@@ -1,0 +1,1188 @@
+1
+00:00:00,080 --> 00:00:02,800
+嘿嘿嘿，这里是STH的Patrick
+hey guys this is patrick from sth
+
+2
+00:00:02,800 --> 00:00:05,839
+今天我会介绍一些会让你大开眼界的东西
+today we're probably going to blow a lot of people's minds with what we're going to
+
+3
+00:00:05,839 --> 00:00:10,559
+我们先具体说说看是这一代的数据是如何存储的
+show you specifically let's talk about how storage is done for generations
+
+4
+00:00:10,559 --> 00:00:15,200
+这一代服务器使用2.5英寸硬盘位
+you've had servers with like two and a half inch storage bays those storage
+
+5
+00:00:15,200 --> 00:00:19,600
+其中包括SATA、SAS，当然还有NVME硬盘
+ bays have had sata they've had sass they've also had nvme drives and the
+
+6
+00:00:19,600 --> 00:00:26,000
+最主要的思想是把他们接入含有SAS HBA，或者RAID卡的存储服务器
+basic idea is that you take your drives you put them into the storage server you have something like a sas hba raid
+
+7
+00:00:26,000 --> 00:00:29,840
+或者通过NVME直连主服务器
+controller or you just have nvme connections to the main server the main
+
+8
+00:00:29,840 --> 00:00:35,360
+这些服务器一般都是双路x86，比如XEON或者EPYC
+server is usually an x86 server with two intel xeon cpus or amd epic cpus just
+
+9
+00:00:35,360 --> 00:00:38,079
+或者一些别的差不多的东西
+something like that and then basically
+
+10
+00:00:38,079 --> 00:00:44,160
+下一步人们会把存储接入网络，使得所有别的设备都能访问到存储
+what's the next step well we have to go put that storage onto the network so all the rest of our infrastructure can talk
+
+11
+00:00:44,160 --> 00:00:46,640
+同时为了使能连接到网络，服务器得添加网卡
+to it so then we have some network cards
+
+12
+00:00:46,640 --> 00:00:52,320
+这些卡不管是光纤卡、以太网卡还是IB网卡
+those network cards even if they're fibre channel adapters or they're just traditional ethernet adapters infiniband
+
+13
+00:00:52,320 --> 00:00:59,680
+都得从服务器后面连接到网络中
+whatever you have well basically you need to have those kind of network adapters on the back of the system and then that basically goes out to your
+
+14
+00:00:59,680 --> 00:01:01,760
+在某些方面看，这样的做法很愚蠢
+network and in some ways that's stupid
+
+15
+00:01:01,760 --> 00:01:07,200
+我这样说的理由是这样的结构有太过多的转换了
+right the reason i say it's stupid is because well think about how many conversions you have right you have
+
+16
+00:01:07,200 --> 00:01:14,000
+你看看，硬盘插进机箱的背板里，接入到x86服务器，做一些处理后
+drives and then you put them into a chassis which goes into a backplane that backplane then goes to an x86 server which has to do something on that and
+
+17
+00:01:14,000 --> 00:01:20,240
+再通过网络传输后，转换到PCI-e 信号，脱离以太网
+then from there it basically has to go over the network and so you have to do another translation to pcie back over
+
+18
+00:01:20,240 --> 00:01:26,799
+最后才能进入系统。
+the network and now we're basically out onto ethernet and then it has to go into the system frankly that's kind of a
+
+19
+00:01:26,799 --> 00:01:30,400
+说实话由于这些不同的转换，这是一个非常奇怪的过程
+really weird way to go do it because that's a lot of different translations
+
+20
+00:01:32,820 --> 00:01:35,840
+因此，铠侠为了解决这个问题生产了这款叫em6的SSD
+and so what kioxia has is actually something called the em6 ssd you might
+
+21
+00:01:35,840 --> 00:01:43,040
+我以前听说过cd6和cm6，这款em6和别的“6”有什么区别呢？
+say em6 i've heard of cd6 cm6 i mean i've heard of lots of these different sixes like what's different with this
+
+22
+00:01:43,040 --> 00:01:47,680
+区别在于其中的“e”代表了以太网(Ethernet)
+ and the difference is the fact that there's an e which stands for ethernet
+
+23
+00:01:47,680 --> 00:01:50,079
+也许不是这样的，但是这正是我要说的
+maybe it doesn't but that's what we're going to say it stands for and the
+
+24
+00:01:50,079 --> 00:01:55,200
+em6和其他ssd相比如此与众不同的原因在于
+reason that those em6 ssds are so much different from pretty much anything else
+
+25
+00:01:55,200 --> 00:02:00,719
+他们完全不同
+that you've seen is really just the fact that they are different they actually
+
+26
+00:02:00,719 --> 00:02:08,399
+em6使用的协议不是NVME，或者说与外部互联的协议其实25g以太网
+speak instead of nvme they speak or their external connectivity is actually 25 gig ethernet so when you plug that
+
+27
+00:02:08,399 --> 00:02:13,760
+所以当你把SSD塞入机箱插电开机的时候
+ssd into a chassis to get power and cooling for example instead of it going
+
+28
+00:02:13,760 --> 00:02:17,520
+em6不会通过PCI-e通道和CPU通信很多次 ，而是直接连接到交换机里面去
+over pcie a whole bunch of times into cpus it directly goes into a network
+
+29
+00:02:17,520 --> 00:02:24,560
+现在你可能会在心里想：“Patrick，这东西理论上听起来不错，实际如何工作的呢？”
+switch now you might be thinking hey patrick that sounds theoretical and great but like how does it actually work
+
+30
+00:02:24,560 --> 00:02:28,080
+“要怎么拿它组阵列？为什么我要用它来代替原来的？”
+what do we do about raid like like how does this hold like why why would i even
+
+31
+00:02:28,080 --> 00:02:30,480
+我想了想应该这样
+do this and so i thought about that and
+
+32
+00:02:30,480 --> 00:02:36,800
+我应该先向你们展示一下下一代存储应该是怎样
+i said hey what if what if i actually went and showed you guys the next generation of how you might do storage
+
+33
+00:02:36,800 --> 00:02:41,280
+所以我去到加利福尼亚州圣何塞的铠侠实验室
+and so what i did was i traveled to san jose california so i could go to the lab
+
+34
+00:02:41,280 --> 00:02:46,879
+来向你们展示这是个什么玩意
+at kioxia and just kind of show you guys what is going on here because this is definitely a newer generation so for the
+
+35
+00:02:46,879 --> 00:02:52,319
+视频剩下的部分我们将出发到那里去。
+rest of this video we're going to get on the road and if it sounds a little different it's because we're on the road
+
+36
+00:02:52,319 --> 00:02:54,720
+好的，现在我们已经到了铠侠的实验室
+okay so here we are in the kioxia lab and
+
+37
+00:02:54,720 --> 00:02:58,640
+我们来看看这台Ingrasys出品的服务器
+we are going to take a look at the ingrasys system now this is something
+
+38
+00:02:58,640 --> 00:02:59,840
+其实我们之前已经看过它好几遍了
+that we have actually looked at a number
+
+39
+00:02:59,840 --> 00:03:04,239
+比如说在SC21上
+of times this particular system we looked at it specifically at SC21 and
+
+40
+00:03:04,239 --> 00:03:09,840
+它的外观基本和常见的存储服务器差不多
+what you can basically see is that this looks like something that we've seen a bunch of times in terms of storage
+
+41
+00:03:09,840 --> 00:03:14,159
+它高度为2u，有24盘位
+systems there's a 2u 24 bay chassis and
+
+42
+00:03:14,159 --> 00:03:20,319
+光从前面看你可能会说“我之间看过这东西”
+from the front frankly you wouldn't be wrong to say hey i've seen this type of box before
+
+43
+00:03:20,319 --> 00:03:24,799
+但是严谨地来说，这并不是一个机箱
+however that is not exactly the case because
+
+44
+00:03:24,799 --> 00:03:30,959
+虽然从前面看上去这些只是质量不错的硬盘托架
+when you look at the system while we have these nice drive trays when we pull one of the drives out what you're gonna
+
+45
+00:03:30,959 --> 00:03:36,799
+实际上这里面插的都是em6和一块小小的红色板子
+see is that well there's an em6 drive in there and this funky little red board
+
+46
+00:03:36,799 --> 00:03:40,799
+我们接下来会仔细聊聊这部分
+we're gonna get into exactly what's going on here in a moment but the big
+
+47
+00:03:40,799 --> 00:03:47,280
+但其中最重要的是这是一片可以提供和普通u.2形态的NVME硬盘一样功能的SSD
+thing here is that this is serviceable like a normal nvme ssd or u.2 ssd or something like
+
+48
+00:03:47,280 --> 00:03:52,239
+可以说它和NVME硬盘几乎是一样的，且可以热插拔
+that right this is pretty much the same these are hot swappable and well i guess
+
+49
+00:03:52,239 --> 00:03:54,400
+接下来的问题又来了
+the next question is how what makes this
+
+50
+00:03:54,400 --> 00:03:56,159
+这套系统有什么不一样的地方？
+system different and why do we even care
+
+51
+00:03:56,159 --> 00:03:58,640
+我们要关心em6的哪些地方呢？
+about this whole em6 thing and so here
+
+52
+00:03:58,640 --> 00:04:03,040
+这是一张在盘架里的em6的照片
+is basically the picture of the drive in a sled and what you're going to see is
+
+53
+00:04:03,040 --> 00:04:09,599
+要注意到的是这里的两个edsff连接器
+that we have this em6 drive and then we have two connectors which are actually edsff connectors so these are the same
+
+54
+00:04:09,599 --> 00:04:15,040
+所以你基本上可以把它当成e1.s 或者e3.s硬盘
+ones you'd see in like e1.s or something like e3.s drives or something
+
+55
+00:04:15,040 --> 00:04:18,720
+或者其他有edsff标准接口的硬盘
+like that you'd see these edsff connectors and there are two of them
+
+56
+00:04:18,720 --> 00:04:21,600
+双端口在拓扑中非常重要
+which is really important when we actually look at the topology there's
+
+57
+00:04:21,600 --> 00:04:24,479
+此外，还有另一个版本的板子和导轨套装
+also a little version of this that has a
+
+58
+00:04:24,479 --> 00:04:27,759
+可以容纳NVME SSD
+sled and has the space for a nvme ssd so
+
+59
+00:04:27,759 --> 00:04:29,919
+所以你可以直接拿普通的NVME SSD放进去
+you can actually take a normal nvme ssd
+
+60
+00:04:29,919 --> 00:04:33,120
+放到这个神奇的小控制板上
+put it into this little marvel
+controller board and this will actually
+
+61
+00:04:33,120 --> 00:04:35,520
+以此来把硬盘变成NVMEof硬盘
+turn it into an nvme over fabric ssd so
+
+62
+00:04:35,520 --> 00:04:39,440
+只要你想，你完全可以拿手边就有的SSD这么干
+you can totally use a different ssd if you want it's just that's what we have
+
+63
+00:04:39,440 --> 00:04:45,840
+看这张图，你可能会发现这块硬盘有两个不同的MAC地址
+here now something you are going to notice is also the fact that these drives say two different mac port
+
+64
+00:04:45,840 --> 00:04:47,680
+分别属于端口0和端口1
+numbers there's port zero and port one
+
+65
+00:04:47,680 --> 00:04:51,520
+一块盘有两个MAC的原因其实是这是块双端口硬盘
+there's two different macs because these are actually dual port drives these are
+
+66
+00:04:51,520 --> 00:04:53,440
+这个设计来源于SAS
+really going after sas and to be going
+
+67
+00:04:53,440 --> 00:04:58,400
+因此你得为这种设备提供两个路径来连接
+after sas or dual nvme you actually need to have dual paths to a given storage
+
+68
+00:04:58,400 --> 00:05:02,800
+巧的是我们手上正好有双端口edsff连接器
+device so what we basically have is we have those two edsff connectors and when
+
+69
+00:05:02,800 --> 00:05:07,680
+好戏在接通电源后才刚刚开始
+we get to the nodes powering them this is where some of the real magic happens
+
+70
+00:05:07,680 --> 00:05:09,280
+精彩程度远超物理接口带来的刺激
+way beyond the physical interface or
+
+71
+00:05:09,280 --> 00:05:14,320
+我们现在看到的是一堆接口
+anything like that what we actually have is a bunch of connectors but you're
+
+72
+00:05:14,320 --> 00:05:18,320
+但奇怪的是这些接口只有一排
+gonna see that we only have one row of connectors on this node and that is
+
+73
+00:05:18,320 --> 00:05:21,919
+那是因为我们实际上有两个控制器节点，但严谨地说它们又不叫“控制器”
+because we actually have two controller nodes but they're not controller nodes
+
+74
+00:05:21,919 --> 00:05:23,840
+不像是我们平常在x86服务器里面看到的那种控制器
+like you'd have in an x86 server or a
+
+75
+00:05:23,840 --> 00:05:25,840
+也不像是通常的存储阵列里面的控制器
+standard storage array when you look at
+
+76
+00:05:25,840 --> 00:05:32,320
+转头从后面看这套系统的时候，你可以看到两个冗余的通道
+the back of the systems you can actually see that we have the two different redundant paths and at the back we
+
+77
+00:05:32,320 --> 00:05:40,240
+表面上看就是几个巨大的100G，或200G之类的端口
+basically just have just giant network ports you can run something like 100 gig networking or 200 gig networking or whatever you want on the back of it you
+
+78
+00:05:40,240 --> 00:05:43,280
+此外还有外带管理接口
+also see that we have an out-of-band management port and all the kind of
+
+79
+00:05:43,280 --> 00:05:48,880
+还有usb口之类的。这些接口通常出现在交换机上，用来升级
+things that we normally see from a switch because we also have a usb port for things like upgrades and then we
+
+80
+00:05:48,880 --> 00:05:55,120
+顺便还有一个console口
+have a a console port as well so we have basically everything that you would have in a switch and that's because inside
+
+81
+00:05:55,120 --> 00:06:00,080
+这些接口之所以存在，是因为这个节点从内部看基本就是个交换机
+these nodes what we actually basically have is a switch and so here's another
+
+82
+00:06:00,080 --> 00:06:04,560
+这张图是我在SC21上看到的一个版本
+version of the one that we saw at supercomputing 21 and you're going to
+
+83
+00:06:04,560 --> 00:06:08,319
+可以清楚地看到后面的口都是100G以太网端口
+ see that we have all of the ports on the back and these are all 100 gigabit
+
+84
+00:06:08,319 --> 00:06:13,039
+这个版本他们给接口上了色，实验室里给我们看的那个没有
+ethernet ports they have colors in this version they don't have colors in the lab version that we saw at Kioxia
+
+85
+00:06:13,039 --> 00:06:18,000
+这两者之间还是有一点小区别
+have just a little difference in terms of you know the lab version versus the one that we actually saw on the show
+
+86
+00:06:18,000 --> 00:06:19,600
+这张图是整个系统从机架里搬出来的样子
+floor here's the front of the system out
+
+87
+00:06:19,600 --> 00:06:25,039
+当然上面还是有块有机玻璃
+of a rack so you just kind of see it and it actually has a plexiglass top so you can see kind of back where
+
+88
+00:06:25,039 --> 00:06:27,520
+这样能让你了解硬盘和节点之间的位置关系
+the node sits versus the drives and the
+
+89
+00:06:27,520 --> 00:06:31,440
+硬盘托架那么长的原因有两个
+reason that the drive bays are that long is for two reasons one so that way you
+
+90
+00:06:31,440 --> 00:06:40,400
+第一个，能让你用转接器来把普通的NVME SSD转换为NVMEof 以太网设备
+can actually go and put you know the adapter and convert a nvme ssd to a nvme over fabric ethernet device and
+
+91
+00:06:40,400 --> 00:06:47,199
+当然你也可以只用这个机箱，它有另一个版本，里面可以装
+edsff SSD then also you could also use this chassis if you wanted to with a version of this that has edsff so you could just use
+
+92
+00:06:47,199 --> 00:06:52,400
+组装成一台普通的NVME服务器
+this as a normal nvme server like you normally would if you had different nodes so this is actually something that
+
+93
+00:06:52,400 --> 00:06:54,960
+Ingrasys把它打造地非常灵活
+ingrasys makes that is super flexible
+
+94
+00:06:54,960 --> 00:06:58,160
+如果你不知道Ingrasys是哪家公司，它其实是富士康的子公司
+and if you don't know Ingrasys are actually a division i think of foxconn
+
+95
+00:06:58,160 --> 00:07:01,039
+这是一家非常大的供应商企业
+so a big big provider there and the
+
+96
+00:07:01,039 --> 00:07:07,680
+总之，你可以把它当作传统的NVME服务器
+whole idea here is that you could have a version of this that is really just a standard old school nvme server or the
+
+97
+00:07:07,680 --> 00:07:11,759
+也可以把他作为基于以太网的NVMEof设备
+other version of it is this which is the nvme over fabric ethernet version now i
+
+98
+00:07:11,759 --> 00:07:16,080
+这台淡然是以太网版的，看看它的内部
+mentioned the fact that this is an ethernet version and when you look inside the system this is definitely a
+
+99
+00:07:16,080 --> 00:07:19,759
+这完全就是一台交换机
+switch guys this is not you know something else this is a switch so under
+
+100
+00:07:19,759 --> 00:07:22,800
+这个巨大的散热器下面的是交换芯片
+the big heatsink it's actually the switch chip in this version it's
+
+101
+00:07:22,800 --> 00:07:24,639
+这个版本的芯片是Marvell的
+actually a marvell switch and then what
+
+102
+00:07:24,639 --> 00:07:25,919
+接下来是一个m.2 SSD
+you're gonna see is that you'll see an
+
+103
+00:07:25,919 --> 00:07:28,960
+是交换机的存储
+m.2 ssd and that's your storage for the
+
+104
+00:07:28,960 --> 00:07:33,520
+黑色散热器下面的是一个x86 cpu
+switch now under the black heatsink you can see that we have an x86 cpu and then
+
+105
+00:07:33,520 --> 00:07:35,120
+以及一条单通道内存
+we have a single channel of memory and
+
+106
+00:07:35,120 --> 00:07:36,880
+这个cpu运行控制方案
+that's really running the control plan
+
+107
+00:07:36,880 --> 00:07:42,720
+交换机本身运行的是SONiC系统
+now when we look in the switch itself what you can actually see is that this whole switch is running sonic so this is
+
+108
+00:07:42,720 --> 00:07:49,680
+运行微软Azure的SONiC平台算是当下软件定义网络的标配了
+running you know the big microsoft azure sonic platform that is like the number one thing in software-defined networking
+
+109
+00:07:49,680 --> 00:07:55,759
+SONiC作为时下热门交换机系统，运行在很多SDN网络中
+right now it is you know all kinds of hotness it's definitely what we like to go run on a lot of our switches and so
+
+110
+00:07:55,759 --> 00:08:02,960
+在这里你可以用软件定义网络来控制数据流进出SSD
+you're basically using software-defined networking to go and control the data flows to and from the nvme ssds and just
+
+111
+00:08:02,960 --> 00:08:04,400
+另一个比较好玩的是
+another really quick kind of fun one
+
+112
+00:08:04,400 --> 00:08:09,919
+终端上的这些输出显示我们正通过telnet连进SSD
+here this little bit right here is where we're actually telnetting into a ssd so
+
+113
+00:08:09,919 --> 00:08:11,199
+想想看，我们正用telnet
+think about this for a sec we are
+
+114
+00:08:11,199 --> 00:08:17,520
+通过网络 连进NVMEof SSD
+telnetting over the network to a nvme over fabric ssd what in the heck is
+
+115
+00:08:17,520 --> 00:08:19,360
+真是太疯狂了
+going on here this is absolutely crazy
+
+116
+00:08:19,360 --> 00:08:22,960
+我们来介绍一下这一切是怎么办到的吧
+and we're gonna get into what's going on in a second so let's go and hop in and
+
+117
+00:08:22,960 --> 00:08:25,919
+我们开了一个demo来进行演示
+just kind of show you a demo of what this looks like so now we're on a
+
+118
+00:08:25,919 --> 00:08:31,840
+我们现在在工作站中，我们想要连接到网络中的NVME硬盘
+workstation and we're going to connect to these nvme drives that are just sitting on the network and they're sitting on
+
+119
+00:08:31,840 --> 00:08:35,599
+就是刚刚展示的这些插在Ingrasys交换机里面的硬盘
+that switch in that that chassis that the ingress chassis that we just showed
+
+120
+00:08:35,599 --> 00:08:39,519
+我们将会通过网络去访问它们
+you we're just going to go and access them over the network so the first thing
+
+121
+00:08:39,519 --> 00:08:44,240
+接下来我想要列出nvme设备
+that we are going to do is we're going to have to you know we have right now you can see that with the nvme list we
+
+122
+00:08:44,240 --> 00:08:46,800
+但可以看到一个都没有出来
+don't have any nvme drives at all on the
+
+123
+00:08:46,800 --> 00:08:48,320
+接下来我们来让他们出现在这里
+system but we're going to do is we're
+
+124
+00:08:48,320 --> 00:08:52,240
+先ping一下我们刚刚telnet进去的硬盘
+going to go ping that host that we just telnet it into the next thing that we're
+
+125
+00:08:52,240 --> 00:08:53,519
+我们要来寻找一下它们
+going to do is we're going to discover
+
+126
+00:08:53,519 --> 00:08:57,600
+我们要指定使用RDMA，RoCEv2，以及NVME硬盘的地址
+and we're specifically going to use rdma in RoCE v2 and then we're going to
+
+127
+00:08:57,600 --> 00:09:04,320
+这样我们就连上了一个em6 SSD
+connect to the nvme drive so we're going to connect to a single em6 ssd right now
+
+128
+00:09:04,320 --> 00:09:09,519
+它们之间的连接完全是网络，没有存储服务器，而是直连那边的交换机
+purely over the network there's no storage server it's only connected to the network switch in that chassis and
+
+129
+00:09:09,519 --> 00:09:13,760
+现在通过lsblk命令就能看到硬盘了
+now what you can actually see with lsblk is that we can actually see that the
+
+130
+00:09:13,760 --> 00:09:18,080
+名字叫nvme0n1
+nvme drive is connected so that's nvme0n1
+
+131
+00:09:18,080 --> 00:09:22,480
+第二步来创建文件系统
+but then the next step is that we are going to make a file system on
+
+132
+00:09:22,480 --> 00:09:25,839
+一般来说这都是非常重要的
+that because that's usually pretty important to go do okay so here we are
+
+133
+00:09:25,839 --> 00:09:32,399
+那我们在那个不接存储服务器，直连以太网的NVME硬盘上创建一个xfs文件系统吧
+making an xfs file system on that nvme drive that's not connected to a storage server only to ethernet now when we do
+
+134
+00:09:32,399 --> 00:09:38,560
+我们先用nvme list，你能看到一块3.84T的SSD
+nvme list you can see that we have the 3.84 terabyte ssd and you can see that
+
+135
+00:09:38,560 --> 00:09:42,720
+现在正在创建xfs文件系统
+we are now making a xfs file system on that and
+
+136
+00:09:42,720 --> 00:09:52,560
+再次强调，这块硬盘是直接连接到网络中的
+again this is not even over this is not a local drive this is just over the ethernet it's not connected to a storage server this is purely over ethernet directly to the drive itself the next
+
+137
+00:09:52,560 --> 00:09:55,120
+接下来我们挂载这一块硬盘
+step is we will mount that single drive
+
+138
+00:09:55,120 --> 00:09:58,480
+我这里强调了“一块”硬盘，你可以猜猜看我下一步会干什么
+and we're saying it's a single drive and you can guess we're going to go next with this
+
+139
+00:09:58,480 --> 00:10:02,720
+已经挂载好了
+but there we can see that we actually have the drive mounted as a single drive
+
+140
+00:10:02,720 --> 00:10:05,120
+我们来试着拷贝一点文件
+and now it's time to go copy some files
+
+141
+00:10:05,120 --> 00:10:08,320
+就把大便拷过去吧~
+over let's go copy debian over and so we
+
+142
+00:10:08,320 --> 00:10:09,600
+正好有一个大便在那
+just have a zip of debian and that's
+
+143
+00:10:09,600 --> 00:10:13,519
+好了，这样就拷贝好了
+just being copied over the network and it's already done okay so that's like
+
+144
+00:10:13,519 --> 00:10:15,360
+以上是单盘版本的操作
+the single drive version of this and
+
+145
+00:10:15,360 --> 00:10:20,399
+虽然看上去不错，但是问题是如何向外扩展呢？
+while the single drive version is good the next question is well can't you scale out like what if you had a data
+
+146
+00:10:20,399 --> 00:10:22,000
+如果你有一数据中心的这东西
+center of these you wouldn't necessarily
+
+147
+00:10:22,000 --> 00:10:24,399
+你肯定不会像这样只用一块硬盘
+want to just go access one drive right
+
+148
+00:10:24,399 --> 00:10:27,519
+你肯定又一堆这样的硬盘
+you might have a bunch of them and you'd want to go pull drives maybe from
+
+149
+00:10:27,519 --> 00:10:30,800
+也许数据会从数据中心的不同部分、不同机架、不同机箱中的硬盘里读取
+different chassis different racks different parts of the data center
+
+150
+00:10:30,800 --> 00:10:32,720
+但我们不用考虑这些东西
+whatever it is and we can just because
+
+151
+00:10:32,720 --> 00:10:35,200
+因为我们能把每个单独的硬盘作为一个NVME硬盘
+we can treat each individual drive as
+
+152
+00:10:35,200 --> 00:10:37,519
+使我们能够把它们视作本机NVME硬盘
+its own nvme drive that allows us to go
+
+153
+00:10:37,519 --> 00:10:39,600
+于是乎我们就能在这些硬盘中创建阵列
+do things like we can do raid we can do
+
+154
+00:10:39,600 --> 00:10:41,279
+以及任何好玩的操作
+all kinds of fun stuff so let's go look
+
+155
+00:10:41,279 --> 00:10:43,120
+那接下来我们看看创建阵列是怎么样的
+at what that looks like and specifically
+
+156
+00:10:43,120 --> 00:10:47,040
+具体到实际，我们先来删掉之前我们连接的硬盘
+we're gonna have to go and remove that first drive that we just put on there
+
+157
+00:10:47,040 --> 00:10:49,680
+我们来把它从系统中删掉
+we're gonna go remove that from the system so that way
+
+158
+00:10:49,680 --> 00:10:52,800
+下一步我们直接用这个脚本来快速完成
+this all works okay now we're gonna do is we're just gonna go script this real
+
+159
+00:10:52,800 --> 00:11:00,800
+这个脚本在干的是连接所有那边那个机器里面的硬盘
+fast so it's uh pretty easy but the basic idea is we are going to connect to all of these nvme drives that are in a
+
+160
+00:11:00,800 --> 00:11:05,839
+这里用脚本的原因是你们肯定不希望看到我我一个一个地添加硬盘
+chassis via a script and the reason we're using a script here is just because you don't want to see us add
+
+161
+00:11:05,839 --> 00:11:08,880
+毕竟我之前已经给你们演示过一遍了
+drives individually but we already showed you the command for that so
+
+162
+00:11:08,880 --> 00:11:11,279
+敬请谅解
+hopefully hopefully that makes sense
+
+163
+00:11:11,279 --> 00:11:16,399
+做完之后下一步就能创建RAID了
+and once we do that the next step is we can actually go and we can create a raid
+
+164
+00:11:16,399 --> 00:11:18,480
+非常不错
+array which is awesome and because
+
+165
+00:11:18,480 --> 00:11:19,920
+但是呃这里有点小问题
+screwed up a little bit uh we only have
+
+166
+00:11:19,920 --> 00:11:22,160
+只有23个盘上线，但是一共有24个盘
+23 of the 24 drives uh because there's a
+
+167
+00:11:22,160 --> 00:11:23,920
+这个脚本有点小问题
+little script issue so that was a little
+
+168
+00:11:23,920 --> 00:11:25,760
+出了点出状况，大伙见谅
+oops but you know you guys get the idea
+
+169
+00:11:25,760 --> 00:11:30,399
+我想说的是这里又23块3.84T硬盘
+there's actually 23 basically 3.84 terabyte drives here so that gives us
+
+170
+00:11:30,399 --> 00:11:33,440
+总共给我们提供大约80T可用空间
+roughly 80 terabytes or so usable and so
+
+171
+00:11:33,440 --> 00:11:34,800
+接下来我们来挂载阵列
+then what we can do is we can mount the
+
+172
+00:11:34,800 --> 00:11:40,480
+挂载完毕，我们就有了一个巨大的80T硬盘 
+array and then once we've mounted the array we basically just have a giant 80 terabyte drive even though you wouldn't
+
+173
+00:11:40,480 --> 00:11:45,920
+虽然说你不一定要那么大的盘，或者那么大一块只提供给单个系统的硬盘
+necessarily have an 80 terabyte drive or maybe an 80 terabyte drive within a system well now you can just go over the
+
+174
+00:11:45,920 --> 00:11:49,360
+但我刚才的演示让你能够通过玩过获取大量硬盘，用来创建阵列等等 
+network and just grab as many drives as you want and then create a raid array
+
+175
+00:11:49,360 --> 00:11:54,720
+现在我们再来把大便复制过去吧 
+with that and again we can just go copy our little debian zip over and
+
+176
+00:11:54,720 --> 00:11:56,399
+好了
+there we go now the other thing that
+
+177
+00:11:56,399 --> 00:11:57,839
+以上就是我想要展示给各位看的
+we're not showing here is just the fact
+
+178
+00:11:57,839 --> 00:12:01,680
+单台服务器不仅可以做一对一的直接映射 
+that not only can you just have a single drive to a single server and just do
+
+179
+00:12:01,680 --> 00:12:06,959
+你还可以用命名空间，把一个NVME硬盘切成片
+that straight mapping you can also use namespaces and slice up a nvme target
+
+180
+00:12:06,959 --> 00:12:14,480
+把它们切成不同的分区，以提供给不同的系统使用 
+ssd that's on ethernet you can slice that up into multiple different little partitions and then give that to multiple systems and why that matters is
+
+181
+00:12:14,480 --> 00:12:16,959
+这个功能重要的原因是
+you might want to only give say a bunch
+
+182
+00:12:16,959 --> 00:12:24,959
+每台机器有时候可能只在一个NVME设备上存一点点数据 比如100G 
+of machines only maybe i don't know 100 or so gigabytes worth of storage on each nvme device and then as they need more
+
+183
+00:12:24,959 --> 00:12:28,720
+如果需要更多空间，就会去不同的硬盘中取
+storage you can just go pull in more storage from different devices that
+
+184
+00:12:28,720 --> 00:12:30,720
+这意味着你的数据会更加分散
+means that your data is spread among
+
+185
+00:12:30,720 --> 00:12:36,720
+更多的设备意味着更多的你懂的优势
+more drives and that allows you to have you know if you have
+a number of drives allows you to have a larger number that
+
+186
+00:12:36,720 --> 00:12:42,079
+像是更强的性能，以及更好的容错 
+you're pulling from which gives you more performance and it also gives you the ability to manage failures and risk in
+
+187
+00:12:42,079 --> 00:12:44,399
+遇到特殊情况也能更好应对
+that kind of situation and we can treat
+
+188
+00:12:44,399 --> 00:12:47,760
+我们还能把单独的一块硬盘视为独立个体 
+every single drive as its own independent thing because well i mean
+
+189
+00:12:47,760 --> 00:12:49,680
+因为我们能telnet过去还能ping它嘛
+just like we can telnet and ping them
+
+190
+00:12:49,680 --> 00:12:51,760
+每块硬盘都是网络上的节点
+each drive is its own node on the
+
+191
+00:12:51,760 --> 00:12:55,360
+我们不用穿越多种类型的存储系统 
+network and so we're not going across like multiple storage systems and we're
+
+192
+00:12:55,360 --> 00:12:57,440
+也不用升级存储系统
+not really scaling up a storage system
+
+193
+00:12:57,440 --> 00:13:04,160
+我们只需要去升级这些以太网交换机就行了 
+all we're doing is using these you know chassis that are really the you know ethernet switch chassis and we're
+
+194
+00:13:04,160 --> 00:13:07,120
+比如升级交换机端口数 
+basically just scaling up the number of ethernet switches with ports that we
+
+195
+00:13:07,120 --> 00:13:11,120
+因为我们只需要通过网络就能直接访问这些资源了
+have and then we're basically just accessing these resources directly over
+
+196
+00:13:11,120 --> 00:13:17,040
+由于它们管理升级都很方便 
+the network and so from a you know ease of management or ease of scalability standpoint this is like as easy as just
+
+197
+00:13:17,040 --> 00:13:20,079
+你只需要往上加交换机以及硬盘就可以了 
+adding more switches and adding more drives onto a network you're not having
+
+198
+00:13:20,079 --> 00:13:25,200
+不用像普通阵列一样“哦，我的硬盘数量多到了阵列支持的极限数量” 
+to expand your array you're not like oh no i've hit my array limit like your array limit is like how much can you
+
+199
+00:13:25,200 --> 00:13:29,680
+这台机器有多少ip就能寻址多少硬盘 
+address with uh with with networking um and how many ips do you have and all
+
+200
+00:13:29,680 --> 00:13:33,519
+总之这种东西的可拓展性太强了
+that kind of stuff i mean it's like it's
+like way way more scalable and so i think
+
+201
+00:13:33,519 --> 00:13:34,720
+这就是为什么大家伙都想要用这东西
+that's why folks are really looking at
+
+202
+00:13:34,720 --> 00:13:38,160
+真是牛逼爆了
+this and saying like this could actually be something that is super cool and i
+
+203
+00:13:38,160 --> 00:13:44,880
+现在我们要用PCI-e卡以及一整台服务器来运行阵列，但下一步
+will just plug it real quick that we are using the pcie adapter and the system to go run that md raid but the next step of
+
+204
+00:13:44,880 --> 00:13:50,160
+下一步我们会用DPU来管理阵列以及其它所有基础设备 
+this of course is the fact that you could use DPUs and manage all the raid and all of the infrastructure with the
+
+205
+00:13:50,160 --> 00:13:53,040
+而不是用一整台工作站来干这件事
+dpu instead of using the workstation
+
+206
+00:13:53,040 --> 00:13:54,320
+就像这张图中我们正在干的事情
+like we're using here we're just doing
+
+207
+00:13:54,320 --> 00:13:55,600
+这张图是一张示意图，我希望你能通过这张图懂我的意思
+that for demo purposes but hopefully you
+
+208
+00:13:55,600 --> 00:14:00,480
+兄弟们我希望你们喜欢这条对铠侠em6的介绍视频
+ get what's going on so guys i hope you like this look at the KIOXIA em6 nvme
+
+209
+00:14:00,480 --> 00:14:04,720
+这些SSD对我来说真是牛逼坏了
+ssds i mean i know this to me at least was absolutely crazy to go see i've
+
+210
+00:14:04,720 --> 00:14:07,199
+我想要做这个demo整整一年了
+wanted to do this demo for absolutely
+
+211
+00:14:07,199 --> 00:14:14,480
+总的来说，它的价值在于不需要一台x86或者arm服务器来把存储空间传递到
+years but the basic idea here is that you don't necessarily need an x86 server to go or an arm server to actually go
+
+212
+00:14:14,480 --> 00:14:17,839
+另外的服务器那里去
+and deliver your storage to your servers
+
+213
+00:14:17,839 --> 00:14:23,519
+这两者完全是不同的概念，显然是一种更加现代的存储方法
+right i mean this is a totally different paradigm and it's definitely a more modern way to go and do storage you
+
+214
+00:14:23,519 --> 00:14:25,519
+这样一来存储管理员不再是必须的了
+don't necessarily need storage admins as
+
+215
+00:14:25,519 --> 00:14:31,040
+网络管理员就可以确保数据正常传输 
+much as you basically just need network admins so that way you can keep the flow of data going the other thing is that
+
+216
+00:14:31,040 --> 00:14:36,160
+另外，每个NVME SSD都获得更高的使用效率 
+you can get a much higher utilization of the actual nvme ssds because you can
+
+217
+00:14:36,160 --> 00:14:43,440
+因为你是通过网络传输的数据，因此不会受到机箱内部带宽的限制 
+actually go access those nvme ssds over the network and you're not limited by the chassis bandwidth necessarily of an
+
+218
+00:14:43,440 --> 00:14:47,120
+如果使用x86服务器那必然会在服务器内部进行传输后，再从网卡出口
+x86 server that has to go through another nic so you actually can get a
+
+219
+00:14:47,120 --> 00:14:48,800
+可见新架构会节约不少性能
+lot more performance out of that and
+
+220
+00:14:48,800 --> 00:14:50,160
+你还能利用它干其他特别厉害的事情
+then you can also do all kinds of things
+
+221
+00:14:50,160 --> 00:14:56,000
+比如说分片功能在这个拓扑下能实现的一些功能 
+like slice them up and do really just kind of cool things if you just kind of think about what the topology allows you
+
+222
+00:14:56,000 --> 00:15:02,959
+我希望你喜欢这套新一代存储系统 
+to do so i hope you really appreciate the fact that this is definitely a new generation of devices and what i really
+
+223
+00:15:02,959 --> 00:15:05,279
+但我想让大家想一想
+think and really hoping just personally
+
+224
+00:15:05,279 --> 00:15:06,639
+如果没有这套系统
+is that you take this away and you think
+
+225
+00:15:06,639 --> 00:15:10,320
+有没有什么其他的办法能够达到同样的效果 
+about what are the other ways that you could do this because the next thing
+
+226
+00:15:10,320 --> 00:15:16,560
+因为接下来我们将要展示如何用DPU，而不是以太网来办到这件事 
+that we're going to show is well how would you go manage this if you actually used dpus instead of just using ethernet
+
+227
+00:15:16,560 --> 00:15:23,600
+如果你的服务器里面有一块直连NVME SSD的DPU，可以像我展示的那样吗？
+ connected devices like what if you had a dpu in the server that is directly connected to the nvme ssds if you think
+
+228
+00:15:23,600 --> 00:15:29,600
+如果你认为不可能，那就等几天，我会来用事实闪爆你的狗眼 
+that sounds crazy just keep waiting for another couple days because we're going to have that and i think it's going to blow people's mind that is my real goal
+
+229
+00:15:29,600 --> 00:15:35,680
+当然这也是我做“下一代存储技术”这一系列视频的初衷 
+with this series and that is really to show you what some of the next generation storage technologies are going to look like because frankly
+
+230
+00:15:35,680 --> 00:15:39,440
+因为说实话我们用了三年又三年的设备真的烂透了 
+things like we've used for years just those are boring they're not necessarily
+
+231
+00:15:39,440 --> 00:15:42,959
+它们并不是人们发明过的最好的技术 
+the best and people have innovated since then and we have new technologies so
+
+232
+00:15:42,959 --> 00:15:44,800
+相比之下肯定有更好更新的方法
+there are better and newer ways to go do
+
+233
+00:15:44,800 --> 00:15:51,279
+我做视频的目的是赶在你们花时间踩坑之前告诉你们
+things and i just want to show you those before well you go down a path that maybe you don't necessarily want to or maybe you see something that you think
+
+234
+00:15:51,279 --> 00:15:52,639
+或者把它介绍给适合这个的方案的人
+is like absolutely perfect for you so i
+
+235
+00:15:52,639 --> 00:15:54,000
+我只想把它展示给你看
+just want to present that to you so with
+
+236
+00:15:54,000 --> 00:16:00,240
+谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢 
+that if you like this video well give it a like click subscribe turn on those notifications so you can see whenever we come out with great new videos as always
+
+237
+00:16:00,240 --> 00:16:04,079
+祝你有个开心+愉快的一天
+thanks for watching have an awesome day
+

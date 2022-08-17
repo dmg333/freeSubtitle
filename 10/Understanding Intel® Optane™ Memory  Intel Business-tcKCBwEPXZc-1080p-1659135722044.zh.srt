@@ -1,0 +1,188 @@
+﻿1
+00:00:01,129 --> 00:00:06,454
+了解Intel 傲腾内存就和做煎饼一样容易
+understanding Intel Optane memory is as easy as well making pancakes
+
+2
+00:00:06,478 --> 00:00:07,812
+不相信我们？
+don't believe us?
+
+3
+00:00:07,836 --> 00:00:13,684
+先把你电脑中的数据想象成摊煎饼的原材料
+start by thinking of the data your computer uses as the ingredients you need to make pancakes
+
+4
+00:00:13,708 --> 00:00:16,803
+把计算机处理器想象成厨子
+imagine the computers processor as the cook
+
+5
+00:00:16,827 --> 00:00:19,395
+DRAM 则作为厨房台面
+and the DRAM as the kitchen countertops
+
+6
+00:00:19,419 --> 00:00:22,890
+硬盘则是出售原料的商店
+the store that sells all these ingredients is the hard drive and
+
+7
+00:00:22,890 --> 00:00:26,039
+并且它是个隔了好几里地的超级大商店
+it's a mega store two towns away to get
+
+8
+00:00:26,039 --> 00:00:30,060
+厨子必须开车到商店去，才能带回原材料
+the ingredients the cook has to drive to the store and bring the ingredients back
+
+9
+00:00:30,060 --> 00:00:34,290
+同时把需要的材料放到台面上，每次都需要做很多工作
+to the countertop where they are needed to cook that's a lot of work every time
+
+10
+00:00:34,290 --> 00:00:35,975
+真是非常费事呢！
+you want to make pancakes
+
+11
+00:00:36,458 --> 00:00:42,059
+现在，如果想要加速这个过程就意味着要增加更多的 DRAM 或者说是计算空间
+until now speeding up this process has usually meant adding more DRAM or counter space
+
+12
+00:00:42,059 --> 00:00:45,170
+但这既昂贵又不切实际
+that is both expensive and unrealistic
+
+13
+00:00:45,170 --> 00:00:50,911
+即使有一个更大更贵台面，你仍然需要去商店才能购买原材料
+even with a larger expensive countertop you still need to get all those ingredients from the store
+
+14
+00:00:52,256 --> 00:00:54,191
+这就是Intel派上用场的地方
+that's where Intel comes in
+
+15
+00:00:54,215 --> 00:00:58,617
+Intel 傲腾内存位于机械硬盘和处理器之间
+Intel Optane memory sits between your hard drive and your processor
+
+16
+00:00:58,641 --> 00:01:02,727
+它有点像厨房边的一个方便的储藏室
+kind of like a big convenient pantry right next to your kitchen
+
+17
+00:01:02,907 --> 00:01:06,493
+Intel 傲腾内存也能被用作系统加速器
+Intel Optane memory also used as the system accelerator driver
+
+18
+00:01:06,547 --> 00:01:11,108
+我们叫这块加速器为“副厨师长”吧！你的副厨会为主厨准备好一切
+let's call this driver your sous chef the sous chef gets everything ready for the cook
+
+19
+00:01:11,132 --> 00:01:15,352
+经过一段时间的相处，你的副厨知道你每周六早上都做煎饼
+over time your sous chef learns that you make pancakes every Saturday morning
+
+20
+00:01:15,914 --> 00:01:16,747
+真棒！！
+good for you
+
+21
+00:01:16,771 --> 00:01:22,830
+你那位出色的副厨会准备好你需要的食材，并将它们贮存在储藏室中
+to prepare our awesome sous chef gets the ingredients you need from the store and keeps them in the pantry so
+
+22
+00:01:22,830 --> 00:01:25,978
+系统加速器会自动学习你的计算行为
+the system accelerator automatically learns your computing behaviors
+
+23
+00:01:26,002 --> 00:01:31,961
+智能识别你最常访问的文件和数据来进行加速
+and accelerates frequent tasks by intelligently identifying the files and data you access most frequently
+
+24
+00:01:31,988 --> 00:01:35,403
+并把它们存储在Intel 傲腾内存模块中
+and storing them in the intel Optane memory module
+
+25
+00:01:35,793 --> 00:01:36,975
+谢谢厨师
+Thank You chef
+
+26
+00:01:36,999 --> 00:01:41,487
+现在你所需的原料或者说数据就在旁边的储藏室里
+now you have all the ingredients or data right where you need it in your pantry
+
+27
+00:01:41,511 --> 00:01:43,532
+因此，你不用再去商店跑一趟了
+so no more trips to the store
+
+28
+00:01:43,556 --> 00:01:47,424
+也就是说，它成为了一台速度更快、响应更敏捷、没有短板的PC
+it's a faster more responsive PC with no lag
+
+29
+00:01:47,448 --> 00:01:52,314
+Intel 傲腾内存可以加速任何一颗第七代酷睿处理器赋能的系统
+Intel Optane memory will accelerate any seventh gen core processor based system
+
+30
+00:01:53,081 --> 00:01:54,914
+在哪里可以得到Intel 傲腾内存加持的体验呢？
+how do you get Intel Optane memory
+
+31
+00:01:55,001 --> 00:02:00,200
+可以在支持傲腾技术的主板或准系统中安装
+install the Intel Optane memory module in an Intel obtain ready motherboard or system
+
+32
+00:02:00,200 --> 00:02:06,075
+或者，你也可以直接从当地的零售商处购买带有 Intel 傲腾内存的整机 
+or purchase a complete system with Intel Optane memory already installed from a  local retailer
+
+33
+00:02:06,099 --> 00:02:10,327
+有了它，你就可以在厨房里呼风唤雨
+so you can be a beast in the kitchen and achieve dramatically better performance
+
+34
+00:02:10,351 --> 00:02:12,759
+意味着你的大容量存储介质能获得更好的性能
+with all the storage capacity you need
+
+35
+00:02:12,783 --> 00:02:16,696
+换句话说，你可以好好地吃你的煎饼了！
+in other words you can / have your pancakes and eat them too
+
+36
+00:02:16,721 --> 00:02:20,210
+想获取更多信息，请访问英特尔官网 
+for more information go to intel.com/optanememory
+
+37
+00:02:20,235 --> 00:02:23,141
+登~~登登登登~~
+
+38
+00:02:23,165 --> 00:02:33,094
+[Music]
+

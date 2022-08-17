@@ -1,0 +1,744 @@
+1
+00:00:00,000 --> 00:00:02,760
+嘿嘿 这里是来自STH的Patrick
+hey guys this is Patrick from sth today
+
+2
+00:00:02,760 --> 00:00:07,450
+今天我们来谈谈，为什么虚拟化和BBQ是相通的？
+we're gonna talk about virtualization and barbecue and how they're basically the same things
+
+3
+00:00:07,474 --> 00:00:11,250
+正在看这个视频的观众也许可以分为两类
+now I know there are probably two different types of people that are watching this video now the
+
+4
+00:00:11,250 --> 00:00:18,180
+一部分人会说“虚拟化和BBQ当然是同一件事情啦，为什么还要做一个视频？”
+ first kind of person they're probably saying of course virtualization in barbecue those are exactly the same why are you even doing a video on this and
+
+5
+00:00:18,180 --> 00:00:23,730
+当然，肯定也会有人会觉得有些疑惑
+of course I think there are set of people that maybe are thinking well hey maybe that's a little bit of stretch but
+
+6
+00:00:23,730 --> 00:00:29,185
+但到了视频结尾，你肯定会认同“虚拟化和BBQ是相同的”这一观点
+by the end of this video you're gonna see that of course virtualization of barbecue are basically the exact same thing
+
+7
+00:00:29,209 --> 00:00:34,328
+有一件事情很有意思，我们被反复问到这件事情
+and this is a little bit of a fun topic but it is one that we get actually asked quite a bit
+
+8
+00:00:34,352 --> 00:00:43,800
+那就是为什么人们不去使用至强E2200系列处理器，它们的单核成本更低，频率更高
+and that is you know why do people not use the Xeon E2200 series for example kind of lower core count higher clock speed parts that are
+
+9
+00:00:43,800 --> 00:00:48,501
+它们要比那些大哥们便宜多了，为什么这些小号至强还是不流行？
+a lot less expensive than their larger server brethren why is that not popular
+
+10
+00:00:48,525 --> 00:00:54,780
+在大多数行业中，低端产品都有较高的性价比。但看看服务器领域
+in a lot of industries it's usually the lower cost products that tend to sell in higher volume but if you look at servers
+
+11
+00:00:54,780 --> 00:01:04,155
+主流的性价比之选不是XEON E2200系列，而是至强可拓展处理器或者AMD EPYC
+it's not the xeon e 2200 series of drive volumes it's actually the mainstream say Xeon scalable or AMD EPYC CPUs that drive volumes
+
+12
+00:01:04,179 --> 00:01:10,890
+所以我认为人们想表达的是，为什么大家都不去用那些低端芯片？
+and so I guess a question a lot of people haven't asked us as well why is it that people aren't using these lower end chips and they're
+
+13
+00:01:10,890 --> 00:01:19,931
+参照CPU频率性能对照图可以发现，那些低端芯片性价比很高
+actually a better value if you look at the price for the CPU per Giga Hertz of performance you actually get a better value on these low and chip
+
+14
+00:01:19,955 --> 00:01:23,850
+为什么大家不在集群里用这些，而是用大型的虚拟化节点呢？
+so why don't people use them in clusters and instead of using large virtualization nodes and
+
+15
+00:01:23,850 --> 00:01:31,118
+这个问题正好对应了我最近烤肉的时候发现的问题
+that is exactly the same as what I recently found out when learning how to smoke meats and do barbeque
+
+16
+00:01:31,142 --> 00:01:34,200
+事先简单声明一下，在某些市场，比如EDA市场中
+now we're not gonna go into this but there are some markets like the EDA markets are
+
+17
+00:01:34,200 --> 00:01:42,810
+用E2200系列CPU做集群的案例很流行
+actually clusters of those types of solutions and what host is a really good example where clusters of E2200 series systems are really popular but
+
+18
+00:01:42,810 --> 00:01:45,869
+我们今天只是讨论的范围限于主流的虚拟化
+we're gonna just kind of look at mainstream virtualization right here now
+
+19
+00:01:45,869 --> 00:01:54,780
+过去几周看过我发帖的各位应该知道，我买了一个pit-boss Pro4立式熏炉
+for those who have seen some my posts over the last couple weeks I went to Lowe's and I purchased a pit-boss Pro 4 series vertical smoker and that's
+
+20
+00:01:54,780 --> 00:01:56,790
+那是一个圆形的熏炉
+a pellet smoker that has a total of
+
+21
+00:01:56,790 --> 00:02:06,420
+有大约1300立方英寸的烹饪空间，在Lowe's 只需要400刀就能买到，单看体积的话性价比很高 
+about 1,300 square inches of cooking space and it was only about $400 at Lowe's which was a relatively good deal for something that could cook that much
+
+22
+00:02:06,420 --> 00:02:10,378
+我觉得这东西真是物超所值
+when I was looking at the unit it seemed like an awesome value I mean you got
+
+23
+00:02:10,378 --> 00:02:15,030
+想想看，5层共计1300立方英寸的空间
+1,300 square inches of cooking space across different racks so you had different
+
+24
+00:02:15,030 --> 00:02:19,050
+你可以把这一层一层的烤盘想象成烹饪集群
+racks and if you think about it it's like having a cluster of cooking racks
+
+25
+00:02:19,050 --> 00:02:23,160
+BBQ大牛可能要来说了
+now of course for anybody that's really big into barbecue and sitting there like
+
+26
+00:02:23,160 --> 00:02:25,950
+“你干嘛不买个水平的熏炉呢？”
+hey why did you get like an offset smoker something like that just I'm not
+
+27
+00:02:25,950 --> 00:02:29,130
+我不是一个有空天天坐在炉子旁边看着火烤肉的人
+the kind of person that's gonna go sit and tend to a fire all day I haven't
+
+28
+00:02:29,130 --> 00:02:33,450
+买个立式熏炉，设置好温度就丢一边才是我的风格
+pellet smoker we just set a temperature and go is much more of my style for the
+
+29
+00:02:33,450 --> 00:02:36,865
+一开始的几个星期，我的pit-boss Pro4 非常好用
+first couple weeks my pit-boss pro4 was absolutely awesome
+
+30
+00:02:36,889 --> 00:02:42,209
+我拿它做牛腩、肋排、拉丝猪肉，一切都非常棒
+I was cooking briskets ribs pulled pork I was making hot links you name it
+
+31
+00:02:42,209 --> 00:02:50,130
+那五层烤盘非常好用，直到我碰到了一个小问题
+and those five cooking racks works really well and I was getting great results until one day when I ran into a little bit of an issue
+
+32
+00:02:50,154 --> 00:02:57,695
+我没法在里面塞一整块巨大的肉！
+and that issue was when I got home and I had a whole bunch of large pieces of meat that just didn't work in that smoker
+
+33
+00:02:57,719 --> 00:03:07,410
+我附近的Costco每人限购3块牛肉，所以我就搞了三块超大的牛腩来
+our local Costco had a limit of only three beef items per so of course I loaded up and got three large beef briskets I also got
+
+34
+00:03:07,410 --> 00:03:10,675
+另外还有一些排骨，看上去不错，我也搞了一点来
+some pork ribs because they look good too
+
+35
+00:03:10,699 --> 00:03:18,390
+当我回到家才知道，为什么立式熏炉不是BBQ以及熏肉界最流行的尺寸
+when I got home I figured out why the vertical smoker is not the most popular form factor for smoking and in the barbecue world and it's actually the
+
+36
+00:03:18,390 --> 00:03:22,891
+同样的，这也是为什么小型服务器不在虚拟化行业内流行的原因
+same kind of reason that these smaller servers are not the most popular in the virtualization world
+
+37
+00:03:22,915 --> 00:03:26,280
+为了说明理由，我们先来看看我买的肉
+and to illustrate this let's start looking at some meat
+
+38
+00:03:26,280 --> 00:03:32,730
+第一块肉是一块USDA优选14磅重的牛腩
+the first brisket I got was a beautiful USDA prime 14 pound brisket this is
+
+39
+00:03:32,730 --> 00:03:36,691
+这块肉比我之前烤过的任何一块肉都要重几磅
+about two pounds bigger than anything I had cooked previously
+
+40
+00:03:36,715 --> 00:03:42,335
+因此，当我把它放进真空袋，塞进炉子里准备保存时
+and so when I got it even in the vacuum sealed bag and I put it on to the rack just for the seal food for fit
+
+41
+00:03:42,359 --> 00:03:45,917
+我就意识到基本都没有空余的空间了
+what I realized was that there's basically no room on either end
+
+42
+00:03:45,941 --> 00:03:47,349
+如果你不太了解BBQ
+and for those that don't know
+
+43
+00:03:47,373 --> 00:03:53,760
+一般你需要把牛腩包起来修剪，去掉多余的脂肪和别的东西
+I mean you have to usually trim a packer brisket when you do that it actually you take off a lot of fat and stuff like
+
+44
+00:03:53,760 --> 00:03:59,470
+处理这些会花费很长的时间
+that but at the same time it also tends to get a little bit longer in the process
+
+45
+00:03:59,494 --> 00:04:05,942
+如果装在真空袋里的时候放不下，到真正进入烤箱开烤的时候显然也放不下。 
+so if it's not fitting in the vacuum sealed bag it's clearly not gonna fit wouldn't finally get it into the smoker
+
+46
+00:04:05,966 --> 00:04:07,019
+不过现在的情况比较尴尬
+ but it was kind of close so it's
+
+47
+00:04:07,019 --> 00:04:16,108
+有点像你有一台64G内存的至强E2200系列虚拟化服务器，而你的虚拟机会使用62G内存
+kind of like if you had a 64 gig virtualization server like as Xeon E2200 series virtualization server and you had a 62 gigabyte VM I mean it would
+
+48
+00:04:16,108 --> 00:04:22,860
+内存看上去够，但是管理程序会带来一些开销，导致又不是很够
+be close to my fit but you're not really sure because there's some overhead with the hypervisor and whatnot and so that's
+
+49
+00:04:22,860 --> 00:04:25,001
+这就有点像这块肉的处境了
+kind of what that brisket was
+
+50
+00:04:25,025 --> 00:04:33,511
+还有一块排骨，如你所见，对于烤盘来说，这块肉实在是太长了
+then we got to the pork spareribs and what you can see is that they were just clearly too long and they just didn't fit in the racks
+
+51
+00:04:33,535 --> 00:04:36,300
+虽然没有长很多
+it wasn't by a huge amount but you know this would be like
+
+52
+00:04:36,300 --> 00:04:43,918
+但就像你在64G内存的主机上开了占用64G内存的虚拟机，差那么一点点就能完美装下了
+if you had a 64 gig VM and you had a 64 gig machine and it was just a little too big to fit
+
+53
+00:04:43,942 --> 00:04:48,411
+另外两块包装后的牛腩的情况就不太一样
+now the other two Packer briskets were something completely special
+
+54
+00:04:48,435 --> 00:04:54,630
+两块牛肉，或者更具体地说是储备的美洲和牛肉
+both of these briskets or Imperial American Wagyu reserve briskets
+
+55
+00:04:54,630 --> 00:04:58,418
+它们都非常非常打，而且肌肉中含有大量脂肪
+they are big and may have great in your muscular fat
+
+56
+00:04:58,442 --> 00:05:02,610
+意味着它们会非常可口多汁
+which means that they will create very juicy and tasty briskets one
+
+57
+00:05:02,610 --> 00:05:07,218
+一块不到16磅，另一块不到19磅
+is just barely under 16 pounds on the other one was just barely under 19 pounds
+
+58
+00:05:07,242 --> 00:05:12,390
+我之前提到，14磅的那块挤一挤还能挤得下
+and so if you remember the 14 one pound one barely fit and kind of didn't
+
+59
+00:05:12,390 --> 00:05:19,320
+16磅和19磅两块就别想在里面了
+fit but then when we got to the 16 and 19 powder set they had absolutely no chance of fitting in this pit boss and
+
+60
+00:05:19,320 --> 00:05:25,020
+你要是不知道“牛腩”指的是哪块肉，我来简单地说一下
+hey in case you're wondering I'm guessing that a lot of people that are watching this video don't necessarily know what a brisket is so we're gonna
+
+61
+00:05:25,020 --> 00:05:30,751
+牛腩是牛的胸肌
+learn something real quick and a brisket is basically like the pectoral muscle of a cow
+
+62
+00:05:30,775 --> 00:05:34,080
+想象一下，你有一头牛，牛有牛前腿
+so if you think about you have a cow you have a cow leg and you have a
+
+63
+00:05:34,080 --> 00:05:36,210
+你的胸肌在这里
+pectoral muscle right here that's
+
+64
+00:05:36,210 --> 00:05:38,220
+牛腩也大概是在这个部位
+basically what a brisket is and there's
+
+65
+00:05:38,220 --> 00:05:41,100
+一头牛有两块这样的肌肉
+two different muscles that you get in a packer brisket which is what you
+
+66
+00:05:41,100 --> 00:05:44,555
+可以拿来做德克萨斯风味的BBQ 
+get you know a like a texas-style barbecue
+
+67
+00:05:44,579 --> 00:05:51,567
+由于牛是四肢行走的，这块肌肉因此变得非常强壮 
+and of course the cows because they're walking around on four legs that muscle actually gets worked a lot and it becomes very tough
+
+68
+00:05:51,591 --> 00:05:56,670
+这也是为什么要用低温慢煮的方式烧牛腩
+which is why you have to cook briskets at pretty low temperatures over a long period of time
+
+69
+00:05:56,670 --> 00:06:00,998
+这样“温柔”的烹饪方式能够让你吃起来更嫩
+which makes a tender and therefore much more pleasant to eat
+
+70
+00:06:01,022 --> 00:06:09,990
+之所以美洲和牛是那样的特殊，是因为它的一部分血统来自日本
+now the American Wagyu and the reason that these are special is that these actually come from cows that are partly from a lineage of cows that came over from Japan which is
+
+71
+00:06:09,990 --> 00:06:11,940
+这也是为什么它们被叫做“类和牛”牛
+why we call them the Wagyu style cows
+
+72
+00:06:11,940 --> 00:06:16,020
+同时，美洲和牛还和美洲本土的牛杂交过
+but they're also cross bred with American cattle so they live better in
+
+73
+00:06:16,020 --> 00:06:17,820
+使它们更适应美洲的环境
+the American environment and so you get
+
+74
+00:06:17,820 --> 00:06:25,740
+它们尝起来和日本和牛不一样，和美洲本土牛也不一样，口感非常特殊
+a taste that's different from Wagyu and you get a taste that's different from an American beef brisket and you get something that's absolutely special and
+
+75
+00:06:25,740 --> 00:06:30,990
+如你所见，Costco根据肉的大小进行定价
+as you can see Costco prices these briskets accordingly since these are big
+
+76
+00:06:30,990 --> 00:06:35,101
+就像以规模大小定价的虚拟机一样
+briskets well they're kind of like big in valuable virtual machines
+
+77
+00:06:35,125 --> 00:06:37,440
+我想把它们塞进pit-boss的熏炉里去
+so we try putting them into the pit-boss
+
+78
+00:06:37,440 --> 00:06:40,240
+但它们不可能放得进去
+they didn't even come close to fitting so this would be
+
+79
+00:06:40,240 --> 00:06:46,060
+就像你有一台64G内存的至强E2200系列服务器
+kind of like if you had a 64 gigabyte Xeon E2200 series server and you
+
+80
+00:06:46,060 --> 00:06:54,220
+你打算把占用96G内存的虚拟机塞到里面去。这是不可能的
+tried putting in or tried installing you're using a 96 gigabyte of RAM virtual machine it just wouldn't work
+
+81
+00:06:54,220 --> 00:06:56,020
+物理尺寸上就塞不进去
+because it just physically doesn't fit
+
+82
+00:06:56,020 --> 00:06:58,120
+这一情况相当于16磅的那块肉
+and that was like the 16 pound brisket
+
+83
+00:06:58,120 --> 00:07:04,720
+19磅那块肉更像是个要求128G内存的虚拟机
+when you get to the 19 pound brisket that was like taking maybe 128 gig of ram virtual machine and trying to put
+
+84
+00:07:04,720 --> 00:07:07,600
+根本没有塞进去的可能性
+that in I mean these things didn't even come close to fitting the smoker
+
+85
+00:07:07,600 --> 00:07:11,890
+就像是这些虚拟机根本不会被管理程序接受
+just like those VMs don't come close to fitting in those types of hypervisors so
+
+86
+00:07:11,890 --> 00:07:19,480
+现在，BBQ和虚拟化的相切点就找到了
+at this point I clearly came up with another tangental point of intersection between barbeque and virtualization with
+
+87
+00:07:19,480 --> 00:07:26,470
+花了400刀在肉、立式烤炉的配件以及燃料等等上后 
+around 400 dollars of meat to cook plus all the accessories the pellets of the fuel and all of that I realized finally
+
+88
+00:07:26,470 --> 00:07:35,500
+我明白了，在烤炉本体上花的钱完全不是整个烤肉过程中最花钱的部分
+that the actual machine that I was using the smoker was by far not the most expensive portion of the entire process
+
+89
+00:07:35,500 --> 00:07:43,090
+就像虚拟化服务器不是虚拟化套件中最昂贵的部分
+just like a server virtualization server actually isn't the most expensive part of a virtualization setup armed with
+
+90
+00:07:43,090 --> 00:07:46,381
+有了这样的认识，我在买了第一个炉子几周后，立刻买了新的
+that realization I abruptly went out only a couple weeks after giving the first one
+
+91
+00:07:46,405 --> 00:07:50,950
+是来自GMG的Jim Bowie prime plus
+and got a Green Mountain Grills Jim Bowie prime plus just like
+
+92
+00:07:50,950 --> 00:07:54,670
+就像是个想要搞个更大的服务器的人一样
+one would kind of figure out hey I need to go get a larger server now if you're
+
+93
+00:07:54,670 --> 00:08:00,850
+只看参数，这台烤炉只有658立方英寸的烹饪区域
+just looking at the specs you would look at the Jim Bowie prime plus and you say this has 658 square inches of cooking
+
+94
+00:08:00,850 --> 00:08:07,045
+只有pit-boss那台的一半，怎么会是台更好的烤炉呢？ 
+space which is like half of the 1300 that the pit-boss had so how can that be a better smoker
+
+95
+00:08:07,069 --> 00:08:13,300
+原因是这些空间都位于同一个平面
+well it turns out that those 658 square inches actually are all on a single cooking surface and what
+
+96
+00:08:13,300 --> 00:08:21,580
+意味着16磅和19磅两块肉可以同时放在烤炉上
+that means is that both of those large 16 and 19 pound briskets fit simultaneously on the grates no problem
+
+97
+00:08:21,580 --> 00:08:25,960
+有点像我们在高端双路服务器上看到的那样
+this is kind of similar to how we see on the higher-end dual socket servers that
+
+98
+00:08:25,960 --> 00:08:30,021
+严谨地说是能安装更高端的CPU的服务器
+you have enough memory or at least higher end server CPU servers
+
+99
+00:08:30,045 --> 00:08:32,409
+比如单路的AMD EPYC
+so you can have the single socket AMD EPYC for
+
+100
+00:08:32,409 --> 00:08:35,979
+有了这些高端的服务器，我们就有了更高的内存容量
+example both those higher end servers would get higher memory capacity in with
+
+101
+00:08:35,979 --> 00:08:42,969
+从而能轻松塞得下以前放不下的，更大的虚拟机
+this higher memory capacity we can fit those larger VMs that didn't fit on the smaller clustered nodes easily but while
+
+102
+00:08:42,969 --> 00:08:48,339
+我们已经展示了新烤炉和更大的服务器能够塞得下更大的牛肉以及更吃内存的虚拟机
+we've shown that we can fit bigger VMs or bigger briskets into the new grill or bigger server
+
+103
+00:08:48,339 --> 00:08:54,190
+如果只是放小一些的肉呢？从结果可以看到
+well what about fitting just as simply as much and it turns out that is actually no problem to
+
+104
+00:08:54,190 --> 00:09:00,205
+只要再加上一个烤架，新的烤箱相比之前甚至能放得下更多的肉
+fit as much in fact we even fit more on the new smoker just by adding a couple of grill racks
+
+105
+00:09:00,229 --> 00:09:08,350
+就像是一台大型的虚拟化节点和一个小型服务器组成的集群一样
+so just like the difference between a larger virtualization node and a cluster of smaller servers what you see is that you
+
+106
+00:09:08,350 --> 00:09:11,157
+新的烤炉能使你获得更高的烹饪面积利用路
+get better utilization of a larger cooking area
+
+107
+00:09:11,181 --> 00:09:16,570
+另一个很直观的例子是，如果你的虚拟化服务器拥有64G内存
+in a really great example of this is think about our 64 gigabyte of RAM virtualization server but what if
+
+108
+00:09:16,570 --> 00:09:21,178
+但却有一堆需要48G内存的虚拟机
+we had a 48 gigabyte or a bunch of 48 gigabyte virtual machines
+
+109
+00:09:21,202 --> 00:09:28,150
+集群内的所有节点都只能运行一个虚拟机，会有很多浪费的空间
+all of these smaller nodes on the cluster would basically only be able to run one VM and there'd be all that wasted space and in
+
+110
+00:09:28,150 --> 00:09:31,960
+实际上，这也在pit-boss的烤炉中发生着
+fact when we looked at our smokers the same kind of thing happened in the pit-boss
+
+111
+00:09:31,960 --> 00:09:35,860
+每一层你都可以放一到两片肉
+you could have a piece of meat or two maybe on each grate but then there'd be
+
+112
+00:09:35,860 --> 00:09:39,275
+但在犄角旮旯里会有大量被浪费的空间 
+a whole bunch of wasted space around the edges of those grill grates
+
+113
+00:09:39,299 --> 00:09:45,880
+相反，在GMG的大烤炉中，我们能把肉塞得更紧密，从而能利用到额外的空间
+conversely on the big green mountain grill we can go pack meat in a lot tighter and use all that kind of extra space that's
+
+114
+00:09:45,880 --> 00:09:49,420
+这些空间存在于肉与肉之间，这意味着我们的空间利用效率变得越来越高了
+around each of the meats and use the space more efficiently which means we're
+
+115
+00:09:49,420 --> 00:09:54,010
+我们能装得下更多，更高效地利用好我们的硬件
+able to pack a more in and get more efficient use of our hardware and if
+
+116
+00:09:54,010 --> 00:09:58,750
+如果你好奇什么使得云提供商能靠虚拟化活得那么滋润
+you're wondering a key reason that the cloud providers are so successful using virtualization
+
+117
+00:09:58,750 --> 00:10:04,478
+答案是，他们非常擅长利用这些到处都是的小空间
+is that they are very good at using all of that little space that could be sitting around the edges
+
+118
+00:10:04,502 --> 00:10:11,808
+因此他们的虚拟化平台和服务器的利用率，相较于典型的企业数据中心而言非常高
+so they get very high utilization of their virtualization platforms and servers versus what you see in a typical enterprise data center
+
+119
+00:10:11,832 --> 00:10:17,231
+在我们结束之前，我还想到了一件和它们非常相似的事情
+now before we close this out there's something else that we found those actually kind of similar
+
+120
+00:10:17,255 --> 00:10:18,760
+不全是有关烹饪的
+it's not all about cooking area
+
+121
+00:10:18,760 --> 00:10:24,168
+这个新烤箱其实还有Wi-Fi功能
+the green mound grills Jim Bowie prime plus actually has Wi-Fi
+
+122
+00:10:24,192 --> 00:10:30,790
+能够精细到以1度为单位进行温度调整
+it also has the ability to set temperature increments in one degree increments you can set those
+
+123
+00:10:30,790 --> 00:10:36,490
+你可以在家、在去商店买吃的的路上或者干任何事情的时候调整
+temperatures from at your home you could actually be at the store buying food or whatever you needed to do and you can do
+
+124
+00:10:36,490 --> 00:10:40,390
+还能远程开启关闭炉子
+it remotely you could turn the grill on and off remotely you can monitor the
+
+125
+00:10:40,390 --> 00:10:42,400
+还能远程查看肉的情况等等
+meat probes remotely do all that kind of
+
+126
+00:10:42,400 --> 00:10:44,535
+因为你的烤炉有更高级的功能
+stuff because you have a higher set of features
+
+127
+00:10:44,559 --> 00:10:50,830
+与之相比，老的烤炉就没有设计相关功能
+ in comparison the pit-boss wasn't designed to get anywhere near as hot camera should see it same temperature ranges it doesn't have Wi-Fi
+
+128
+00:10:50,830 --> 00:10:53,680
+没有Wi-Fi，不能远程监控
+so you can't do all that remote monitoring and your temperature
+
+129
+00:10:53,680 --> 00:10:57,215
+温度也只能以25度为单位进行调节
+increments are really like 25 degree increments
+
+130
+00:10:57,239 --> 00:11:00,100
+就像虚拟化一样
+and this is just like virtualization search because with a
+
+131
+00:11:00,100 --> 00:11:07,580
+因为一台大型的虚拟化服务器能拥有更好的网络、更好的存储、更好的管理方式、更好的加速器等等
+larger virtualization server you can have better networking better storage better management better accelerators all of that type of stuff because you're
+
+132
+00:11:07,580 --> 00:11:13,507
+因为你把这些成本分担到数量众多的虚拟机上后，这些额外功能产生费用反倒变成“性价比之选”了
+deferring those costs over a larger number of VMs it becomes cost-effective to add those extra features
+
+133
+00:11:13,531 --> 00:11:16,255
+嘿，这只是个假期周末做的有意思的视频
+hey guys this is just a fun video for the holiday weekend
+
+134
+00:11:16,279 --> 00:11:17,320
+希望你喜欢 
+so I hope you like it
+
+135
+00:11:17,344 --> 00:11:23,400
+但我想我已经完全证明了BBQ和虚拟化是互通的
+but I think we clearly proved definitively that barbecue and virtualization are basically the same thing
+
+136
+00:11:23,424 --> 00:11:27,529
+甚至其中的任意一个都可以作为营生的工作
+I mean if you think about it you can make a living doing either one of them but there is
+
+137
+00:11:27,529 --> 00:11:33,740
+只有一个区别，烧烤的产物是好吃的食物，而虚拟化的终点嘛...
+one difference and that is at the end of barbecue you get to eat some delicious food we're at the end of virtualization
+
+138
+00:11:33,740 --> 00:11:41,660
+你大概能得到一堆在硅芯片、PCB和金属上跑来跑去的电子......
+you have electrons running over silicon PCB and metal so I guess that's not as
+
+139
+00:11:41,660 --> 00:11:43,700
+虽然不如好吃的牛腩
+exciting as the delicious brisket but
+
+140
+00:11:43,700 --> 00:11:45,721
+但它们不管怎么说都是非常相似的
+still they're very similar
+
+141
+00:11:45,745 --> 00:11:48,050
+最后我来点小名言
+at the end of the day it kind of is a skill dictate
+
+142
+00:11:48,050 --> 00:11:53,638
+就像是烤炉一样，虚拟化服务器都倾向于变得越来越大，而不是变成一个个小节点组成的集群
+that like with smokers virtualization servers tend to be bigger instead of clusters or smaller nodes
+
+143
+00:11:53,662 --> 00:11:59,923
+这些大型节点相比小节点能够提供更高的效率，更强大的功能
+those larger nodes help deliver better efficiency and features that you wouldn't get on clusters of smaller nodes
+
+144
+00:11:59,947 --> 00:12:06,080
+如果你这个夏天在外面野炊，讲到虚拟化的时候，你想让在朋友面前装装x
+so if you're in a cookout this summer and you're talking virtualization and you want to impress your friends or maybe not
+
+145
+00:12:06,080 --> 00:12:09,500
+那就把这个视频拿出来 
+impress your friends but just send them a video well send in this video and tell
+
+146
+00:12:09,500 --> 00:12:12,275
+告诉他们虚拟化就是BBQ
+them that virtualization is exactly like barbecue
+
+147
+00:12:12,299 --> 00:12:21,170
+谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢 
+hey guys if you made it this far I think it's definitely time to go hit that subscribe button turn those notifications and check back all the time on sth the main side we have new
+
+148
+00:12:21,170 --> 00:12:27,135
+关注原作者啊！关注原作者啊！关注原作者啊！ 
+content coming out every single day we also have new videos that we're uploading this year and overall I hope you guys enjoyed this video and
+
+149
+00:12:27,159 --> 00:12:29,920
+have an awesome day
+

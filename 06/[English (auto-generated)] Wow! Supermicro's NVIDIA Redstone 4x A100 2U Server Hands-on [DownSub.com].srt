@@ -1,0 +1,663 @@
+1
+00:00:00,000 --> 00:00:02,320
+嘿嘿，这里是STH的Patrick
+hey guys this is patrick from sth and
+
+2
+00:00:02,320 --> 00:00:09,200
+今天我们来看看超微SYS-220GQ-TNAR+
+today we're going to take a look at the super micro SYS-220GQ-TNAR+
+
+3
+00:00:09,200 --> 00:00:11,280
+这台服务器可不一般
+now this system is actually really cool
+
+4
+00:00:11,280 --> 00:00:13,440
+它是一台NVidia“红石”
+because it is a nvidia redstone platform
+
+5
+00:00:13,440 --> 00:00:20,560
+这个代号意味着这是一台有4个NVidia A100 GPU的服务器
+and what that practically means is that we get to take a look at a system that has four nvidia a100 gpus these gpus can
+
+6
+00:00:20,560 --> 00:00:25,279
+并且这些GPU能以更高的TDP运行，因为这些GPU是SXM4接口的
+actually run at higher tdp and higher power because they are in an sxm4 form
+
+7
+00:00:25,279 --> 00:00:29,439
+同时这些GPU还使用NVLink进行互联
+factor but they also get NVLink between all the different gpus which is a
+
+8
+00:00:29,439 --> 00:00:30,960
+NVLink是一种高速互联技术
+high-speed interconnect so you can have
+
+9
+00:00:30,960 --> 00:00:34,061
+能让GPU与GPU之间实现高速通讯
+gpu to gpu communication and it all is really fast
+
+10
+00:00:34,085 --> 00:00:39,120
+我们在STH上已经做过了好几个红石服务器的评测了
+now we definitely have done reviews of a number of these redstone systems on sth already but this one was
+
+11
+00:00:39,120 --> 00:00:41,840
+但这台有所不同
+different and the reason i wanted to look at this one is because it is not
+
+12
+00:00:41,840 --> 00:00:44,079
+我之所以想看看这台服务器，是因为它不是基于AMD EPIC平台的
+based on the amd epic platform instead
+
+13
+00:00:44,079 --> 00:00:47,840
+而是基于Intel第三代至强可拓展处理器，代号IceLake
+it's based on the third generation intel xeon scalable codenamed icelake and that
+
+14
+00:00:47,840 --> 00:00:52,399
+这一点使得它尤为不同，因为一些你懂的原因
+makes it a little bit different than some of the other options in the industry and just first just so you know
+
+15
+00:00:52,399 --> 00:00:56,160
+Intel和AMD在某些项目上是互有胜负的
+for some workloads it is a little better to have amd and other workloads intel's
+
+16
+00:00:56,160 --> 00:01:01,228
+超微选择把两家平台都做了，但不论如何我还是比较想看看Intel版本的服务器
+a little better so it is kind of cool that super micro has both but i really wanted to go look at the intel version specifically
+
+17
+00:01:01,252 --> 00:01:04,879
+以后会有一系列相关的视频，因为我们获得了进入超微演示厅的批准
+now we're doing this as part of a series where we got the keys to the super micro demo room they said
+
+18
+00:01:04,879 --> 00:01:11,530
+所以还等什么呢？让我们赶紧过去吧
+just go for it and so what i want to do is why don't we get over to super micro and go take a look at this box
+
+19
+00:01:11,530 --> 00:01:15,859
+[Music]
+
+20
+00:01:16,080 --> 00:01:19,761
+在正式开始这个视频之前我想强调一下
+before we get too far in this video i do want to note something that is super important
+
+21
+00:01:19,785 --> 00:01:22,240
+我们把这个视频标记为了“被赞助的”（译者注：钱是个STH的，不是给我的，我不需要打星标）
+sponsored and the reason for that is we are marking this video as
+
+22
+00:01:22,240 --> 00:01:26,159
+那是因为我现在我住的地方不像之前一样，离超微只有15分钟路程
+that i don't necessarily live 15 minutes away from supermicro anymore instead i
+
+23
+00:01:26,159 --> 00:01:28,320
+我现在住在德克萨斯州奥斯汀
+live in austin texas and so both i flew
+
+24
+00:01:28,320 --> 00:01:29,920
+所以我和Joe都得坐飞机去超微那边
+out joe flew out and so supermarket was
+
+25
+00:01:29,920 --> 00:01:34,640
+所以超微就帮我们报销了差旅费
+helping us cover the you know flight costs and travel costs and stuff like that to be able to go and actually do
+
+26
+00:01:34,640 --> 00:01:39,040
+但他们只是给了我们进入演示厅，以及测试里面服务器的权利
+this but they basically just gave me the keys to the demo room and so they also gave us keys to the demo room and let us
+
+27
+00:01:39,040 --> 00:01:45,280
+他们没有干预我们的创作内容
+use these boxes but they basically said hey you know go do your thing go do whatever you want to go do and they did
+
+28
+00:01:45,280 --> 00:01:48,640
+他们没有给我们塞钱，这期视频的内容完全是独立编辑的
+not give me a script this is all being done completely editorially independent
+
+29
+00:01:48,640 --> 00:01:50,479
+和我们在STH上做的评测性质是一样的
+just like everything we do on sth so i
+
+30
+00:01:50,479 --> 00:01:54,560
+以上只是为了让各位了解为什么这个视频被标记为“被赞助的”
+just want to be very clear that that's what's going on and that's why we're marking this as sponsored with that
+
+31
+00:01:54,560 --> 00:01:56,015
+接下来让我们到超微那边去吧
+supermicro let's get over to
+
+32
+00:01:56,039 --> 00:02:00,880
+好的，我的计划是从前往后看整台服务器
+and so the basic plan is we're gonna start at the front of the system and we're gonna move our way to the rear of the system and
+
+33
+00:02:00,880 --> 00:02:04,135
+在此之间，我们再具体介绍这台服务器的不同部分，以及这台服务器特殊的点
+we're gonna just talk about all the different parts and what makes this system tick
+
+34
+00:02:04,159 --> 00:02:07,520
+先让我们从服务器的前面开始吧
+so let's get to it and let's start with the front of the chassis on
+
+35
+00:02:07,520 --> 00:02:14,640
+前面板有4个SSD或者说2.5英寸硬盘位
+the front of the system we get a total of four ssd or hard drive they're two and a half inch bays most likely you're going to
+
+36
+00:02:14,640 --> 00:02:19,535
+这几个硬盘位只是SATA接口的，因为它们只是用来安装启动盘的
+use these as probably sata bays just because of well they're probably like
+more like a boot ssd
+
+37
+00:02:19,559 --> 00:02:22,640
+一般来说这类服务器不会有太多的存储空间
+typically these servers do not have that much storage
+
+38
+00:02:22,640 --> 00:02:27,920
+因为这类服务器的目标是尽可能地重视GPU，以及让它们能获取到充足的电力
+because the goal is really to have as much power and as much focus as you can on the gpus and so that's why that's
+
+39
+00:02:27,920 --> 00:02:34,000
+接下来我们来看看一个细节，那就是这台服务器只有4个风扇
+like that now this might seem like a small detail but there are actually a total of four fans on the system and
+
+40
+00:02:34,000 --> 00:02:36,239
+这几个风扇单元强的离谱
+they are absolutely crazy fan units
+
+41
+00:02:36,239 --> 00:02:44,640
+因为这四个风扇要冷却四个GPU、高功耗CPU以及后面的网络设备
+because these four fan units have to cool this entire system including these four gpus hot cpus and all of the networking that's in the back and one of
+
+42
+00:02:44,640 --> 00:02:51,200
+这些风扇还有一个很酷的功能  ，看看风扇单元上的这些通风板条
+the cool features of these fans is actually that there are these little vent slats that go in these fan units
+
+43
+00:02:51,200 --> 00:02:56,239
+这个设计和我们之前见过的很多超微服务器都不一样
+and so like this is something that's different than a lot of the super micro systems that we've seen to date and it's
+
+44
+00:02:56,239 --> 00:02:59,080
+拆解机器的时候属实惊艳到我了
+just kind of a cool little thing i saw while tearing apart the system
+
+45
+00:02:59,104 --> 00:03:05,200
+好的，把视角挪到风扇以及硬盘笼之后，来到整台服务器的主要区域
+okay now behind the fans and the hard drive or ssd base what we also get is the main
+
+46
+00:03:05,200 --> 00:03:08,319
+这应该是整台服务器最有特色的地方了
+part of the system or probably the biggest feature of the system and that
+
+47
+00:03:08,319 --> 00:03:11,440
+这是NVidia红石平台的基础部分
+is this is a nvidia redstone based system
+
+48
+00:03:11,464 --> 00:03:15,360
+众所周知，NVidia的低端GPU是以PCI-E形式出售的
+now if you don't know how nvidia gpus are sold at the kind of lower end
+
+49
+00:03:15,360 --> 00:03:20,159
+和以往的PCI-E GPU是一样的
+what you get is the pcie gpus that we've seen for years above the pcie gpus you
+
+50
+00:03:20,159 --> 00:03:24,159
+在那些PCI-E GPU之上，就是我们眼前的整台NVidia红石平台
+get the nvidia redstone platform and that's exactly what this is this has
+
+51
+00:03:24,159 --> 00:03:28,879
+其中包括四块GPU，同时可以给GPU提供额外的电力以及散热能力
+four gpus and you get additional power and cooling delivery to these gpus and
+
+52
+00:03:28,879 --> 00:03:33,200
+能让你在每个GPU上榨取更多的性能
+that basically allows you to have more performance per gpu which makes you
+
+53
+00:03:33,200 --> 00:03:37,280
+让你在这些昂贵的GPU上花的钱更值
+basically better able to utilize your investment in these expensive gpus
+
+54
+00:03:37,280 --> 00:03:42,959
+这个锁扣机构也让我印象很深
+something that i think is super cool on this is that there's actually a big giant latching mechanism that latches
+
+55
+00:03:42,959 --> 00:03:47,680
+把整个红石平台的基板锁定在服务器上
+this nvidia redstone board to the super micro system over here and i just think
+
+56
+00:03:47,680 --> 00:03:50,799
+我没别的意思，只是觉得这个东西超级帅
+this is super cool to look at and i've probably done it a couple times on the
+
+57
+00:03:50,799 --> 00:03:53,281
+我今天把玩过好几次了，很好玩
+system already today and i really like this
+
+58
+00:03:53,305 --> 00:03:59,519
+除此之外，你还能看到这些给GPU供电的电缆，非常粗壮
+the other thing that you're going to see is that we have these giant power cables and those are really kind of feeding all the power to these gpus
+
+59
+00:03:59,519 --> 00:04:09,068
+因为不管你买的是40G还是80G版本的A100 GPU，每个GPU都要消耗超过400W的电力，这会是一个大挑战
+because you can have at least 400 watts per gpu you can have either 40 gig or 80 gig versions of the a100 gpus so this is definitely a big solution
+
+60
+00:04:09,092 --> 00:04:14,080
+这台服务器在HPC领域非常畅销
+it's also very popular in the high performance computing industry and markets because
+
+61
+00:04:14,080 --> 00:04:20,639
+相比于更高端的8 GPU机型，你不需要使用
+NVSwitch you basically don't have the nv switches that you have on the kind of eight gpu and higher systems and so it's just kind
+
+62
+00:04:20,639 --> 00:04:25,488
+因为它的拓扑更简单，耗电量更少，因此很多人都更喜欢它
+of an easier topology it's a lower power topology and it's one that a lot of people like because of that
+
+63
+00:04:25,512 --> 00:04:32,000
+在GPU之后，就到了处理器部分，这里用到了第三代可拓展至强处理器，代号IceLake
+now behind the gpus we get these processors now these are third generation intel xeon scalable processors codenamed ice lake
+
+64
+00:04:32,000 --> 00:04:38,479
+相比于上一代28核心提高了，这代我们可以最高上到40核心
+and that means we get up to 40 cores in this generation up from a total of 28 cores in the previous generation we also
+
+65
+00:04:38,479 --> 00:04:42,479
+此外得到了内存通道数量上的升级，从上一代的6通道内存
+get more memory channels we go from six channel memory in the second generation
+
+66
+00:04:42,479 --> 00:04:50,000
+升级到了现在的8通道内存，另外还可以用DDR4 3200内存
+up to eight channel memory in this new third generation and that means that we also get to use ddr4 3200 and so overall
+
+67
+00:04:50,000 --> 00:04:56,080
+总的来说，现在我们能使用更多的内存带宽，来喂饱CPU和GPU
+we get more memory bandwidth to feed the high speed processors as well as the gpus something else that you could
+
+68
+00:04:56,080 --> 00:05:03,120
+这台服务器还能使用Intel DCPMM 200系列
+potentially do with the system is you could also have intel optane dc persistent memory 200 or pmem200 in the
+
+69
+00:05:03,120 --> 00:05:08,240
+通过内存接口提供高带宽的持久内存
+system which gives you persistent memory that you can have a very high bandwidth you know memory interface too and so
+
+70
+00:05:08,240 --> 00:05:14,720
+我们已经做了很多关于Intel DCPMM的内容了，此外还有一条有关它的视频
+that's something you can totally look at we've done a lot with the intel optane dc persistent memory we actually have an entire piece on that that we'll link
+
+71
+00:05:14,720 --> 00:05:17,701
+我们会把链接放在不存在的简介中，你可以去看看
+in the description if you want to go check that out and learn a little bit more about it
+
+72
+00:05:17,725 --> 00:05:22,880
+IceLake 处理器还有一个关键特性，那就是PCI-E Gen4
+but the other key feature that we have in these IceLake processors is we also get pci gen4 which means we
+
+73
+00:05:22,880 --> 00:05:27,600
+能让CPU和GPU之间拥有更高的带宽
+have a faster and higher bandwidth interface between the cpus and the gpus
+
+74
+00:05:27,600 --> 00:05:32,975
+更快的接口能让数据传输得更快，以此获得更多的性能
+that faster interface means that you can transfer data between the two faster and that gives you more performance just from that
+
+75
+00:05:32,999 --> 00:05:39,520
+这代CPU有更多的PCI-E通道
+but since these cpus in this generation get more pcie lanes we actually get 128 pcie lanes in these two
+
+76
+00:05:39,520 --> 00:05:44,080
+这两颗处理器使我们获得了128条PCI-E，但4颗GPU只需要64条PCI-E通道
+processors but we only have four gpus that only use 64 pcie lanes and what
+
+77
+00:05:44,080 --> 00:05:52,639
+这就意味着我们能给其他设备提供更多通道，比如说网卡，以及其他加速器
+that practically means is that there's more lanes available for other devices such as networking cards or other accelerators and that
+
+78
+00:05:52,639 --> 00:05:56,000
+因此我们来看看服务器的后面
+really gets us to the rear of this system now on the rear of the system
+
+79
+00:05:56,000 --> 00:05:59,600
+我们简单介绍一下后面的PCI-E拓展插槽
+we'll talk about those expansion slots those pcie lanes uh just really briefly
+
+80
+00:05:59,600 --> 00:06:08,301
+这些插槽都是半高的，可以基于需要配置为不同的形式
+you have a number of pcie slots these are low profile slots that can be configured in different ways in the system depending on you know what kind of devices that you need
+
+81
+00:06:08,325 --> 00:06:12,187
+理论上支持最高6个设备
+but you could in theory have up to i guess six devices in the system
+
+82
+00:06:12,211 --> 00:06:16,080
+并且这些PCI-E Riser都是通过线缆连接到主板上的
+and these pcie risers are fully cabled and that basically makes
+
+83
+00:06:16,080 --> 00:06:20,639
+使得它们的维护非常简单，不需要工具进行拆解
+them really easy to go service you don't need tools or anything like that to get in there so it makes them very easy to
+
+84
+00:06:20,639 --> 00:06:28,080
+这意味着你睾贵的GPU不需要花太多的时间在维护上
+go work with and means that if you do have to go service the system your expensive gpus are not sitting idle for that long because you can more quickly
+
+85
+00:06:28,080 --> 00:06:31,199
+你可以更快地维护或者在机器后部添加设备
+go and add things and service things in the back of the system that's definitely
+
+86
+00:06:31,199 --> 00:06:33,214
+如果你的机器价值千金，那你肯定也想要一款维护简单方便的服务器
+what you want in a high value system like this
+
+87
+00:06:33,238 --> 00:06:39,199
+还有一些你在网上看不到的细节
+something else that you might not see just if you're looking at the system online or something like that but what you can see if you're here is that
+
+88
+00:06:39,199 --> 00:06:42,560
+如果你把PCI-E Riser整个拔出来
+if you pull out this pci riser assembly
+
+89
+00:06:42,560 --> 00:06:49,120
+你就能看到Riser下面还有两个m.2插槽
+what you can actually see is that there are two m.2 slots that are below it kind of at the bottom of the system and why
+
+90
+00:06:49,120 --> 00:06:54,319
+它和普通的消费者主板上插槽有一点点区别
+this actually kind of interesting is that they're a little bit different from some of the ones that you may have seen on like a consumer motherboard or
+
+91
+00:06:54,319 --> 00:06:59,039
+这些接口设置在主板的边缘
+something like that these actually sit at the edge of the motherboard itself
+
+92
+00:06:59,039 --> 00:07:06,160
+把m.2硬盘插入后，通过另一端的免工具固定器就能安装好
+and then you basically plug in the m.2 board and then you secure it using a tool-less assembly on the other end but
+
+93
+00:07:06,160 --> 00:07:09,840
+硬盘下面没有主板
+there's no motherboard underneath it's actually just the drive and so it's a
+
+94
+00:07:09,840 --> 00:07:15,520
+这个设计让超微能够再加两个m.2接口给启动盘
+way that super micro was able to actually add two m.2 slots for like boot media or something like that without
+
+95
+00:07:15,520 --> 00:07:17,975
+而不用拓展主板
+having to actually extend the motherboard
+
+96
+00:07:17,999 --> 00:07:20,720
+好的，回到机箱的后方
+okay and then moving to the back of the system what you're going to
+
+97
+00:07:20,720 --> 00:07:28,960
+能看到一些比较常规的部分，但和普通的超微服务器比又在排布上有些不同，总之是些比较常规的功能
+see is that we have a pretty standard block it's a little bit different orientation from some of the other super micro systems that we've looked at but it's still pretty standard features we
+
+98
+00:07:28,960 --> 00:07:34,319
+有传统的VGA接口，两个USB 3接口
+get a vga connector so legacy vga connector we also get two usb 3
+
+99
+00:07:34,319 --> 00:07:40,319
+这些接口能让你亲自给系统做维护 
+connectors and those allow you to service the system in person and you can actually just go and you know plug in a
+
+100
+00:07:40,319 --> 00:07:42,560
+比如插个KVM卡(keyboard video mouse)
+kvm card you know keyboard video mouse
+
+101
+00:07:42,560 --> 00:07:45,919
+还能插个u盘啥的
+card or you might have to go and plug in a usb drive or something like that you
+
+102
+00:07:45,919 --> 00:07:50,080
+这些接口在你必须肉身去维护的时候可堪一用
+can totally do that using the ports that aren't backing system if you actually have to go out and physically service it
+
+103
+00:07:50,080 --> 00:07:54,319
+如果你不想这样，因为人工很贵嘛
+now if you don't want to go out and physically service it because that's always pretty expensive what you can do
+
+104
+00:07:54,319 --> 00:07:55,919
+你还可以利用远程管理功能
+is you can use remote management this
+
+105
+00:07:55,919 --> 00:07:57,599
+这台服务器拥有专用的外带管理口
+has a dedicated out-of-band management
+
+106
+00:07:57,599 --> 00:07:59,599
+这个接口直接连接到BMC
+port that's connected to the bmc so you
+
+107
+00:07:59,599 --> 00:08:05,039
+所以你不用到现场也能做维护
+ can basically do all of those functions without having to physically touch the server of course that always saves in
+
+108
+00:08:05,039 --> 00:08:09,520
+节约了服务器的维护费用，这点非常有用，并且在大多数服务器里都有这个功能
+your service costs so it's something that's great it's in the system but it's also pretty standard on most servers
+
+109
+00:08:09,520 --> 00:08:14,160
+这台机器有两个网口
+these days something that is pretty interesting though is that we get two additional network ports now these are
+
+110
+00:08:14,160 --> 00:08:18,160
+看起来像普通的RJ45接口，但实际上是10G BaseT接口 
+just look like standard rj45 parts but they're actually 10g based t ports so we
+
+111
+00:08:18,160 --> 00:08:20,080
+也就是万兆电口
+do get 10 gig networking on here now in
+
+112
+00:08:20,080 --> 00:08:24,400
+用上像这样的服务器，你大概也不会用10G接口或者10G电口做互联
+a system like this you're probably not going to rely on 10 gigabit or 10g base
+
+113
+00:08:24,400 --> 00:08:30,639
+你肯定会加IB网卡或者100G以太网卡
+t networking you're most likely going to put things like either infiniband cards or maybe 100 gig ethernet cards or
+
+114
+00:08:30,639 --> 00:08:32,479
+甚至是DPU
+something like that maybe even dpus in
+
+115
+00:08:32,479 --> 00:08:38,958
+但我觉得有了总比没有好吧
+the system but at the same time i think that this is something that you know it is kind of nice that you do get that 10g
+
+116
+00:08:38,958 --> 00:08:43,634
+都那么贵的机器了，有个10G网口算是个小小的优势吧（注：这些口是给水冷用的，但这台机器是风冷的）
+base t just in a system of this value and stuff like that is kind of nice to get that little bump
+
+117
+00:08:43,658 --> 00:08:53,760
+这台机器还可以插NVidia Bluefield2 DPU或者类似产品，以此提供更加现代的管理方法 
+this is also a system that is pretty interesting because you could use something like a nvidia bluefield dpu in here and actually get some of the kind of more modern ways to go and manage the system
+
+118
+00:08:53,760 --> 00:08:58,480
+这不是服务器内置的东西，但是可以利用后面的扩展槽进行添加 
+so that's not necessarily built into the system but it is something that you could add using these expansion slots in
+
+119
+00:08:58,480 --> 00:09:00,399
+好的，接着我们来介绍一位重量级
+the rear okay and now let's talk about
+
+120
+00:09:00,399 --> 00:09:02,820
+也就是这个电源 
+the big things which are the power supplies
+
+121
+00:09:02,844 --> 00:09:07,760
+这个电源是一颗3000w 80PLUS 钛金电源
+these things are three kilowatt 80 plus titanium units which means that
+
+122
+00:09:07,760 --> 00:09:13,519
+转换效率很高，给这台电老虎用属于是门当户对了
+they're high efficiency which you definitely want in a system that can use as much power as this system but they're
+
+123
+00:09:13,519 --> 00:09:20,560
+要注意的一点是，因为它的功率非常高
+also just just giant honking power supplies one quick note because they do use so much power it also means that
+
+124
+00:09:20,560 --> 00:09:25,200
+所以这块电源只适用于200V+的电压，或者说200V到240V电压
+these are basically 200 plus or say 200 to 240 volt power supply so if you do
+
+125
+00:09:25,200 --> 00:09:29,839
+如果你的机柜是120V的，那就不要选这台服务器了
+have a kind of more like 120 volt rack or something like that this is not the kind of system that you would use in
+
+126
+00:09:29,839 --> 00:09:34,895
+更加低端的服务器更加适合你，因为这台服务器消耗的电力太多了
+that you probably want to have a lower end system just because this does use a lot of power
+
+127
+00:09:34,919 --> 00:09:40,095
+嘿大伙们，希望你们喜欢这期对超微NVidia红石平台的展示视频
+hey guys i hope you enjoyed this look at this super micro nvidia redstone platform
+
+128
+00:09:40,119 --> 00:09:44,720
+我们看过了四块SXM4  A100 GPU组成的HGX平台
+the fact that we get the HGX A100 with its four sxm4 gpus
+
+129
+00:09:44,720 --> 00:09:48,240
+这些都是高功耗，高性能的GPU
+that are you know high powered gpus high performance gpus we also get the third
+
+130
+00:09:48,240 --> 00:09:53,968
+以及代号IceLake的第三代至强可扩展处理器和相关的新一代技术 
+generation intel xeon scalable processors codenamed icelake and all the technology that comes around with that new generation
+
+131
+00:09:53,992 --> 00:09:59,375
+我认为相较于上一代，这款服务器有了巨大的进步 
+i think this system is absolutely awesome and it is a definitely big step up from the previous generation
+
+132
+00:09:59,399 --> 00:10:05,200
+谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢
+
+133
+00:10:05,200 --> 00:10:10,000
+关注原作者！！
+

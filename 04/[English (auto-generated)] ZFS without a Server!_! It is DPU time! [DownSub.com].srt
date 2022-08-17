@@ -1,0 +1,1630 @@
+1
+00:00:00,080 --> 00:00:02,639
+嘿，这里是STH的Patrick
+hey guys this is patrick from sth today
+
+2
+00:00:02,639 --> 00:00:06,640
+今天我们来看看这块Nvidia bluefield 2 DPU
+ we're going to take a look at this nvidia bluefield 2 dpu and we're going
+
+3
+00:00:06,640 --> 00:00:10,400
+今天我要做的事情你可能从来都没见过
+to do something that i don't think you've seen probably ever and it's maybe
+
+4
+00:00:10,400 --> 00:00:12,000
+可能之前也没有人干过这件事
+never been done before we're actually
+
+5
+00:00:12,000 --> 00:00:15,200
+那就是在这块DPU上运行ZFS
+going to be running zfs on this dpu and
+
+6
+00:00:15,200 --> 00:00:18,320
+我们还会用一种更令人兴奋的方法来实现
+we're going to be even doing it in a little bit more exciting way which we're
+
+7
+00:00:18,320 --> 00:00:23,039
+我叫这种方法为“赞美”，有点像魔术表演完后，观众的赞美那样
+going to call the prestige of like the prestige of the magic trick a little bit later in this video now the reason that
+
+8
+00:00:23,039 --> 00:00:26,160
+之所以我们做这个视频，是因为最近我们做了一个特别棒的视频
+we're doing this video is because we recently did a really cool video about
+
+9
+00:00:26,160 --> 00:00:28,960
+那个视频是有关铠侠EM6的
+the KIOXIA em6 and in that we actually
+
+10
+00:00:28,960 --> 00:00:31,439
+那个视频中的硬盘原生基于以太网
+had a drive that spoke native ethernet
+
+11
+00:00:31,439 --> 00:00:34,880
+你可以用NVMEoF把他们连接到网络中
+and you could go connected to things using nvme over fabric and what i
+
+12
+00:00:34,880 --> 00:00:39,600
+有一点我在那个视频的评论中注意到的是
+noticed when we did that video because we were already kind of working on the next version with the dpus was that a
+
+13
+00:00:39,600 --> 00:00:40,480
+很多人看了后表示头晕
+lot of folks were getting kind of
+
+14
+00:00:40,480 --> 00:00:43,680
+因为其中包含了太多的新技术
+confused because we had a lot of new terminology and then my kind of thought
+
+15
+00:00:43,680 --> 00:00:47,600
+于是我反思了一下我这条关于DPU的视频
+was when i was looking at our next dpu video i was like man we have new
+
+16
+00:00:47,600 --> 00:00:51,680
+天哪，还是一堆新东西、新硬件、新运作模式
+terminology new hardware new operating models like everything's new most people
+
+17
+00:00:51,680 --> 00:00:53,199
+大部分人很难跟着视频走
+aren't gonna be able to follow this and
+
+18
+00:00:53,199 --> 00:00:57,039
+这样的内容显然很难给各位看
+things are just gonna be really really difficult to show folks so what i
+
+19
+00:00:57,039 --> 00:00:58,960
+所以我觉得还是这样吧
+thought is like well instead of going
+
+20
+00:00:58,960 --> 00:01:03,760
+与其像之前一样，不如做得浅一点
+like all the way on the first video why don't we do something and kind of go
+
+21
+00:01:03,760 --> 00:01:08,720
+我会用各位比较熟悉的概念来解释
+like halfway and so what we're going to do is we're going to use concepts that i think are very familiar to a lot of
+
+22
+00:01:08,720 --> 00:01:14,880
+但是会用新硬件以及新的运作模式
+folks but we're going to show it with using the new hardware and we're gonna show it with some kind of the new operating models that we're gonna get to
+
+23
+00:01:14,880 --> 00:01:27,119
+在视频的结尾，我会让你明白这个由三块SSD和一片DPU会怎样组合为一个存储系统
+in a little bit and by the end of this video you're gonna see why this awesome little solution right here which is just a dpu with three ssds we're gonna turn this into basically a storage system
+
+24
+00:01:27,119 --> 00:01:31,840
+一个不需要x86处理器或者任何类似功能的处理器的存储系统
+without a host x86 processor or anything like that just using the dpu
+
+25
+00:01:31,840 --> 00:01:37,680
+虽然它现在还被钢丝吊在这里，但还是能找到我留的彩蛋的
+and yeah while this is hanging in the foreground via some steel cables there is something else that is in this frame
+
+26
+00:01:37,680 --> 00:01:42,021
+如果你看到了，可以在评论区留言
+that if you see feel free to go put it in the comments if you see the easter egg go for it but
+
+27
+00:01:42,045 --> 00:01:48,799
+在开始运行ZFS之前，我先来介绍一下，确保所有人都知道什么是DPU
+before we get to the zfs i thought well let's go real quick and make sure everybody's level set on what the heck is the dpu because there
+
+28
+00:01:48,799 --> 00:01:52,720
+有很多人可能听过DPU，还不知道DPU到底是什么
+are a lot of people out there that are probably like i don't know what a dpu is i think i've heard it but like tell me
+
+29
+00:01:52,720 --> 00:01:57,920
+其实我已经做过一个有关什么是DPU的视频了，其中还包括一张网卡时间线
+about it now we already have videos on what is the dpu and also talking about the sth NIC continuum where we talk
+
+30
+00:01:57,920 --> 00:02:04,719
+从最基本的网卡到卸载网卡，再到智能网卡，DPU以及Exotic(IPU)
+about everything from basic NICs to offload knicks to smartnix dpus and then exotic solutions so we have entire
+
+31
+00:02:04,719 --> 00:02:06,399
+我们有一系列这样的视频
+videos on that but i want to give you a
+
+32
+00:02:06,399 --> 00:02:09,758
+但我现在还是先快速说一下为什么如今我们要用DPU
+quick primer here one of the primary reasons that we have dpus today is
+
+33
+00:02:09,758 --> 00:02:22,800
+AWS Nitro提供了一个解决方案，能把一些过去虚拟化服务器需要实现功能卸载到其他设备上
+because aws with nitro basically has a solution where they can offload a lot of functions that would normally be done by the server that would be the virtualized server that is used to kind of host virtual machines they moved it all onto
+
+34
+00:02:22,800 --> 00:02:27,840
+这张专用卸载卡就被叫做AWS Nitro
+a dedicated offload card which is called the aws nitro that does things like it
+
+35
+00:02:27,840 --> 00:02:32,000
+这张卡可以卸载主机的网络负载
+handles the network offloads from the host system it also will do things like
+
+36
+00:02:32,000 --> 00:02:38,480
+还可以把EBS块存储暴露给运行在AWS内部的虚拟机或者实例
+expose your ebs block storage to your virtual machines that are running or your instances in the aws cloud so
+
+37
+00:02:38,480 --> 00:02:44,319
+大家都觉得对于云基础架构来说这是一个更棒的模型
+everybody looked at that model like hey that is a way better model for doing cloud infrastructure like having this
+
+38
+00:02:44,319 --> 00:02:49,920
+Nitro是很厉害，但是这是AWS专有的，我们不能用
+whole you know nitro thing is cool but it's an aws proprietary thing and so we can't really use that so everybody's
+
+39
+00:02:49,920 --> 00:02:53,040
+大家合计一块，也想搞一个
+saying hey we need to go make those things and have a model that works with
+
+40
+00:02:53,040 --> 00:02:59,599
+于是乎大家都开始竞争研发DPU，Mellanox也就是现在的Nvidia是目前的领跑者之一
+it so the race is on right now to go and build dpus mellanox now nvidia was one of the forerunners in actually making
+
+41
+00:02:59,599 --> 00:03:04,480
+这些DPU应该是更多人的选择。比如VMware全家桶就需要它
+these dpus i guess for more folks like so for example if you
+have like a vmware ecosystem this would be something that
+
+42
+00:03:04,480 --> 00:03:06,400
+而不是AWS Nitro
+you would use instead of an aws nitro
+
+43
+00:03:06,400 --> 00:03:13,040
+不仅是软件层面需要做很多来适配DPU，除此之外还需要硬件的配合
+there's still a lot of work going on to actually make that work from a software perspective but you also need the hardware to make it work as well and so
+
+44
+00:03:13,040 --> 00:03:15,200
+我们来看看这块Bluefiled 2 DPU
+we're going to take a look at this
+bluefield 2 dpu and i'm going to talk
+
+45
+00:03:15,200 --> 00:03:18,720
+我来说说能够让它成为DPU的原因
+about some of the things that actually make it a dpu first you need high speed
+
+46
+00:03:18,720 --> 00:03:23,120
+首先，你需要高速网络，比如25G以太网
+networking there are some gpus that have like 25 gig ethernet pretty much 10 gig
+
+47
+00:03:23,120 --> 00:03:26,480
+10G基本上只是向下兼容，很少DPU会只有10G
+is just a backwards compatibility thing not many are really 10 gig you don't
+
+48
+00:03:26,480 --> 00:03:29,599
+如今10G已经不算是什么高速网络了，而这一块卡是100G的
+ really see like 10 gig of high speed networking these days this particular
+
+49
+00:03:29,599 --> 00:03:32,080
+而且有两个100G接口
+one is a 100 gig so we have two 100 gig
+
+50
+00:03:32,080 --> 00:03:34,000
+这块卡是有200G版本的
+ports there is a 200 gig version of that
+
+51
+00:03:34,000 --> 00:03:38,400
+今年晚些时候我们就能看到更多200G以至于400G的DPU了
+and we are going to see especially later
+this year more 200 and 400 gig dpus
+
+52
+00:03:38,400 --> 00:03:41,760
+因为不管运行的是高性能存储还是高性能显卡 because the idea is that you're
+running these very high performance whether it's
+
+53
+00:03:41,760 --> 00:03:46,159
+抑或是高性能、高密度虚拟机
+storage gpus or you're running high
+performance vms or high density vms you
+
+54
+00:03:46,159 --> 00:03:50,400
+你都需要大带宽的网络进行传输
+need a lot of bandwidth to be able to deliver services over the network now to
+
+55
+00:03:50,400 --> 00:03:53,519
+为了处理这些信息，你还需要非常快速的包处理能力
+handle that you also have high speed packet processing we are seeing a lot of
+
+56
+00:03:53,519 --> 00:03:56,319
+很多新的DPU使用了一些诸如P4语言进行编程
+the newer dpus use things like p4 for so
+
+57
+00:03:56,319 --> 00:04:01,680
+我以AMD Pensando解决方案作为例子在最近的一期视频里面讲过
+for programmable we talked about the amd Pensando solution as an example recently in a video and so there's high-speed
+
+58
+00:04:01,680 --> 00:04:05,680
+总之要有一种处理高速包的办法
+packet processing that has to go on just to kind of handle the speeds there's a
+
+59
+00:04:05,680 --> 00:04:07,760
+有一种方案采用CPU核心和其他芯片的复合体
+cpu core complex and the vast majority
+
+60
+00:04:07,760 --> 00:04:11,200
+核心的架构业内多数采用ARM， 包括NVidia自己
+of folks in the industry are using arm which actually nvidia does here we have
+
+61
+00:04:11,200 --> 00:04:16,079
+这个型号就包含了8颗ARM cortex a72内核
+eight arm cores on this so these are cortex a72 arm cores on this particular
+
+62
+00:04:16,079 --> 00:04:21,440
+运行频率为2Ghz，因为这张卡是效率版的，不是性能版的
+model and they run at about two gigahertz because this is the efficiency not the performance version because we
+
+63
+00:04:21,440 --> 00:04:22,560
+可惜的是我们没有性能版的
+don't have the performance versions we
+
+64
+00:04:22,560 --> 00:04:23,759
+不过既然我们有一堆这个版本的那就凑合用吧
+have ton of these so that's what we're
+
+65
+00:04:23,759 --> 00:04:25,600
+当然也有用其他内核的DPU
+using there are a couple other versions
+
+66
+00:04:25,600 --> 00:04:29,680
+比如说FUNGIBLE用MIPS核心
+out there like for example fungible will
+use mips cores but basically nobody's
+
+67
+00:04:29,680 --> 00:04:31,120
+但基本除了FUNGIBLE没人会用MIPS核心
+using mips cores other than fungible and
+
+68
+00:04:31,120 --> 00:04:32,400
+其他公司基本都会用ARM
+this is all going to go to arm at some
+
+69
+00:04:32,400 --> 00:04:34,080
+DPU有自己的内存控制器
+point dpus have their own memory
+
+70
+00:04:34,080 --> 00:04:37,919
+所以这张卡其实有16GB的DDR4内存
+controllers so this actually has 16 gigabytes of ddr4 memory there are also
+
+71
+00:04:37,919 --> 00:04:39,600
+有其他集成了HBM内存的方案
+some solutions with things like hbm and
+
+72
+00:04:39,600 --> 00:04:45,181
+今年晚些时候我们还能看到集成了DDR5和LPDDR5之类的产品，目前只有DDR4
+we will see ddr5 and lpddr5 and stuff like that later this year but for now we have ddr4
+
+73
+00:04:45,205 --> 00:04:46,639
+这块卡有板载的各种加速器
+there's onboard accelerators
+
+74
+00:04:46,639 --> 00:04:48,800
+比如加密、存储负载的卸载功能
+for things like crypto offload storage
+
+75
+00:04:48,800 --> 00:04:52,560
+有一部分还有纠删编码功能
+offload some of them also have things like erasure coding so you know kind of
+
+76
+00:04:52,560 --> 00:04:54,320
+如果我们往远一点的方向看
+moving beyond what we've seen is like
+
+77
+00:04:54,320 --> 00:04:57,759
+传统的RAID控制器真的需要纠删码来进行奇偶校验
+legacy raid and really using erasure coding for those parity calculations
+
+78
+00:04:57,759 --> 00:05:01,520
+这个功能可以被一些DPU加速
+that's kind of um something that has actually accelerated in some DPUs and
+
+79
+00:05:01,520 --> 00:05:02,800
+之所以加密卸载这个功能非常非常重要
+the reason that crypto offload is super
+
+80
+00:05:02,800 --> 00:05:06,080
+是因为不仅存储需要被加密，网络也需要
+important is because not just storage encryption but also networking a lot of
+
+81
+00:05:06,080 --> 00:05:07,840
+DPU可以承载大量网络流量
+networking gets handled on dps and
+
+82
+00:05:07,840 --> 00:05:11,919
+因此如果你想要让网上的一切都被加密
+therefore if you want to have everywhere be encrypted in your network well you
+
+83
+00:05:11,919 --> 00:05:16,655
+你需要在网络中所有的网卡上进行加密，直接把这些工作交给DPU做是再简单不过的了
+need to have crypto on all your network cards and that's something that is easy to offload in a dpu
+
+84
+00:05:16,679 --> 00:05:20,560
+大部分DPU都是PCI-E 4.0的
+the vast majority of these have pci gen 4 lanes and
+
+85
+00:05:20,560 --> 00:05:28,479
+要注意的一点是，这里你看到的设备不仅可以运行在EP模式
+specifically what you're going to see is that these pcie 4 and this is what we're actually using here is that not only can these run as a pcie endpoint which is
+
+86
+00:05:28,479 --> 00:05:36,720
+也就是像平常一样，作为一张网卡插入x86服务器，被识别为一个端点（EP），根节点为x86 CPU
+basically i think if you put this like in an x86 server and this is seen as a nic then this would be an endpoint the root would be on the x86 cpu well these
+
+87
+00:05:36,720 --> 00:05:42,800
+如今的大部分DPU，包括这张，还可以作为根设备运行
+dpus and most dps nowadays can actually run as root devices for pcie and so if
+
+88
+00:05:42,800 --> 00:05:46,240
+所以如果你把DPU运行在像这样的PCI-E route板上
+you have a pcie route on your dpu you can basically do something like this
+
+89
+00:05:46,240 --> 00:05:49,775
+就不需要x86服务器了
+where you don't need an x86 server and you can just use a dpu
+
+90
+00:05:49,799 --> 00:05:56,319
+以上是给大家粗略地说明这是什么
+we're gonna get to what this is and kind of the system that's around and all that in a second but i just wanted to kind of point out that we actually are showing that right
+
+91
+00:05:56,319 --> 00:06:01,840
+安全的信任根是这块DPU的另一个标志性安全功能
+here another hallmark of DPU's is these things like having a secure root of trust because there's security features
+
+92
+00:06:01,840 --> 00:06:05,600
+此外这张卡还有单独的管理接口
+you also see things like an out-of-band management interface and stuff like that
+
+93
+00:06:05,600 --> 00:06:09,520
+这张卡运行的是自己的操作系统，与宿主机是隔离开的
+the other big one is that this actually
+runs its own os separate from a host
+
+94
+00:06:09,520 --> 00:06:14,720
+如果你把它插在x86服务器上，它也能运行属于它自己的OS
+system so if you did have this in an x86 system well this can run its own os and
+
+95
+00:06:14,720 --> 00:06:20,800
+我们之前还用这些Bluefield2 DPU在TR pro工作站里搭建了一个集群
+we specifically actually did a cluster of these bluefield 2 DPUs in a threadripper pro system where we had a
+
+96
+00:06:20,800 --> 00:06:22,400
+这个集群不仅运行在TR pro 上
+bunch of running on the threadripper pro but
+
+97
+00:06:22,400 --> 00:06:26,560
+还运行在这些DPU上
+we also had it running in all of these little dpus and so we had a multi-node
+
+98
+00:06:26,560 --> 00:06:28,475
+使得我们能在一个机箱里运行一整个多节点的集群
+cluster even though it's all in a single box
+
+99
+00:06:28,499 --> 00:06:33,680
+在比这块还要高端的DPU，能最高上到128G eMMC存储
+now on some of the really high-end ones that are higher than this you can actually get up to 128 gigs i think of
+
+100
+00:06:33,680 --> 00:06:38,319
+其他厂商对于存储有不同的解决方案
+emmc memory on board other vendors have different solutions but nvidia actually
+
+101
+00:06:38,319 --> 00:06:44,000
+NVidia选择内置，但注意你只能使用内置存储中的一部分，因为它运行在高耐久模式
+i think makes it so you can only use a portion of that because it runs in like high endurance mode because you don't really
+
+102
+00:06:44,000 --> 00:06:48,800
+你应该不想让你的DPU因为eMMC存储问题而坏掉吧
+want to like kill your dpu because you killed the emc memory right like of course you don't want to do that so i
+
+103
+00:06:48,800 --> 00:06:53,360
+所以你应该用不到完整的存储空间了
+think that you don't actually get the full capacity and so we do have an os it
+
+104
+00:06:53,360 --> 00:06:56,880
+这里我们选择了Ubuntu，你当然可以选其他的系统比如RHEL
+ is ubuntu it is running on this you can run RHEL or something like that as well
+
+105
+00:06:56,880 --> 00:06:59,039
+我就选Ubuntu了
+but we're going to be using ubuntu for
+
+106
+00:06:59,039 --> 00:07:07,680
+当然你可以通过MONTEREY项目直接在DPU上运行VMware ESXi 给主机提供服务
+this and also eventually with project monterey this will run things like vmware esxi directly on the DPU and then provide services to the host system now
+
+107
+00:07:07,680 --> 00:07:12,479
+目前大家关注的重点大多数都是x86服务器中插入DPU
+most of the coverage to date on DPUs has really been focused on a dpu in a x86
+
+108
+00:07:12,479 --> 00:07:17,427
+基本上ARM服务器在任何场景里都是这样的，到DPU这也是一样 server like that's
+pretty much the way things go every once in a while you get an arm server but it's always a
+dpu in another server
+
+109
+00:07:17,451 --> 00:07:19,919
+既然DPU能够作为一个单独处理器运行
+still since it's correct to think of a dpu as a standalone
+
+110
+00:07:19,919 --> 00:07:25,440
+我就想让你看看不用x86服务器能够玩出什么花样
+processor i wanted to show like what would happen if you didn't have an x86 processor in the loop like what could
+
+111
+00:07:25,440 --> 00:07:28,880
+我们现在展示的就是如此
+you do with it and that is specifically what we're going to set up now and what
+
+112
+00:07:28,880 --> 00:07:33,680
+我们将用它来搭建一台独立的ZFS服务器
+we're gonna do is we're going to set up a zfs standalone server using this now
+
+113
+00:07:33,680 --> 00:07:38,080
+对于大多数观众来说，这块DPU不就是个网卡吗
+to a lot of folks this dpu looks a lot like a nic and so people
+
+114
+00:07:38,080 --> 00:07:39,919
+更有人直接叫他智能网卡
+call these things smartNICs but they are
+
+115
+00:07:39,919 --> 00:07:45,707
+但它百分之百不是这样的。让我们用框图的视角看DPU
+100 not and let me show you what a dpu looks like from a block diagram perspective
+
+116
+00:07:45,731 --> 00:07:51,440
+在这里看到的是CX6，也就是提供100G以太网接口的部分
+what you're going to see here is that we have the connectx-6 so that's actually powering the 100 gig ethernet ports so we have our normal
+
+117
+00:07:51,440 --> 00:07:53,759
+所以我们能拥有CX6的所有功能，但除此之外
+connect x6 kind of features but then we
+
+118
+00:07:53,759 --> 00:07:58,788
+还集成有一个PCI-E交换芯片，以及更重要的是一个ARM CPU集成体
+also have a pcie switch and more importantly we have an arm cpu complex
+
+119
+00:07:58,812 --> 00:08:04,800
+我想做的是把注意力集中在ARM CPU这里，而不是网卡部分
+and what i want to do is i want to specifically focus on the arm cpu complex instead of focusing on the
+
+120
+00:08:04,800 --> 00:08:09,759
+重点是这里的ARM部分
+nik part we're going to focus on the arm part of the dpu and the reason for that
+
+121
+00:08:09,759 --> 00:08:12,560
+我这么说的原因是很多人都认为DPU是智能网卡
+is that a lot of folks just think that these things are smart nicks and they
+
+122
+00:08:12,560 --> 00:08:16,228
+他们认为这不就是一张网卡加上几个ARM核心嘛。他们不知道DPU是如何工作的
+just say oh it's a nick with some arm cores they don't really understand how it works
+
+123
+00:08:16,252 --> 00:08:20,720
+我的想法是，如果我能把其中ARM子系统的部分单独拿出来
+and so my thought was if we can isolate that arm subsystem well that
+
+124
+00:08:20,720 --> 00:08:24,080
+我就能干一些前所未有的事情了
+allows us to really go do some cool things that people probably haven't seen
+
+125
+00:08:24,080 --> 00:08:28,879
+借此就能直驱要害地说清楚DPU和网卡的区别了
+before and hopefully it drives home the difference between a dpu and a nic so
+
+126
+00:08:28,879 --> 00:08:30,720
+顺带一提这是BlueField2的lstopo命令的结果
+just real quick here's the lstopo and
+
+127
+00:08:30,720 --> 00:08:36,080
+这个是lscpu的
+lscpu output of the bluefield 2 card that we're using and you can see that we
+
+128
+00:08:36,080 --> 00:08:43,839
+逻辑上看，这是一台8核心16G内存的ARM系统
+basically have if logically it looks like we basically have a little eight core arm system with a little bit of memory like 16 gigabytes
+
+129
+00:08:43,839 --> 00:08:47,920
+我们也有eMMC存储设备
+of memory we have our storage device which is our emmc and then we have the
+
+130
+00:08:47,920 --> 00:08:52,080
+mellanox...哦不应该是NVidia
+melanox uh same melanox but now that's nvidia but
+
+131
+00:08:52,080 --> 00:08:54,480
+有块CX6通过PCI-E连接
+we have the ConnectX-6 ports sitting off
+
+132
+00:08:54,480 --> 00:08:58,480
+你还能看到这里还有一堆其他的接口，我们花一点时间简单看一下
+on pcie and then you can see a whole bunch of other ports down there we're going to talk about those in a sec so to
+
+133
+00:08:58,480 --> 00:09:02,000
+为了彻底搞清楚DPU到底是什么
+hammer home the point of what the heck a dpu is
+
+134
+00:09:02,000 --> 00:09:05,760
+我们把它放进了这里
+what we actually did was we put it into this little carry right here now this is
+
+135
+00:09:05,760 --> 00:09:09,040
+这是AIC JBOX的一个托盘
+just the carrier for the aic jbox and we
+
+136
+00:09:09,040 --> 00:09:11,760
+我们在STH网站上做过一个测评
+did a review of the asc jbox on the sth
+
+137
+00:09:11,760 --> 00:09:13,680
+但在高层次的角度看
+main site but at a high level what the
+
+138
+00:09:13,680 --> 00:09:17,279
+AIC JBox是两个博通交换机
+aic jbox is is it has two broadcom
+
+139
+00:09:17,279 --> 00:09:21,360
+这两个交换机各自处理半个机箱中的设备
+switches these two broadcom switches each kind of deal with half of the
+
+140
+00:09:21,360 --> 00:09:28,080
+这里的半个机箱提供了大量接口，能接入PCI-E设备
+chassis each half of the chassis is basically just a way to go plug in a whole bunch of pcie devices and then you
+
+141
+00:09:28,080 --> 00:09:36,240
+最后你只要通过线缆来把AIC JBox连接到一台或者多台服务器
+can actually go take a cable and you can connect that cable from the AIC jbox to a server or to multiple servers and have
+
+142
+00:09:36,240 --> 00:09:42,480
+于是你就能利用机箱内部的PCI-E交换芯片实现一个PCI-E拓展箱了
+a basically pcie expansion box using that pcie switch now this aic jbox is
+
+143
+00:09:42,480 --> 00:09:46,160
+真是非常牛逼，在SC21上我第一次看到他并简单地介绍过
+super cool and when i first saw it we featured it really briefly at our sc21
+
+144
+00:09:46,160 --> 00:09:47,760
+我看到它的第一眼就被震惊到了
+coverage one of the things i thought was
+
+145
+00:09:47,760 --> 00:09:51,279
+哦天哪这东西真的非常适合DPU
+like oh my gosh this is actually the perfect box for a DPU even though that's
+
+146
+00:09:51,279 --> 00:09:52,560
+它原来的卖点是什么其实不重要
+not necessarily what they're being sold
+
+147
+00:09:52,560 --> 00:09:59,839
+之所以它适合DPU，是因为它没有内置x86处理器
+for and the reason it's a perfect box for a dpu is because it does not have an x86 cpu there's none in it and so if you
+
+148
+00:09:59,839 --> 00:10:03,120
+如果你的系统不需要x86处理器
+run the system without an x86 processor
+
+149
+00:10:03,120 --> 00:10:04,959
+或者不需要连接到一台主服务器
+and you know or connected to a main
+
+150
+00:10:04,959 --> 00:10:09,279
+也许你只需要一个能传输PCI-E的盒子
+server well then you just basically have a box that's just pcie and that is
+
+151
+00:10:09,279 --> 00:10:11,760
+DPU就适合在这样的场景中接管这个箱子
+perfect to have a dpu take over and so
+
+152
+00:10:11,760 --> 00:10:16,560
+这个盒子就包含了一块DPU和三块NVME SSD
+what we basically have here is we have the dpu and then we have three nvme ssds
+
+153
+00:10:16,560 --> 00:10:20,880
+你可能好奇为什么我不用PCI-E 4.0 SSD
+and you may be asking why are you not using pcie gen 4 ssds and the reason is
+
+154
+00:10:20,880 --> 00:10:23,760
+因为他们是全高的设备
+that i had these already with full height brackets and that's why they're
+
+155
+00:10:23,760 --> 00:10:27,839
+我们还用AIC JBox做了其他版本的东西
+there we also have versions though that we've done in the aic jbox where we've
+
+156
+00:10:27,839 --> 00:10:30,720
+我们在里面塞了多张FPGA配合DPU使用
+had fpgas we've had multiple dpus we've
+
+157
+00:10:30,720 --> 00:10:37,519
+还有比如单独的GPU以及GPU配合DPU。基本上什么PCI-E设备都可以放进去
+had other things like gpus gpus with the dpu and you can basically put whatever kind of pca device you want and you can
+
+158
+00:10:37,519 --> 00:10:39,680
+塞NVME SSD更不在话下
+go load this up with nvme ssds as well
+
+159
+00:10:39,680 --> 00:10:41,920
+你能拿它干很多事情
+there's a whole bunch of different things that you can go do this is just
+
+160
+00:10:41,920 --> 00:10:47,854
+拿这样的配置能够很好地展示我想要表达的
+the configuration we're using because well there's something kind of simple that i want to show and this looks like a simple configuration
+
+161
+00:10:47,878 --> 00:10:51,279
+原来我计划让它直接在我背后运行
+now my original plan was to go and run the jbox behind
+
+162
+00:10:51,279 --> 00:10:56,480
+但是它运行起来特别吵
+me but then i realized that it is super loud when i plugged it in i mean it is
+
+163
+00:10:56,480 --> 00:11:03,600
+你站在三米开外都能感觉到气流
+crazy loud like if it's if it's probably ten feet three meters ish away you can definitely feel the airflow still from
+
+164
+00:11:03,600 --> 00:11:07,519
+那么远的距离也绝对能感觉到，这风扇的风量巨大无比
+the thing i mean you can definitely feel those fans go it is super loud it moves
+
+165
+00:11:07,519 --> 00:11:12,399
+原因是它的风扇被设计成能够带走比如GPU产生的300w热量的形态
+a lot of air but really the reason for that is it is designed to be able to go take you know a whole bunch of 300 watt
+
+166
+00:11:12,399 --> 00:11:15,040
+并且两边都要
+gpus for example and run them on each
+
+167
+00:11:15,040 --> 00:11:21,440
+如果要能接入那么多设备的话
+side and so you know i guess the idea there is that if you have that much capacity well you know you need a lot of
+
+168
+00:11:21,440 --> 00:11:24,399
+这样大的气流应该是JBox需要保证的首要事情之一
+airflow and that is one of the big things of the j box so if you want to
+
+169
+00:11:24,399 --> 00:11:28,240
+如果你想知道有关JBox的更多信息，请到STH网站看看
+learn more about the jbox check it out on the sth main site but for now let's
+
+170
+00:11:28,240 --> 00:11:30,640
+但现在我们来登录DPU，开始创建ZFS
+get logged in and start setting up zfs
+
+171
+00:11:30,640 --> 00:11:34,959
+BlueField2 DPU有一大堆奇奇怪怪的地方
+now the bluefield 2 dpu has a ton of quirks to it let's let's just call it
+
+172
+00:11:34,959 --> 00:11:36,959
+和平常配置ZFS有些不一样
+what it is it definitely feels a little
+
+173
+00:11:36,959 --> 00:11:41,680
+最重要的不同点是你有很多种方法来访问它
+bit different and one of the big ones is the fact that there are a bunch of different ways you can actually access
+
+174
+00:11:41,680 --> 00:11:44,320
+在这张卡上你可以通过USB串口
+it on this card you have usb serial you
+
+175
+00:11:44,320 --> 00:11:47,600
+以及这里的外带管理接口
+also have an out-of-band management port which i think is on this side and then
+
+176
+00:11:47,600 --> 00:11:50,560
+以及这里的100G网口
+you have the you know 100 gig ports that
+
+177
+00:11:50,560 --> 00:11:53,680
+有很多网口以及各种各样的接口来让你接入
+are here and so there are a whole bunch of you know network ports and all kinds
+
+178
+00:11:53,680 --> 00:11:56,399
+此外还有一个挑战
+of stuff going in there and one of the challenges is that if you go put this
+
+179
+00:11:56,399 --> 00:11:59,040
+比如你把它塞到机箱里比如JBox中后
+into something like the j box and you go
+
+180
+00:11:59,040 --> 00:12:00,800
+你想要开始运行DPU上的系统
+try writing it as its own system you're
+
+181
+00:12:00,800 --> 00:12:03,628
+你就会碰到这个挑战，必须得修复才能继续下去
+gonna run into a challenge very quickly that you have to go fix
+
+182
+00:12:03,652 --> 00:12:08,399
+那就是我们需要通过这个1G端口来直接访问ARM CPU
+specifically we want to just use this one gig ethernet port that goes directly to the arm
+
+183
+00:12:08,399 --> 00:12:14,720
+而不是经过这两个100G端口，再到ARM CPU
+course instead of going through the entire hundred gig nick ip and then out to the arm cpus we want to go directly
+
+184
+00:12:14,720 --> 00:12:17,519
+我需要直接通过这个管理口访问它
+through this outer band port and that's what we're going to do here so one thing
+
+185
+00:12:17,519 --> 00:12:20,160
+为了能让外带管理口能独立工作
+you have to do to get this to work as its own kind of standalone thing is
+
+186
+00:12:20,160 --> 00:12:23,168
+你大概得到这里，看到这里有一个tmfifo
+you're probably going to want to go to there's a tmfifo
+
+187
+00:12:23,192 --> 00:12:32,160
+这个端口实际上在宿主机和DPU之间，通过PCI-E连接
+there's an interface that actually is used to go between the host system and the dpu over pcie and so
+
+188
+00:12:32,160 --> 00:12:38,480
+你不想通过这个端口访问你的网关或者DNS，那你就把它给注释了
+ you don't want to go over that interface for things like your gateway and your name servers so if you comment that out
+
+189
+00:12:38,480 --> 00:12:41,600
+这样就让所有流量通过外带管理口了
+you actually will push all of your traffic through the out-of-band port if
+
+190
+00:12:41,600 --> 00:12:43,360
+当然前提是你断开100G端口的连接
+you you know disconnect the 100 reports
+
+191
+00:12:43,360 --> 00:12:49,279
+现在所有的流量都经过那个1G网口了，这就是我们想要的
+you'll push all of your traffic through that one gig out-of-band management port and that's exactly what you need to set
+
+192
+00:12:49,279 --> 00:12:56,079
+很多人都没有干这一步，导致他们不能比如更新系统啊等等...
+up and we needed to do here a lot of people miss this and then you can't do things like you can't update the os and stuff like that so just a quick little
+
+193
+00:12:56,079 --> 00:12:57,440
+希望这个配置可以能够帮到某些人
+tip that might help someone one day and
+
+194
+00:12:57,440 --> 00:13:00,480
+接下来就是更新并升级Ubuntu
+once you do that i would definitely do an update and upgrade we are running
+
+195
+00:13:00,480 --> 00:13:08,880
+很多人都会编译他们自己的DPU系统镜像
+ubuntu here something that is you know a lot of people do is they will actually go and make their own os images and put them onto the dpu you
+
+196
+00:13:08,880 --> 00:13:10,720
+这完全行得通，你可以自己做到，NVidia也有相对应的工具
+can totally go do that nvidia has tools
+
+197
+00:13:10,720 --> 00:13:15,680
+我们用用基础的Ubuntu镜像就行了
+to go do that we're specifically just using the base ubuntu os that this came
+
+198
+00:13:15,680 --> 00:13:17,120
+我还要提到一点
+with i also just want to note that we
+
+199
+00:13:17,120 --> 00:13:21,200
+Bluefield2 DPU有很多个修订版本
+have gotten a couple different revisions of these bluefield 2 DPUs and in every
+
+200
+00:13:21,200 --> 00:13:28,000
+每个版本的软件和硬件都有一点不一样的地方
+revision you can tell that the software is still kind of still changing a little bit because there are things that are a little bit different and so we are using
+
+201
+00:13:28,000 --> 00:13:29,839
+我们现在正在用的是老一点的版本
+an older version if you buy one you may
+
+202
+00:13:29,839 --> 00:13:31,760
+如果你真的买了一块，那应该是新版本的
+see something that's a little bit newer
+
+203
+00:13:31,760 --> 00:13:33,839
+没办法，你们懂的，我已经尽我所能了
+and you know guys like i don't know i'm
+
+204
+00:13:33,839 --> 00:13:36,800
+这东西就是变得特别快
+trying to do the best we can but these things are changing pretty rapidly and
+
+205
+00:13:36,800 --> 00:13:43,695
+顺便一提，你可以单独重启DPU，即使它被插到宿主机里面也可以 just as a quick
+note you can actually reboot the dpu by itself even if it's in a host system you can actually reboot the arm cores on the dpu
+
+206
+00:13:43,719 --> 00:13:49,120
+在平常的Ubuntu安装过程中， 使用ZFS是非常简单的
+now in a normal ubuntu installation it's actually pretty easy to go and get zfs working these
+
+207
+00:13:49,120 --> 00:13:56,959
+基本上下载安装ZFS相关的组件就行了
+days you basically do your zfs utilities linux and you basically install that and you're ready to go you do have to do the
+
+208
+00:13:56,959 --> 00:14:01,600
+在DPU你还需要额外做两步
+extra step or two on a dpu because that's not going to be enough you have
+
+209
+00:14:01,600 --> 00:14:05,680
+还要额外安装ZFS dkms
+to do the zfs dkms and you have to install that as
+
+210
+00:14:05,680 --> 00:14:14,240
+更新配置等等操作需要花好几分钟，我就直接加速了
+well and by the way these things like doing the updates and also just installing and you know getting this whole thing configured these things take several minutes so we're gonna speed
+
+211
+00:14:14,240 --> 00:14:19,839
+要是这些都放进来，你估计得睡着了
+them up for the video these are not at real time because man like you just fall asleep if you're watching these things
+
+212
+00:14:19,839 --> 00:14:24,480
+要不然你倒了杯咖啡就忘了这件事了
+or you go get a coffee and forget that you have this video on so that's why we're going to fast forward through and
+
+213
+00:14:24,480 --> 00:14:32,240
+安装好ZFS之后，下一步是使用这些960G SSD
+so once we have zfs installed on the dps the next step is to actually go and use these 960 gigabyte ssds that are here in
+
+214
+00:14:32,240 --> 00:14:38,639
+我们来创建一个ZFS RAID-Z阵列
+this chassis and so what we're going to do is we're going to go and create a zfs raid z array now there is a little bit
+
+215
+00:14:38,639 --> 00:14:43,360
+在这其中还有一些额外的工作要做
+of extra credit work that's going to go into this that we're going to show in our procedure a little bit later but for
+
+216
+00:14:43,360 --> 00:14:46,079
+我们等会再展示这些步骤，先往前推进度
+now we're just going to kind of keep going and what you're going to see is
+
+217
+00:14:46,079 --> 00:14:49,279
+我在这创建了一个三个硬盘组成的RAID-Z1阵列
+that we created a 3-disc raid z1 array
+
+218
+00:14:49,279 --> 00:14:58,308
+看到现在你可能会说“哦你运行了ZFS，创建了阵列，好厉害哦”
+so at this point you may be thinking like okay that's kind of cool i guess you know you have zfs and you have three drives you made a raid array like whoopty do
+
+219
+00:14:58,332 --> 00:15:02,233
+但其中还有一些小插曲，让我给你展示“致命魔术”吧
+but there's actually a little bit extra going on and let's get to “the prestige” right now
+
+220
+00:15:02,257 --> 00:15:07,600
+我知道有一部分观众已经知道我要讲什么了
+now i know that there are a lot of storage folks that probably will have caught what i was doing and why there's something actually a little
+
+221
+00:15:07,600 --> 00:15:10,399
+以及所谓“有意思的东西”
+bit more exciting in this video because
+
+222
+00:15:10,399 --> 00:15:19,279
+平常NVME设备在Ubuntu里显示为一个块设备，通常以nvme+数字来标记
+normally when you have nvme ssds and you go and put them into like an ubuntu server you'll see that they show up as block devices but they'll be labeled as like nvme and then some number and like
+
+223
+00:15:19,279 --> 00:15:21,920
+或者其他类似的方法标记，来告诉我们有三个NVME设备
+you know all that kind of stuff and so we'd have three different nvme drives
+
+224
+00:15:21,920 --> 00:15:26,959
+但你应该发现了，我们的960G SSD被标记为sda/b/c
+but you also notice that our 960 gig drives are actually called sda b and c
+
+225
+00:15:26,959 --> 00:15:35,759
+原因是我们有一堆DPU，同时，我们还想展示一个更加有趣的运作模式
+the reason for that is well we have a lot of DPUs and i wanted to show a more exciting operating model than just this you know this is crazy exciting
+
+226
+00:15:35,759 --> 00:15:42,079
+实际上我们没有在这块DPU上运行ZFS specifically we actually were
+not making zfs the zfs array on this dpu in here oh
+
+227
+00:15:42,079 --> 00:15:44,560
+哦，比我想象中还大
+no man this is a lot bigger than i thought it was gonna be this is actually
+
+228
+00:15:44,560 --> 00:15:49,360
+把它搬上来真是个坏主意
+like really huge uh and this is a bad idea but this is actually the aic server
+
+229
+00:15:49,360 --> 00:15:51,600
+但这台AIC服务器里运行着第二块NVidia Bluefield2 DPU
+that we had the second nvidia bluefield
+
+230
+00:15:51,600 --> 00:15:58,079
+这是一台双路Intel Ice Lake服务器，未来我们会在STH网站上对它进行测评
+two dpu in this is an intel dual ice lake server we will have a review of this server on the sthm site we'll link
+
+231
+00:15:58,079 --> 00:16:02,079
+服务器的相关参数在视频并不存在的相关链接中
+a couple more specs on the server in the description just so you can go look it
+
+232
+00:16:02,079 --> 00:16:12,880
+但这台服务器只提供给第二块DPU电力和冷却设备
+up but the idea is basically we had a second dpu and the only thing that's really doing in this demo in this server is really it is just provide the servers providing power and cooling to that dpu
+
+233
+00:16:12,880 --> 00:16:17,759
+接下来的视频中，我会展示一些它的高级功能，那些功能会用到宿主服务器
+in the next video we will actually kind of show some kind of higher level features that will use the server but
+
+234
+00:16:17,759 --> 00:16:25,279
+我只是澄清一下，这个ZFS阵列不是在JBox中的那块DPU创建的
+for now i'm just kind of saying hey that zfs array that was not created on the DPU that's in you know the jbox it was
+
+235
+00:16:25,279 --> 00:16:26,880
+是这台服务器里面的DPU创建的
+actually created on the dp that was in
+
+236
+00:16:26,880 --> 00:16:30,000
+我们这样干能让事情变得更有趣
+the server and so the way that we did that was actually a little bit more fun
+
+237
+00:16:30,000 --> 00:16:34,480
+因为DPU不仅仅可以设置成一台ZFS服务器
+because we didn't just set this up as a zfs server because like let's face it
+
+238
+00:16:34,480 --> 00:16:38,480
+仔细想想，如果一台存储服务器只能运行ZFS，那它还有什么用？
+like what are you gonna do with storage here if it's just a zfs server so we
+
+239
+00:16:38,480 --> 00:16:44,399
+实际上我们把这三个SSD作为单独的块设备使用
+actually did was we took all three of these devices we made them separate block devices so that we could show
+
+240
+00:16:44,399 --> 00:16:46,800
+来让这三块硬盘在另一边显示出来
+three drives on the other side and we
+
+241
+00:16:46,800 --> 00:16:50,480
+接着我们把硬盘作为iSCSI目标导出
+exported them as basically iscsi target
+
+242
+00:16:50,480 --> 00:16:52,959
+所以JBox里那块DPU实际上在跑Open iSCSI
+so we had open iscsi running on the dpu
+
+243
+00:16:52,959 --> 00:17:03,680
+干完这些后，服务器那边的DPU就能把这边的三个块设备拉过去使用了
+here and then all of these three drives they were used as targets so that gave us our three block devices that we could then pull from the server side dpu and
+
+244
+00:17:03,680 --> 00:17:08,000
+我们就能把他们作为阵列设备导入使用了
+then we could go and import all three of
+those and use those in our array but the
+
+245
+00:17:08,000 --> 00:17:13,119
+展示这个给各位看原因是因为这将会是我们下个视频中会展示的运作模式
+reason i wanted to show this is because this is really the operating model that we're going to look at in our next video
+
+246
+00:17:13,119 --> 00:17:16,240
+我们将用高性能模式的DPU来做那件事
+when we kind of do this in the high performance version of what we have here
+
+247
+00:17:16,240 --> 00:17:23,839
+所有人都了解iSCSI，它都已经出现了也许十年了？ZFS也有大概十年了
+specifically we have iscsi and everybody understands is been around for i don't know for forever decades zfs has probably been around for decades as well
+
+248
+00:17:23,839 --> 00:17:25,119
+我想说的是，这些技术都是非常知名的
+i mean that's a very well known
+
+249
+00:17:25,119 --> 00:17:26,959
+它们都是可靠的，同时也算是老技术了
+technology very robust and old
+
+250
+00:17:26,959 --> 00:17:30,000
+很多人都有使用它们的经验
+technology so a lot of people have experience with these technologies so
+
+251
+00:17:30,000 --> 00:17:39,135
+我们使用这样的技术而不是NVMEoF或者其他新技术的原因也是如此
+what we did was we basically set this up instead of using nvme over fabric and some of the newer storage paradigms what we're actually doing is just kind of using the old stuff
+
+252
+00:17:39,159 --> 00:17:43,600
+整理一下我们现在正在做的事情，我们在用DPU，NVME SSD
+and so what we're doing here is we have the dpu we then have the nvme ssds and we're able to go
+
+253
+00:17:43,600 --> 00:17:45,039
+它们让我能够把块设备通过网络传递
+take these block devices and put them
+
+254
+00:17:45,039 --> 00:17:48,880
+其中不需要用到x86服务器
+over the network without the use of an x86 server in the way and while this is
+
+255
+00:17:48,880 --> 00:17:53,200
+再让我们想象一下，这只有一个单元，如果我们有一堆呢？
+ just one unit you can also imagine just the idea that you would have a bunch of
+
+256
+00:17:53,200 --> 00:17:58,960
+如果有一整个数据中心呢？在不同的机架，机柜，甚至不同的数据中心，遍布全球呢？
+these in a data center maybe in different racks different roads different data centers all over the world whatever it is but be able to
+
+257
+00:17:58,960 --> 00:18:03,440
+这套系统能让把块设备放到网络中
+basically just go and put block devices onto the network and that's basically
+
+258
+00:18:03,440 --> 00:18:05,280
+也就是NVMEoF想要实现的功能
+what you would do with nvme over fabric
+
+259
+00:18:05,280 --> 00:18:09,840
+回到服务器端，提一嘴，这东西相比一整台服务器真是轻多了
+and then on the server side and by the way this is a lot lighter than that entire server because that was actually
+
+260
+00:18:09,840 --> 00:18:12,320
+那台服务器真的重死了。扯远了，我想表达的主要观点是
+really heavy but the idea is that on the
+
+261
+00:18:12,320 --> 00:18:18,880
+在服务器那端的DPU上，你可以从不同的机器上获取块设备
+server side dpu you can go and take those block devices doesn't have to all be from one chassis it could be from multiple different chassis and you can
+
+262
+00:18:18,880 --> 00:18:24,480
+通过DPU上的高速网卡导入这些块设备
+go and put those into or import these over the high speed nics on the dpu and
+
+263
+00:18:24,480 --> 00:18:31,600
+接着你可以创建虚拟设备，并把它们透传到x86服务器上的虚拟机里面 
+then you can go and create virtual devices and go pass those into vms that are running on the host x86 system
+
+264
+00:18:31,600 --> 00:18:33,039
+这基本就是我下一个视频要干的事情
+that's really the next video and a lot
+
+265
+00:18:33,039 --> 00:18:34,880
+上个视频的一些评论提到
+of folks in our last video asked well
+
+266
+00:18:34,880 --> 00:18:40,240
+要如何处理冗余问题，比如说做RAID等等
+how would you deal with things like redundancy and how would you do raid or something like that and that's
+
+267
+00:18:40,240 --> 00:18:42,720
+我现在这么配置的原因就是如此
+specifically why i set it up like this
+
+268
+00:18:42,720 --> 00:18:54,080
+因为你能看到，我在这里运行DPU上的ZFS，使用远程端点的块设备也能够在功能某种意义上实现冗余机制 
+because the idea of just having blocked devices on one end and then being able to go run raid in this case ZFS on the dpu itself that basically allows us to have some level of redundancy on the
+
+269
+00:18:54,080 --> 00:18:59,440
+对端你像把它放在网络上的哪边都可以，总之这套系统可以实现冗余
+flip side you could also run it on another box somewhere in the network but that's basically the idea but the cool
+
+270
+00:18:59,440 --> 00:19:04,559
+但最重要的是，你可以把存储相关的一切任务都卸载给DPU 
+thing is that you're able to go and offload all that storage task to the dpu
+
+271
+00:19:04,559 --> 00:19:07,919
+而不是把这些活都让宿主机去做 
+instead of having to go run it on the host processors in a server and what
+
+272
+00:19:07,919 --> 00:19:11,679
+多出的核心可以用来给虚拟机使用 
+that does is it gives you more cores to go and use for vms and those cores are
+
+273
+00:19:11,679 --> 00:19:13,520
+这些核心如今可是非常贵的
+very expensive these days and so the
+
+274
+00:19:13,520 --> 00:19:17,039
+如果把这些工作都给它来做，那会便宜不少 
+idea is that this is a lot less expensive not only can this do storage
+
+275
+00:19:17,039 --> 00:19:19,679
+而且它不止可以用来做存储，我们以存储做演示只是因为很多人都了解存储 
+and we're using that because a lot of people understand storage but it can
+
+276
+00:19:19,679 --> 00:19:27,360
+它还能用来做网络，比如你想搭建一个私有云，你可以拿它加密虚拟机到虚拟机之间的流量 
+also do networking and do things like encrypt all of your traffic from your vms to the other vms so if you want to go create like a virtual private cloud
+
+277
+00:19:27,360 --> 00:19:32,480
+总之类似的事情都能拿DPU去做
+or something like that you could totally go do that by encrypting everything directly on the dpu itself again that's
+
+278
+00:19:32,480 --> 00:19:34,000
+一句话总结，这是一个非常牛逼的卸载器
+a massive offload and as you start to
+
+279
+00:19:34,000 --> 00:19:38,240
+当你上到100G或者多个100G、200G、甚至400G 
+get to things like 100 gig or multiple 100 gig 200 gig 400 gig speeds you start
+
+280
+00:19:38,240 --> 00:19:41,919
+你就开始需要这些卸载引擎了 
+to need those offload engines to even be able to handle it because just doing on
+
+281
+00:19:41,919 --> 00:19:44,000
+直接拿CPU核心去做根本划不来
+cpu cores won't scale anymore all right
+
+282
+00:19:44,000 --> 00:19:47,679
+我知道你们在想，高速流量对性能有多大的影响
+so i know what you're thinking like how bad does this perform the answer is
+
+283
+00:19:47,679 --> 00:19:50,080
+答案是，影响超级大
+absolutely terrible this is this is one
+
+284
+00:19:50,080 --> 00:19:54,880
+我看到的时候都被震惊到了
+of the worst i was actually somewhat shocked when i saw how bad it was and there's a reason for it and i'm gonna
+
+285
+00:19:54,880 --> 00:19:56,720
+我来解释一下为什么会这样
+explain that in a sec so you remember i
+
+286
+00:19:56,720 --> 00:20:01,200
+你还记不记得我说过，DPU不只是网卡这句话？
+wanted to show that the dpu was like not just a nick it had something that was
+
+287
+00:20:01,200 --> 00:20:02,960
+它有它自己的系统
+basically its own system that was really
+
+288
+00:20:02,960 --> 00:20:11,440
+为了证明这一点，我直接用1G管理口来传输数据，而不是上面的高速网口 
+the idea of this piece and so instead of using the higher speed ports we use the lower speed management port and that lower speed management port is a one gig
+
+289
+00:20:11,440 --> 00:20:18,559
+用1G的管理口运行iSCSI肯定不是为了连接另一个管理口做存储
+ethernet port so as you can imagine running iscsi over a
+management network that's not set up for storage to another
+
+290
+00:20:18,559 --> 00:20:25,919
+这个口的传输速度也就平均85MBps 
+management port and the maximum you're gonna get is one gigabit per second i think we got something like 85 megabytes per second on average when we did this
+
+291
+00:20:25,919 --> 00:20:28,080
+速度很慢，但是第一：这个速度没有经过调优
+which is like really bad but number one
+
+292
+00:20:28,080 --> 00:20:34,080
+第二：哪个**会用ZFS+iSCSI这个组合？ 
+this is not tuned number two this is a silly setup like why are you doing zfs iscsi i mean it's a silly setup but
+
+293
+00:20:34,080 --> 00:20:38,400
+我们这样做的原因只是为了展示不一样的部分 
+realistically the reason we did it is really just to kind of show the different parts rather than really
+
+294
+00:20:38,400 --> 00:20:39,919
+而不是为了单纯的展示速度
+showing the performance the performance
+
+295
+00:20:39,919 --> 00:20:43,280
+性能表现会在下一个版本展示
+is something that we'll show on the next
+version of this when we do things like
+
+296
+00:20:43,280 --> 00:20:46,480
+我们会用软件定义网络加速处理，会用上正确的软件栈 
+we use SNAP(Software-defined Network Accelerated Processing) so we actually use like the right software stack we start using the
+
+297
+00:20:46,480 --> 00:20:48,720
+还会用上100G端口
+100 gig ports but i just wanted to show
+
+298
+00:20:48,720 --> 00:20:51,679
+以此高速各位DPU的基础水平是怎么样的
+a base level of what dpus do also and
+
+299
+00:20:51,679 --> 00:20:58,320
+这是非常重要的，不要把这个视频当作“如何为我的公司创建存储服务器”的教程
+this is very important do not use this as like a how to set up my storage server for my company because you do not
+
+300
+00:20:58,320 --> 00:21:00,315
+千万不要尝试去搭建这样的环境！！
+want to go do the setup that i just showed
+
+301
+00:21:00,339 --> 00:21:06,799
+我只是在以一种特殊的方式告诉你们DPU是如何工作的
+i was literally doing this just to be able to show how this whole thing works in a very specific manner so this was a
+
+302
+00:21:06,799 --> 00:21:11,360
+这只是一个示例，不是生产环境搭建指南！ 
+demonstration not meant to be a production guide it's very important
+
+303
+00:21:11,360 --> 00:21:15,120
+再次强调，不要尝试！！
+please do not set up your systems exactly like this it is silly to do this
+
+304
+00:21:15,120 --> 00:21:19,600
+我只是以此展示它们是如何工作的 
+but i wanted to show the concepts on how all the different parts work with that i
+
+305
+00:21:19,600 --> 00:21:24,080
+我希望大家对DPU在数据中心内的未来感到兴奋
+hope you're excited for the future of DPUs in the data center i know i am
+
+306
+00:21:24,080 --> 00:21:30,320
+我们在不断地尝试这些Bluefield2 DPU的新使用方法，它们还有很多不同的版本，都非常nb
+we've been running these bluefield 2 DPUs like non-stop they have very very cool versions out there and the
+
+307
+00:21:30,320 --> 00:21:33,840
+根据目前的信息，Bluefield3和其他DPU会比现在的版本强很多
+bluefield 3 looks like it's going to be a lot better there are other dps as well
+
+308
+00:21:33,840 --> 00:21:42,635
+未来我们会做一些NVidia之外的公司做的DPU产品的测评 
+so we're actually going to be doing some pieces on not just nvidia's gpus but also some of the other dpus in the industry and so we'll have some videos on those as well
+
+309
+00:21:42,659 --> 00:21:49,679
+但说实话这个视频还是非常基础的，旨在展示DPU如何工作，以及DPU的独立系统是怎么样的
+but this video was really kind of the primer video to show how these things work and why they are like their own little systems and that's
+
+310
+00:21:49,679 --> 00:21:55,280
+它们被创造出来的终极目标是建立一个安全壁垒
+really the point of them because at the end of the day the idea of having something like this is you're like secure bulkhead if you're an
+
+311
+00:21:55,280 --> 00:22:00,480
+如果你是在企业里当基础设施提供者，你以后可能会把这些东西插进你的服务器里面 
+infrastructure provider whether that is an in enterprise where you're going to go put these into all of your servers
+
+312
+00:22:00,480 --> 00:22:05,520
+通过它来管理所有东西，比如安全等等
+and as the enterprise provider you're going to you know manage everything here and manage your security and everything
+
+313
+00:22:05,520 --> 00:22:09,520
+或者如果你在一家大型云提供商供工作
+on the dpu or if you're a big cloud provider you want these DPUs because the
+
+314
+00:22:09,520 --> 00:22:14,960
+如果你想让你的基础设施上的每一行代码都是可信的
+idea that you're going to have every piece of code running in in your infrastructure as trusted is kind of
+
+315
+00:22:14,960 --> 00:22:16,880
+虽然这个概念现在有些过时了
+obsolete at this point right i mean
+
+316
+00:22:16,880 --> 00:22:21,679
+毕竟你永远不会知道用户会在你的设施上跑什么东西对吧 
+people run things all the time you never know who's on your vms you never know what's going on and so the idea of
+
+317
+00:22:21,679 --> 00:22:24,640
+但我的意思是有了服务器有了DPU，一袋能顶两袋撒（误）
+having a dpu in a server where the
+
+318
+00:22:24,640 --> 00:22:29,600
+基础设施提供者可以更好地掌握服务器，把流量安全部分剥离下来
+infrastructure provider can secure this and have all the streams coming off of
+
+319
+00:22:29,600 --> 00:22:35,919
+在DPU上做防火墙，以及提供别存储服务等等 
+it secure do all the firewalls do all the you know provide services like storage all that onto dpus i think is
+
+320
+00:22:35,919 --> 00:22:39,039
+我认为这是基础设施的未来 
+definitely the way of infrastructure in the future we're just kind of at the
+
+321
+00:22:39,039 --> 00:22:44,480
+目前的硬件只发展到了AWS几年前的水平
+point where the hardware is starting to get to where aws was a couple years ago
+
+322
+00:22:44,480 --> 00:22:48,799
+当然这也让DPU的未来变得令人激动
+frankly and that makes the world of dpus super exciting so if you like this video
+
+323
+00:22:48,799 --> 00:22:55,280
+谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢
+well why don't you give it a like click subscribe and turn on those notifications because we're going to have a lot more dpu content coming in
+
+324
+00:22:55,280 --> 00:23:01,120
+关注原作者捏！！！
+the future and with that thanks for watching and have an awesome day
+

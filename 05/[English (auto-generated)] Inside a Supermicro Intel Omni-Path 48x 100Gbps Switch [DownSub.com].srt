@@ -1,0 +1,347 @@
+1
+00:00:00,000 --> 00:00:02,419
+[Music]
+
+2
+00:00:02,419 --> 00:00:04,650
+嘿嘿，这里是STH的Patrick
+hey guys this is Patrick from STH
+
+3
+00:00:04,650 --> 00:00:12,315
+今天我们来看看这台来自超微的Intel OPA 48口100G交换机的内部 
+today we're to look inside a super micro intel omni path 48 port a handred gigabit per second switch
+
+4
+00:00:12,339 --> 00:00:17,130
+OPA是一个非常有意思的技术，我们会做一系列的视频
+now this is a really interesting technology in this part of our series that we're gonna start doing
+
+5
+00:00:17,130 --> 00:00:21,350
+看看这些不太一样的服务器硬件
+taking a look at various server hardware
+
+6
+00:00:21,350 --> 00:00:27,480
+虽然它们有些没有被广泛应用，但其中也有一些不错的创新技术 
+platforms that you know really showed a lot of innovation maybe they didn't get a great adoption or maybe they did but
+
+7
+00:00:27,480 --> 00:00:30,210
+我们只是想给各位看一些在实验室里的有趣的东西
+we just kind of wanted to show people some of the things that are in the lab
+
+8
+00:00:30,210 --> 00:00:34,250
+你们平常可能看不到这样的硬件
+that are really cool pieces of hardware that you wouldn't normally see otherwise
+
+9
+00:00:34,250 --> 00:00:39,570
+好的，让我们来看看Intel Omni Path(OPA)
+okay so Intel Omni path so Omni path that was
+
+10
+00:00:39,570 --> 00:00:52,138
+OPA最低就是100Gbps光纤，以此来和Mellanox主导的InfiniBand还有以太网在高性能计算领域竞争 
+started as a 100 gate per second fabric to really compete with both InfiniBand which Mellanox was championing as well as Ethernet in the high performance computing space
+
+11
+00:00:52,162 --> 00:01:00,059
+它有两种部署模式，第一种是标准的PCI-E 3.0x16形式拓展卡
+and they're really two ways of this was deployed the first way was on a standard PCIe by 16 gen 3 card
+
+12
+00:01:00,059 --> 00:01:05,909
+看起来和以太网网卡还有Mellanox IB卡没什么两样的
+and now it looks a lot like an Ethernet NIC or a Mellanox InfiniBand adapter but
+
+13
+00:01:05,909 --> 00:01:11,044
+另一种方法我觉得更好玩一些，我们之前在实验室就见过这样的
+the other way I think was a lot more interesting and it's something that we actually saw in the lab
+
+14
+00:01:11,068 --> 00:01:17,939
+为了让大家给OPA捧场，Intel把OPA光纤网卡集成到了
+to get adoption for Omni path Intel actually integrated the Omni path fabric adapter directly on
+
+15
+00:01:17,939 --> 00:01:22,770
+Xeon phi 的Knight landing以及Knight mill两条产品线里
+to chip packages both in the Xeon Phi Knights landing in Knights mil but also
+
+16
+00:01:22,770 --> 00:01:31,259
+以及cascade lake 的前任，至强可拓展或者叫他skylake
+ in cascade lake predecessor which was the Intel Xeon scalable SP or skylake
+
+17
+00:01:31,259 --> 00:01:40,590
+只要多花$155，100G光纤抱回家 
+and so for about $155 more than these standards SKU you could get a hundred gig fabric connector built in and with
+
+18
+00:01:40,590 --> 00:01:48,509
+而且还不用为了网卡多花16条PCI-E通道
+that also meant was that you didn't have to use PCIe lanes for your hundred gig fabric which takes 16 you could just use
+
+19
+00:01:48,509 --> 00:01:51,550
+因为它用的是Intel专属PCI-E通达 
+this because their dedicated PCIe lanes on the package
+
+20
+00:01:51,574 --> 00:01:53,220
+性价比不错吧
+ that was awesome and the
+
+21
+00:01:53,220 --> 00:02:02,790
+Intel也觉得在基础配置上，比如6148上，加$155就能都得到一个集成的网卡真是太划算了
+fact that Intel was selling them basically the on package adapters for only like $155 uplift to over a normal SKU like a 6148 that's a big deal
+
+22
+00:02:02,790 --> 00:02:09,571
+如果一个组织能采用OPA的话，成本能节约很多
+because it became a lot cheaper for organizations to use omni path than other fabrics
+
+23
+00:02:09,595 --> 00:02:18,360
+实际上呢，这个技术用的人还是比较少，很多服务器也不能把这根线从CPU引出到机箱后面 
+in practice it was still always a little bit funky to use and a lot of server couldn't even get the little cables that would connect from the CPUs to the back of chassis and that was kind
+
+24
+00:02:18,360 --> 00:02:24,209
+整体的体验上并不是特别好
+of a weird little bit from the whole experience but we also didn't see the
+
+25
+00:02:24,209 --> 00:02:29,489
+Intel也看到了，于是OPA并没有在Intel的cascade lake中出现
+Omni path make it into cascade lake so it seems like Intel's doing a reset for
+
+26
+00:02:29,489 --> 00:02:31,829
+Intel似乎要重置OPA 200系列了
+OPA 200 they announced a little bit at
+
+27
+00:02:31,829 --> 00:02:39,569
+他们在SC18中宣布了这件事，但目前还没有任何消息
+supercomputing 18 but we're not really seeing a ton of it now so we hope to see it in the future instead or we're gonna
+
+28
+00:02:39,569 --> 00:02:47,909
+不管那么多了，我们今天要看的是超微出品的Intel OPA 48口100G交换机
+do today is it we're gonna go look at an Intel Omni Path 48
+port hundred gigabit per second switch that Super Micro made
+
+29
+00:02:47,909 --> 00:02:52,109
+虽然是超微生产的，但大部分设计都参照了Intel的参考设计
+but a lot of these designs were mostly the Intel reference design that were
+
+30
+00:02:52,109 --> 00:02:54,780
+或者说Intel只是和合作伙伴一起，做出了这个产品
+just produced by their partners okay so
+
+31
+00:02:54,780 --> 00:02:58,500
+我们先来看产品吧
+let's go look at it the actual model that we're looking at is a Super Micro
+
+32
+00:02:58,500 --> 00:03:01,230
+它的名字是超微SSH-C48Q
+SSH-C48Q you can see that there are
+
+33
+00:03:01,230 --> 00:03:04,409
+你能看到前面板有48个QSFP28接口
+48 QSFP28 ports on the front and this
+
+34
+00:03:04,409 --> 00:03:08,159
+这个QSFP28物理接口和IB和以太网的接口是一样的 
+is the same q SS p 28 connector that you use for InfiniBand or Ethernet there's
+
+35
+00:03:08,159 --> 00:03:09,690
+另外还有管理口和USB口
+also managed port USB port
+
+36
+00:03:09,690 --> 00:03:15,810
+接着我们来打开这台交换机看看内部，这才是好戏对吧
+but now let's open up the switch and see what's inside because we want to see kind of the cool bits of the switch so
+
+37
+00:03:15,810 --> 00:03:21,269
+拧开背后的螺丝，抬起盖子
+we're gonna just open up the thumb screw on the back and lift the cover off this
+
+38
+00:03:21,269 --> 00:03:23,504
+这算是个比较好拆的交换机了 
+is actually a really easy switch to get open
+
+39
+00:03:23,528 --> 00:03:30,359
+内部...很简洁...或者说简陋
+and inside you can see something that's well pretty darn simple sometimes
+
+40
+00:03:30,359 --> 00:03:37,889
+一般实验室里的初版都非常复杂，非常粗糙
+when we get things in the lab they are very complex and they look like pretty rough first versions but this is
+
+41
+00:03:37,889 --> 00:03:42,599
+但这台看上去非常简洁，只有几个组件
+actually a really clean design that only has a few major components since we're
+
+42
+00:03:42,599 --> 00:03:48,209
+既然我们在交换机的后方，那就先从风扇开始介绍吧 
+starting at the rear of the chassis I guess it kind of makes sense to look at the fans first and you can see that
+
+43
+00:03:48,209 --> 00:03:54,209
+这些风扇就是标准的4pin 1u风扇
+these are just standard 1u fans they're actually used a four pin pwm power
+
+44
+00:03:54,209 --> 00:04:00,000
+你在标准的白盒交换机里面都能看到
+connector which is standard you need to see that in most white box servers and
+
+45
+00:04:00,000 --> 00:04:06,569
+这些风扇不是真的热插拔风扇，但也不像普通1u服务器那样
+they're not really hot-swap but that's also not overly
+common in 1u servers and instead what they have is
+
+46
+00:04:06,569 --> 00:04:13,349
+他们用这些延长线连接风扇，如果你想更换风扇，从中间就可以断开排线
+they have these long extension cables and long extension cables bring power
+to each fan and you can snap them in the middle too if you had to replace them
+
+47
+00:04:13,349 --> 00:04:19,440
+这里是冗余的750w电源
+there's also a redundant power supplies this using 750 watt redundant power
+
+48
+00:04:19,440 --> 00:04:22,500
+这是电源分配板
+supplies and there's a power distribution board for those power
+
+49
+00:04:22,500 --> 00:04:32,330
+以上是交换机的电源和冷却部分
+supplies and that's pretty much the cooling and power that's needed for this entire switch which is really not that much
+
+50
+00:04:32,330 --> 00:04:37,130
+相比于如今的高端200G或者400G交换机，这个配置不算豪华
+compared to some of the higher-end 200 400 gig switches that we're seeing these
+
+51
+00:04:37,130 --> 00:04:45,889
+在这个散热器底下压着交换机是ASIC芯片
+days under this big heat sink that's the main switch ASIC for the platform it
+
+52
+00:04:45,889 --> 00:04:51,380
+它需要消耗大量电力，这就是为什么需要高端的冗余电源 
+uses a lot of power so that's why we have redundant power we also have pretty high end power supplies you also
+
+53
+00:04:51,380 --> 00:04:55,760
+还有这里的Molex QSFP28 母口插座
+see these molex QSFP28 cages each cage
+
+54
+00:04:55,760 --> 00:05:00,230
+每个插座都有六个QSFP28接口
+has a total of six QSFP28 connectors
+
+55
+00:05:00,230 --> 00:05:07,940
+8 * 6 = 48 (port)
+and there are eight six port connectors so that or cages so that means that gives you 48 ports and in the back we
+
+56
+00:05:07,940 --> 00:05:12,195
+还有一个有意思的东西是这个小卡 
+have something that's I think a little bit interesting as well which is this little card
+
+57
+00:05:12,219 --> 00:05:19,970
+这张卡是管理卡，在很多高端交换机上都有出现 
+now this little card is something that we see on pretty high end switches and it's a management card so
+
+58
+00:05:19,970 --> 00:05:25,340
+如果你把它拿下来就能看到上面有CPU、内存
+if we actually take the card out you'll see as you see there's a CPU on the area see that there's memory on there and in
+
+59
+00:05:25,340 --> 00:05:33,410
+在高端交换机里面很多都有一整台电脑运行在里面
+higher end switches they actually have entire computers that run inside the switch that do all the management
+
+60
+00:05:33,410 --> 00:05:36,890
+用来提供管理功能
+functions that you would need beyond
+
+61
+00:05:36,890 --> 00:05:42,050
+而速度超快的ASIC只需要移动数据就行了
+just you know the superfast switch ASIC moving data around so this is kind of
+
+62
+00:05:42,050 --> 00:05:45,671
+这就是交换机的控制面了
+cool just to see the control plane of the switch
+
+63
+00:05:45,695 --> 00:05:50,479
+当我们把这台交换机装在实验室里运行NVMEoF的时候
+when this switch was installed in our lab that was running a NVME over fabric we even had an optain nvme
+
+64
+00:05:50,479 --> 00:05:52,187
+插一嘴，我们在实验室里用傲腾搭建了一个NVMEoF演示场景
+over fabric demo setup with it
+
+65
+00:05:52,211 --> 00:05:53,161
+它运行的很好
+it worked really well
+
+66
+00:05:53,185 --> 00:05:54,140
+因为这东西你平常应该不太能见到
+and it's something you don't
+
+67
+00:05:54,140 --> 00:06:00,380
+所以我就拿它作为我们“牛逼的硬件”系列的开端了
+really see a lot so we wanted to bring this as the start to our cool hardware series that we're gonna be doing on sth
+
+68
+00:06:00,380 --> 00:06:05,690
+谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢谢
+thanks for watching if you enjoyed this video you should check out our main site you should subscribe and we're gonna
+
+69
+00:06:05,690 --> 00:06:10,510
+关注原作者讷！！
+have more really cool hardware that we're gonna show you in the near future
+

@@ -1,0 +1,1794 @@
+1
+00:00:00,080 --> 00:00:02,480
+嘿嘿，这里是STH的Patrick
+hey guys this is patrick from sth and
+
+2
+00:00:02,480 --> 00:00:07,040
+今天我们来看一台特别酷的8或者10 GPU服务器
+today we're going to take a look at a really cool 8 or 10 gpu server from
+
+3
+00:00:07,040 --> 00:00:13,940
+型号为泰安FT83A-B7129
+Tyan and this one is called the Tyan FT83A-B7129
+
+4
+00:00:13,964 --> 00:00:20,320
+但这个型号其实是父型号，比今天要评测的是它的子型号
+but that's actually the higher level model name because the actual model name for this because there are a
+
+5
+00:00:20,320 --> 00:00:31,780
+也就是B7129F83AV8E4HR-N，不同子型号之间有一些小区别
+couple different variations the one that we're going to be looking at is the B7129F83AV8E4HR-N
+
+6
+00:00:31,804 --> 00:00:34,800
+这个型号真是非常难记
+and yeah these model numbers are very hard to remember but if
+
+7
+00:00:34,800 --> 00:00:41,040
+但它有且仅有另一款名字中间带“14”的兄弟型号
+you do see a 14 in the middle of a model number that kind of looks like this at time that actually is a different model
+
+8
+00:00:41,040 --> 00:00:44,640
+那是一款有更多硬盘位的机型，我们等会提到再聊
+that has more drive bays we're going to talk about that when we get through this
+
+9
+00:00:44,640 --> 00:00:48,480
+在这个视频里，我会做一些改变
+and so in this video we're actually going to do something that's a little bit different and we're really going to
+
+10
+00:00:48,480 --> 00:00:52,879
+这些改变包含我上周去OCP峰会后收到的反馈
+incorporate some feedback that i got at ocp summit this last week and that
+
+11
+00:00:52,879 --> 00:00:54,559
+这些反馈包括
+feedback was really like hey patrick you
+
+12
+00:00:54,559 --> 00:01:02,640
+“嘿Patrick，你已经在犹管和STH网站上做了那么多GPU服务器评测视频了”
+know you guys do so many gpu server reviews not only do we do gpu server reviews that you see here on youtube we do even more gpu server reviews on the
+
+13
+00:01:02,640 --> 00:01:13,600
+ “你知道为什么服务器一定要以某种方法来实现某样功能，而不是另一种吗？”
+some sth main site and so you know the feedback was really like you know why of the differences are you know why a server is made in a particular way and not another way and like you know what
+
+14
+00:01:13,600 --> 00:01:16,560
+“其中的原因是什么？人们的想法是什么样的？”
+what's going on and what's the reasoning behind that what are people thinking
+
+15
+00:01:16,560 --> 00:01:21,280
+“用户想要的是什么？服务器这样设计是为了什么”
+what customers want and so like you know why why is a server the way it is and so
+
+16
+00:01:21,280 --> 00:01:25,840
+所以这期视频我想通过几个案例来谈谈
+the thought was in this video i'm going to go through a couple of those little vignettes and just kind of talk about
+
+17
+00:01:25,840 --> 00:01:31,439
+是什么导致了服务器的设计有所不同，以及服务器是如何被设计出来的
+some of the differences in terms of how you could design a server or how servers are designed and we're going to show you
+
+18
+00:01:31,439 --> 00:01:33,119
+我想告诉各位，泰安在设计这台服务器时做了什么取舍
+know what the design decision was that
+
+19
+00:01:33,119 --> 00:01:41,600
+我只是想告诉各位GPU服务器之间，差异存在之原因
+tyan made and really the idea there is just i want to share with everybody and just kind of explain you know why gpu servers all look a little bit different
+
+20
+00:01:41,600 --> 00:01:47,920
+因为有些人觉得GPU服务器之间只有GPU数量上的区别，对其他部分毫不在乎
+because you think a lot of people just kind of like oh it's an 8 gpu server 10 gpu server but like what's the difference like who cares but there
+
+21
+00:01:47,920 --> 00:01:51,560
+我想通过这个视频告诉各位的一个观点是：除了GPU数量，它们也有很多重要的区别
+actually are some major differences and i want to get into those during this video
+
+22
+00:01:51,584 --> 00:01:54,799
+喜欢的话不妨留下评论
+so if you like that why don't you give us some comments down below if you
+
+23
+00:01:54,799 --> 00:01:59,680
+不喜欢也可以畅所欲言
+don't like it feel free to give comments too we're just going to try it out and see how it goes so let me know in the
+
+24
+00:01:59,680 --> 00:02:02,320
+我们计划从硬件部分开始
+basic game plan is we're going to start with the hardware and specifically what
+
+25
+00:02:02,320 --> 00:02:08,000
+由外到内对它进行介绍
+i wanted to do was start with like the exterior of the chassis and then i think we're going to get into the interior
+
+26
+00:02:08,000 --> 00:02:13,301
+有时候我们比较喜欢从前往后介绍，但这次让我们先关注外部，再到内部的细节
+sometimes we do like front to back but i think we're going to just kind of focus on the exterior first and then get inside
+
+27
+00:02:13,325 --> 00:02:18,800
+有一点我想要告诉各位的是， 是泰安把这台机器送过来让我们进行首发评测的
+hey just real quick i do want to note that tyan did send us this for full disclosure they did send us the system
+
+28
+00:02:18,800 --> 00:02:22,720
+做完这些测评之后，机器是要送回去的
+it is going to go back after we do this and we also uh they did
+
+29
+00:02:22,720 --> 00:02:27,120
+而且它们还要求我们再SC21之前做出评测内容
+ask us to do this before super computing 21 because i think they're actually
+
+30
+00:02:27,120 --> 00:02:31,200
+我猜他们应该会拿这台服务器参展
+going to use this server as kind of like one of their big i guess uh you know
+
+31
+00:02:31,200 --> 00:02:33,280
+作为展品中主要的来展示
+center pieces for that show and they
+
+32
+00:02:33,280 --> 00:02:34,879
+他们还搞了一个虚拟展位
+have a virtual booth that you know you
+
+33
+00:02:34,879 --> 00:02:36,080
+我会把链接放在并不存在的简介中
+can see we'll link that in description
+
+34
+00:02:36,080 --> 00:02:38,408
+如果你想要了解更多关于它的信息，点进去看看把
+but if you want to go learn more you can totally go do that
+
+35
+00:02:38,432 --> 00:02:42,959
+他们提出这个要求的时候，我也只好说：“啊对对对好好好”
+but they wanted us to have the review done before that and i said yeah i think we can go do it so
+
+36
+00:02:42,959 --> 00:02:47,695
+我只想告诉各位，这台服务器是需要还回去的
+just so you guys know the system is going to go back but just want to make sure that everybody's aware of what's going on here
+
+37
+00:02:47,719 --> 00:02:57,760
+好的，我们看机箱的前面板，注意到这块4u面板上有一大块区域是专门给气流通过的
+okay so looking at the front of the chassis what you're basically gonna see is that there's a ton of space that's dedicated just for airflow of this 4u front panel and
+
+38
+00:02:57,760 --> 00:02:59,120
+这样做的理由是
+really the reason for that is that you
+
+39
+00:02:59,120 --> 00:03:06,560
+后面的GPU加CPU总共能消耗高达300...哦不3000瓦
+have to remember that there could be say 300 or sorry three kilowatts worth of gpus in the back plus the cpus i mean
+
+40
+00:03:06,560 --> 00:03:10,080
+这台服务器肯定是台能吃3k到3.5k的电老虎
+this is definitely a system that can go you know three and a half four kilowatts
+
+41
+00:03:10,080 --> 00:03:13,440
+我们这台的配置稍低一点
+no problem our configuration was a little bit below that but just kind of
+
+42
+00:03:13,440 --> 00:03:16,959
+但依然能够消耗大量的电力
+keeping in mind that this is a system that can absolutely use a ton of power
+
+43
+00:03:16,959 --> 00:03:20,400
+因此需要大量的气流来冷却它
+and because of that you actually need a lot of airflow to be able to cool that
+
+44
+00:03:20,400 --> 00:03:27,599
+但与此同时，有人还想要这台服务器能有大量的存储空间，至少是比较像样的空间大小
+but at the same time people also generally want to have a lot of storage or a decent amount of storage at least
+
+45
+00:03:27,599 --> 00:03:33,360
+想象一下，如果你需要对安防摄像头传输进来的视频进行分析
+think about things like if you had like video coming in from security cameras and you need to do analytics on that
+
+46
+00:03:33,360 --> 00:03:36,799
+这算是GPU服务器非常常见的场景了
+which is kind of actually a pretty common thing for a gpu server and so if
+
+47
+00:03:36,799 --> 00:03:40,159
+在这个场景下，如果你想在本地储存
+you have that you kind of want to have your storage locally so that way you
+
+48
+00:03:40,159 --> 00:03:45,680
+以此来避免通过网络获取视频文件和图像这个过程
+know you can avoid going over the network to go and pull all the video files and images you then process things
+
+49
+00:03:45,680 --> 00:03:51,280
+在本地就能通过CPU给GPU提供数据，方便推理和训练，以及其他的应用
+on the local cpus and then feed the information to gpus to go do inferencing or training or whatever you need to go
+
+50
+00:03:51,280 --> 00:03:56,295
+这就是为什么机器的前面板有12个3.5寸硬盘架了
+do so that's why on the front of the system there are a total of twelve three and a half inch bays
+
+51
+00:03:56,319 --> 00:04:00,159
+其中的8个仅支持SAS/SATA
+now a total of eight of those are just purely sas or
+
+52
+00:04:00,159 --> 00:04:05,760
+另外4个接口配合SAS卡也能插SAS或者SATA盘
+sata but then there are four other drives now of course you can get sas only if you have a sas controller it's
+
+53
+00:04:05,760 --> 00:04:10,480
+但也能支持NVME硬盘
+sata native but then the other four you can actually get nvme on those and
+
+54
+00:04:10,480 --> 00:04:12,159
+这是个比较有用的功能
+that's a big deal because sometimes you
+
+55
+00:04:12,159 --> 00:04:18,160
+如果你想要整一些高速存储空间来作为缓冲或者用作他用
+might want to go and put a little bit of fast storage whether that's cache storage or whatever into a server and so that
+
+56
+00:04:18,160 --> 00:04:24,535
+这台服务器给了你在本地使用机械硬盘+NVME硬盘的混合选项
+gives you kind of a mix where you could have like hard drives and you can have nvme storage and then you know you can just have that all locally
+
+57
+00:04:24,559 --> 00:04:29,759
+这一代泰安的3.5寸硬盘架还有免工具拆装设计
+now something cool that tyan has done in this generation is that they have moved to a toolless three and a half inch drive
+
+58
+00:04:29,759 --> 00:04:34,400
+你只要把固定摆臂拨开，放入硬盘就能安装好了
+tray so you basically just swing the little arm out you put plop a drive in and then all sudden you're ready to go
+
+59
+00:04:34,400 --> 00:04:41,360
+你也可以在这个盘架里装2.5寸硬盘，但这就不是免工具安装的了
+now you can go put a two and a half inch drive in this but you basically then would just need to kind of screw that thing down so it's not toolless but if
+
+60
+00:04:41,360 --> 00:04:43,441
+但总之这个设计还是让3.5寸硬盘的安装方便了点
+you do do a three and a half inch drive super easy
+
+61
+00:04:43,465 --> 00:04:47,919
+还有一点，你应该能看到，我们这台服务器上其实有一块巨大的空白区域
+now just above that what you're actually gonna see is in our system you're gonna see this big blank
+
+62
+00:04:47,919 --> 00:04:53,600
+里面还有板条隔断，希望在图片或者花絮里面能看得到吧...
+but you might see little tiny slats and hopefully it's gonna come out in a photo or b-roll or something you may see just
+
+63
+00:04:53,600 --> 00:04:57,680
+总之是面板的中上部分
+kind of like middle section or upper middle section and what that actually is
+
+64
+00:04:57,680 --> 00:05:05,061
+这个机箱的另一个版本允许你在利用这一块区域插10块2.5寸硬盘
+is that there is another version of this chassis that does take that section and allows you to put ten two and a half inch drive bays there
+
+65
+00:05:05,085 --> 00:05:10,639
+我们的这台没有这些硬盘位，而且这还是早期版本
+now our version we don't have that and this is actually kind of a kind of early version i don't think this
+
+66
+00:05:10,639 --> 00:05:13,680
+应该不会有和它相同的版本出现在泰安官网上
+is actually this is a this is listed on the tyan website as we're doing this
+
+67
+00:05:13,680 --> 00:05:19,360
+我们出视频的时候它应该处于还未上市的状态，过会我们再谈
+video is still coming soon we'll talk a little bit more about that in kind of later in this video but that is an
+
+68
+00:05:19,360 --> 00:05:22,320
+总之，你可以通过这些2.5寸硬盘位来得到更多的存储空间
+option that if you do want more storage you can get extra two and a half inch
+
+69
+00:05:22,320 --> 00:05:27,039
+但一般来说，往GPU服务器塞存储空间是有代价的
+base now there always is a drawback to actually putting more storage into a gpu
+
+70
+00:05:27,039 --> 00:05:34,080
+通常的代价就是堵住前面板会让气流显著减小
+compute server and that drawback is usually just the fact that you start restricting airflows pretty significantly if you go and fill up the
+
+71
+00:05:34,080 --> 00:05:44,400
+这些硬盘位会严重影响气流，使GPU得不到满足
+entire front of a chassis with you know three and a half inch or two and a half inch or a mix of drives it just restricts too much airflow to get enough airflow to the gpus and so that's why
+
+72
+00:05:44,400 --> 00:05:47,919
+这就是为什么通常来说，这类服务器有1到2u的空间是开放的
+you typically always see at least like 1/2u that are open and in our
+
+73
+00:05:47,919 --> 00:05:49,919
+我们这台服务器有2u的开放区域
+system we have 2u that are open but
+
+74
+00:05:49,919 --> 00:05:56,479
+同时，也要注意这2u的开窗到底开在哪里，我们这台是机箱的靠上部分
+it is important to also just note which 2u those are those are kind of up at the top of the chassis and in most gpu
+
+75
+00:05:56,479 --> 00:06:02,000
+在大多数4u GPU服务器中，靠上的3u是给加速器用的
+servers you'll see that if they're 4u gpu server you're going to see that the top 3u is usually accelerators so
+
+76
+00:06:02,000 --> 00:06:06,400
+一般来说，存储部分会在机器的靠下部分
+usually you'll see storage towards the bottom part of the chassis because that
+
+77
+00:06:06,400 --> 00:06:09,919
+因为那部分一般都是给电源、扩展卡或者一些别的东西
+would be the portion that either goes to power supplies adding cards or whatever
+
+78
+00:06:09,919 --> 00:06:16,080
+一般这些东西不用像PCI-E GPU或者加速器一样，需要大量的气流通过
+and you don't just need as much airflow for that than as you do for all the pcie gpus or accelerators so that's just a
+
+79
+00:06:16,080 --> 00:06:18,788
+这是关于为什么这些服务器要这样设计的原因
+little bit about why these systems are designed like that
+
+80
+00:06:18,812 --> 00:06:23,440
+还有一些泰安在这款服务器上能深得我心的设计是
+and something else that time did that i actually really like on this system is that they do have
+
+81
+00:06:23,440 --> 00:06:31,280
+前面板的IO设计。如果你需要串口、VGA、USB或者其他东西，你都能直接在前面板上找到
+kind of the front IO so if you need you know serial port or you need a vga port you need usb or any of that kind of stuff all that's actually on the front
+
+82
+00:06:31,280 --> 00:06:39,440
+如果你真的去过一个超大型的GPU集群
+of the system if you've ever been behind a gpu cluster where you have just racks and racks of these systems with all these gpus in them you'll know that the
+
+83
+00:06:39,440 --> 00:06:42,479
+那你肯定知道集群的热通道真是非常的热
+hot aisle is actually really hot and so
+
+84
+00:06:42,479 --> 00:06:49,919
+能够通过KVM卡在冷通道进行维护真的是个非常大的优点了
+being able to service with a kvm cart if you need to on a cold aisle is actually a huge benefit because well it's kind of
+
+85
+00:06:49,919 --> 00:06:53,039
+冷了还能多穿点，热了怎么办呢？
+easier to deal with a little bit of cold than it is to just get blasted by hot
+
+86
+00:06:53,039 --> 00:06:57,199
+集群后面的热气是会把人热得脱水的，真的是难以忍受的高温
+air i mean i get like so dehydrated when i'm behind gpu clusters it's insane so
+
+87
+00:06:57,199 --> 00:07:01,440
+这样亲自维护的时候就可以呆在冷通道了，他们能想到这一点真是太棒了
+it's really great that they thought of that and they had the part that you would service in person on the cold
+
+88
+00:07:01,440 --> 00:07:03,440
+我很喜欢这个设计
+aisle and i just really like that design
+
+89
+00:07:03,440 --> 00:07:09,280
+另外，管理口没有设计在前面板上，而是在机器的背后
+the other thing that you don't see though is that you don't see the management port on that front aisle instead you see it on the rear of the
+
+90
+00:07:09,280 --> 00:07:10,748
+我们花点时间说说这是为什么
+system we're gonna get to that in a second
+
+91
+00:07:10,772 --> 00:07:13,360
+但其实安排在后面是非常好的，如果不在的话
+but it's really nice that it's not up there because otherwise you get
+
+92
+00:07:13,360 --> 00:07:20,080
+就只有管理口在前面，其他线都从后面走，看上去有点奇怪
+these systems where like you have a front management cable and everything else is cabled off the rear of the thing and it just kind of looks weird it's
+
+93
+00:07:20,080 --> 00:07:23,199
+泰安做的这些设计取舍比较人性化
+just it's just kind of nice that tyne made that design decision but speaking
+
+94
+00:07:23,199 --> 00:07:26,455
+既然说到了管理口，那我们就把视角移动到后方，看看有什么优秀设计
+of that management port let's get to the rear of the chassis so we can see what's going on there
+
+95
+00:07:26,479 --> 00:07:32,168
+好的，看看服务器的屁股，你应该能发现3~4个特点
+okay on the rear of the chassis you're basically gonna see i don't know maybe like three or four big features right
+
+96
+00:07:32,192 --> 00:07:41,280
+有大量的空间被设计成属于GPU的IO或者说拓展区域
+there's gonna be a massive area on the rear of the chassis that's really designed to go and be the IO you know expansion slotsand stuff that you would use for gpus
+
+97
+00:07:41,304 --> 00:07:45,599
+我们做GPU服务器测评的一大挑战是GPU不够
+now one of the challenges is that we're doing so many gpu reviews uh gpu server reviews
+
+98
+00:07:45,599 --> 00:07:53,120
+我们必须从数据中心里拉几张显卡当苦力，我们也没有很多剩余的，所以只搞到了8张A40
+that we had to go pull the gpus out of these so they're in the data center right now um we don't have a ton of them extra and so we had only eight A40 and
+
+99
+00:07:53,120 --> 00:07:55,520
+我们只能搞到这些（尴尬）
+that's you know just what we had so but
+
+100
+00:07:55,520 --> 00:07:59,855
+但这样至少能让大家看到底下的PCB了嘛，也很酷，哈
+ at least with this you can actually see now the pcb that's below them so that's also kind of cool
+
+101
+00:07:59,879 --> 00:08:07,440
+在底部还可以看到两个特征，你能看到一整排的1.6kw电源
+and then at the bottom of the system you're gonna basically see two features you're gonna see a array of four 1.6 kilowatt power supplies and
+
+102
+00:08:07,440 --> 00:08:10,548
+还有中间的一个小小的IO模组
+then in the middle you're actually going to see this kind of like little IO module
+
+103
+00:08:10,572 --> 00:08:15,280
+这个IO模组其实还能拉出来，上面有两个主要的点
+now this IO module you can actually go pull out and it has basically two major features first you
+
+104
+00:08:15,280 --> 00:08:19,520
+一个是独立的管理网口，另一个是USB接口
+ get like the dedicated management port and usb ports and those are really you
+
+105
+00:08:19,520 --> 00:08:21,599
+这是从外边看能看到的点
+know on one side of the the chassis and
+
+106
+00:08:21,599 --> 00:08:24,474
+在另一边，你能看到一个OCP NIC 3.0插槽
+then the other thing that you get is an ocp neck 3.0 slot
+
+107
+00:08:24,498 --> 00:08:29,520
+如果需要高速网络，你可以使用这里的接口，而不是宝贵的PCI-E插槽
+so if you need high speed networking and you don't want to take one of your valuable pcie slots you
+
+108
+00:08:29,520 --> 00:08:35,839
+OCP NIC 3.0插槽能让你获得高速的网络连接
+can actually go and you know just kind of use that ocp NIC 3.0 slot and then get high speed networking there now of
+
+109
+00:08:35,839 --> 00:08:37,679
+感到遗憾的是
+course the challenge is if you have like
+
+110
+00:08:37,679 --> 00:08:40,640
+如果你在一台服务器里面塞上10块GPU和一张网卡
+a 10 gpu system and you have a single
+
+111
+00:08:40,640 --> 00:08:45,760
+这张网卡就只能与单独一个CPU通信
+nic well that single nick only goes to a single cpu and so that is just kind of a
+
+112
+00:08:45,760 --> 00:08:50,959
+我在这里花一点时间介绍，因为这需要大家了解一下
+you know kind of known thing with these servers and so just want to go point that out real quick but we're going to
+
+113
+00:08:50,959 --> 00:08:54,880
+接下来让我们放宽视野，看看这台服务器是如何设计的
+get i think to the bigger item which is like how this whole thing is designed so
+
+114
+00:08:54,880 --> 00:08:59,120
+你可能注意到一个特点，就是这些GPU服务器
+one of the key things that you'll notice with these pcie gpu servers especially
+
+115
+00:08:59,120 --> 00:09:00,800
+特别是4u服务器
+the 4u servers is that there's like
+
+116
+00:09:00,800 --> 00:09:03,360
+有两种主要的设计
+kind of two major ways that you do this
+
+117
+00:09:03,360 --> 00:09:10,240
+其一是把电源都放到一边去
+one way that people tend to design these servers is they'll put the power supplies all to one side and then often
+
+118
+00:09:10,240 --> 00:09:16,320
+因为一般的GPU都需要3u的空间
+you know because you only really need 3u of space for you know normal gpus um what you
+
+119
+00:09:16,320 --> 00:09:19,839
+显而易见，底部的空间是给加速器使用的
+actually see is at the bottom tends to get used for things like accelerators
+
+120
+00:09:19,839 --> 00:09:26,240
+另一种就是类似泰安这样的配置
+and then the other way that you sometimes see these things is that you actually see a configuration like this tyan where
+
+121
+00:09:26,240 --> 00:09:30,800
+会有一块板子横穿整个机箱
+there'll be a board that goes across the entire chassis and then the entire top
+
+122
+00:09:30,800 --> 00:09:34,480
+顶部的3u空间是扩展插槽以及PCI-E插槽的
+of the top three of the chassis is all just expansion slots and pcie slots and
+
+123
+00:09:34,480 --> 00:09:38,800
+底部才是电源和相比前者更少的IO接口
+then at the bottom you're going to see power supplies and usually a little bit less io which is kind of the
+
+124
+00:09:38,800 --> 00:09:40,800
+就像这台泰安的机器一样
+configuration that tyan has here but
+
+125
+00:09:40,800 --> 00:09:44,720
+毫无疑问，这不是巧合，这一定是经过取舍后的设计
+make no mistake this is not an accident this is definitely a design choice
+
+126
+00:09:44,720 --> 00:09:50,160
+因为这样把电源放在机箱底部的设计虽然限制了IO接口的数量
+because what this allows you to do by putting the power supplies at the bottom and kind of limiting your IO because of
+
+127
+00:09:50,160 --> 00:09:58,560
+但能让你利用好整个机架的宽度来插PCI-E拓展卡
+that it allows you to have a maximum you get the entire width of the rackmount server to go and put pcie expansion cards and that means that you can put
+
+128
+00:09:58,560 --> 00:10:00,320
+让你能够在一台机器里插超过8张卡
+more than eight cards in a system like
+
+129
+00:10:00,320 --> 00:10:03,208
+这也是泰安想做的事情
+this that is exactly what tyan is trying to do here
+
+130
+00:10:03,232 --> 00:10:06,240
+接下来让我们看看机器的内部，看看这块PCB
+and so let's get inside the system and actually look at that pcb and
+
+131
+00:10:06,240 --> 00:10:07,839
+来谈谈这到底是什么东西
+talk about what the heck is going on on
+
+132
+00:10:07,839 --> 00:10:12,000
+它还是很简单的，如果你之前见过这类服务器，你会发现这样的设计其实非常常见
+this thing it's actually pretty easy if you've seen these things before this is actually a pretty common design but
+
+133
+00:10:12,000 --> 00:10:16,187
+但我们还是要来谈一谈它，说说泰安的好话
+let's just kind of talk through it and work kind of through what's going on with tyan here
+
+134
+00:10:16,211 --> 00:10:21,692
+我们在这里能看到11根PCI-E Gen4 x16插槽
+so what you're going to see is a total of 11 pcie gen 4 by 16 slots
+
+135
+00:10:21,716 --> 00:10:26,800
+你可能会问，为什么会有11根插槽？
+and well that allows you to do something you might say like why do you have 11 and what's this whole funky
+
+136
+00:10:26,800 --> 00:10:29,200
+中间那个小空间是干嘛用的
+spacing in the middle here and the real
+
+137
+00:10:29,200 --> 00:10:34,959
+原因是这样的，很多人都只在这样的服务器里面装8块GPU
+idea is that a lot of people will actually only run eight gpus in a server like this it's a whole balance in terms
+
+138
+00:10:34,959 --> 00:10:40,720
+因为在权衡CPU性能，内存，以及电源消耗等等指标后
+of you know performance for the cpus and memory and also power consumption all that kind of stuff so sometimes you'll
+
+139
+00:10:40,720 --> 00:10:44,320
+一个CPU配4个GPU是较好的
+only see four gpus per cpu but the other
+
+140
+00:10:44,320 --> 00:10:49,839
+但有些人不管那么多，他们希望能在
+way that you sometimes see it is that people will say hey heck with that i want to go maximize my investment in my
+
+141
+00:10:49,839 --> 00:10:53,200
+CPU、内存、硬盘、系统以及等等的东西上投入更多
+cpus memory drive system all that kind of stuff and instead of having just
+
+142
+00:10:53,200 --> 00:10:58,399
+以换取比8GPU数量高25%的10GPU服务器
+eight gpus i want to have 25 more and have a total of 10 gpus in the system
+
+143
+00:10:58,399 --> 00:11:04,981
+所以你能注意到，服务器内有10个GPU插槽
+and so what you'll notice in the system is that there are actually 10 gpu slots that you could use
+
+144
+00:11:05,005 --> 00:11:09,760
+这10个插槽可以提供双宽的空间
+and with those 10 gpu slots that you would use you actually have double width spacing so you can go
+
+145
+00:11:09,760 --> 00:11:15,360
+所以你能在里面塞上全高GPU以及全高双宽GPU，并且总共能插十块
+and put full gpus and full double with gpus and put a total of 10 of them across in this
+
+146
+00:11:15,360 --> 00:11:20,959
+注意到中间那两个PCI-E插槽，非常有意思
+chassis now the double pcie slot that you kind of see in the middle that's actually really interesting as well
+
+147
+00:11:20,959 --> 00:11:26,399
+这种地方一般都是设计给网卡用的
+because what that specifically is is that's really usually designed for like a network card so you can put something
+
+148
+00:11:26,399 --> 00:11:32,480
+所以你可以在显卡之间加100G以太网卡，或者其他类似的拓展卡，同时还可以有额外的空间
+like i don't know 100 gig ethernet adapter or something like that in the system between these gpus and still have
+
+149
+00:11:32,480 --> 00:11:39,279
+再看看板子上的线缆，毫无疑问
+space and so if you kind of look at the board from that lens and you kind of say like okay well what is this for it's
+
+150
+00:11:39,279 --> 00:11:43,360
+它们是用来传输那十块GPU以及高速网卡的信号的
+really to go and be able to put those 10 gpus plus the high speed network card i
+
+151
+00:11:43,360 --> 00:11:48,800
+以及需要提到的一点是，我们自行给气流加了一点挡风罩
+will just note real quick that we did have to do a little bit of blocking of airflow here just because well we kind
+
+152
+00:11:48,800 --> 00:11:52,399
+因为我们拿到的是早期版本，不带有8GPU的挡风罩
+of had a really early unit and we didn't have the block for eight gpus usually
+
+153
+00:11:52,399 --> 00:11:57,440
+一般来说，机器的中间是会有导风罩的
+what you'll see is that in the middle of these systems you'll have a kind of little airflow guide that if you only
+
+154
+00:11:57,440 --> 00:11:59,120
+前提是你只有8块GPU
+have eight gpus there'll be an airflow
+
+155
+00:11:59,120 --> 00:12:03,981
+导风罩可以引导气流，同时阻挡中间空缺的部分
+guide to kind of block off some of this middle section so that way you can divert airflow where it needs to go
+
+156
+00:12:04,005 --> 00:12:05,680
+一些公司可能会在侧面阻挡
+some companies will actually do it on the
+
+157
+00:12:05,680 --> 00:12:11,360
+但这一步是必要的，以此来确保GPU服务器能正常工作
+side but there's just kind of something that you have to basically do to make sure any gpu system functions properly
+
+158
+00:12:11,360 --> 00:12:17,874
+你得确保每个GPU和加速器都有导风罩开口，来让气流通过
+you have to make sure that you have the right blocking versus you know gpus and accelerators that are open slots for airflow to go through
+
+159
+00:12:17,898 --> 00:12:20,428
+只是顺带讲过，让我们接着下去
+so just kind of mention that real quick but let's kind of keep going
+
+160
+00:12:20,452 --> 00:12:23,600
+你可能还看到了PCB上的两个大散热片
+now you're going to see two heat sinks that are on that pcb and
+
+161
+00:12:23,600 --> 00:12:24,720
+你可能会好奇这俩是啥
+you might be wondering what those are
+
+162
+00:12:24,720 --> 00:12:27,360
+它们其实是PCI-E交换机
+what those are actually are are pcie
+
+163
+00:12:27,360 --> 00:12:35,680
+具体型号是PLX/PEX 88096
+switches and specifically they're plx or pex 88096 pcie switches which means that
+
+164
+00:12:35,680 --> 00:12:40,908
+说明它们能提供96条PCI-E通道给设备使用，同时还是Gen4的
+they have at 96 pcie lanes for devices and that they're also pcie gen 4.
+
+165
+00:12:40,932 --> 00:12:45,600
+这些服务器上一代使用的是PCI-E Gen3交换机
+now there were previous generations of these systems that use pci gen 3 switches this
+
+166
+00:12:45,600 --> 00:12:47,600
+这台当然是Gen4的
+is of course pci gen 4 because this is
+
+167
+00:12:47,600 --> 00:12:50,160
+因为这是一台Intel XEON IceLake服务器
+an intel xeon ice lake system and so
+
+168
+00:12:50,160 --> 00:12:57,200
+因此，我们就得用上更新更快的博通PCI-E交换机
+because of that we actually have you know the newer you know faster higher speed pcie switches from broadcom and
+
+169
+00:12:57,200 --> 00:13:06,720
+之所以你能经常看到这些PCI-E交换芯片，是因为GPU之间的点对点流量
+the reason that you typically see things like these pcie switches on here is actually that when you have uh gpus and you want to do peer-to-peer traffic the
+
+170
+00:13:06,720 --> 00:13:14,160
+现在的GPU可以通过PCI-E交换机来进行通讯，而不用经过CPU
+gpus these days can actually talk over a pcie switch and avoid having to go all the way back to the cpu and so you can
+
+171
+00:13:14,160 --> 00:13:20,560
+现在通过PCI-E交换机就可以使多个GPU同步
+do things like sync across a bank of gpus that's on a pcie switch without having to go and kind of saturate that
+
+172
+00:13:20,560 --> 00:13:23,200
+而不需要每个设备都完全连接到CPU
+backlink to the cpu and so it's actually
+
+173
+00:13:23,200 --> 00:13:26,959
+这一点在以前的大型PCI-E交换架构中是个更重要的功能
+a pretty big feature it used to actually be a bigger feature and something that
+
+174
+00:13:26,959 --> 00:13:34,880
+以前这些结构都用上了简单的路由
+we used to see was that people will go and build these like kind of just giant pcie switch architectures to be able to do a single route that can handle you
+
+175
+00:13:34,880 --> 00:13:36,880
+以此来承载8个GPU以及类似的设备
+know eight gpus or something like that
+
+176
+00:13:36,880 --> 00:13:41,839
+这样的架构在过去更加常见
+and that used to be a lot more common uh back in the day but kind of software has picked up and so it is still kind of
+
+177
+00:13:41,839 --> 00:13:44,800
+虽然目前PCI-E交换机还是非常常见
+common that you would see these pcie switches
+
+178
+00:13:44,800 --> 00:13:48,867
+但之前我们已经在STH官网上测评过只需要单根的GPU服务器了
+but you know there used to be this whole single root thing that we actually did reviews on on sth
+
+179
+00:13:48,891 --> 00:13:55,600
+你可能好奇，为什么不直连GPU
+and you might be wondering well why do you not have direct i guess pcie to gpu connectivity
+
+180
+00:13:55,600 --> 00:13:57,440
+为什么必须要这些交换芯片
+why do you have to have these switches
+
+181
+00:13:57,440 --> 00:14:04,720
+原因是，如果你有10个x16 GPU，那么总共就会需要160条PCI-E通道
+and the reason is that if you have 10 gpus all of them are by 16 that's 160 pcie lanes and then usually you want
+
+182
+00:14:04,720 --> 00:14:11,161
+你还需要额外的PCI-E通道给网卡，一般这类服务器至少需要两个网卡
+other pcie lanes for things like your network controllers usually you want to lease two network controllers in a system like this
+
+183
+00:14:11,185 --> 00:14:19,600
+你可能还需要NVME SSD，以及SAS卡、RAID卡等等
+and then also you know you may have nvme ssds you could have a sas controller there are all kinds of raid controller you can have all these kind of devices that also eat up pcie
+
+184
+00:14:19,600 --> 00:14:22,240
+这些都需要占用PCI-E通道
+lanes and in dual intel xeon or third
+
+185
+00:14:22,240 --> 00:14:24,000
+更糟糕的是，两颗第三代Intel Xeon处理器
+generation intel xeon scalable ice lake
+
+186
+00:14:24,000 --> 00:14:30,800
+总共的通道一共也只有128条
+edition cpus only have a total of 128 pcie lanes between them plus a little bit of extra from pch that we're just
+
+187
+00:14:30,800 --> 00:14:32,320
+南桥提供的一点点额外PCI-E通道就假装它不存在好了
+going to pretend that don't exist now i
+
+188
+00:14:32,320 --> 00:14:35,600
+哦，还有一点我没提到的是，这台服务器目前还出于“即将到来”的状态
+have mentioned that this system is listed as coming soon
+
+189
+00:14:35,600 --> 00:14:41,680
+所以这是一台比较粗糙的早期服务器
+so you kind of expect that they're going to be really rough systems when you kind of get early systems like that but we
+
+190
+00:14:41,680 --> 00:14:49,315
+但我们还是拿到了作为一台GPU服务器应该有的配件，这个配件被很多人所忽视，那就是
+actually had a feature that is really important for the gpus that a lot of people kind of overlook that we actually got with the system which was super exciting
+
+191
+00:14:49,339 --> 00:14:52,959
+电源线！！
+and that's just the fact that we got power cables and these power
+
+192
+00:14:52,959 --> 00:14:58,079
+你会发现我手上的这两捆电源线是不同种类的
+cables you'll see that there are two different kinds of power cables that i'm holding right now the power cables on my
+
+193
+00:14:58,079 --> 00:15:02,560
+左边这捆是给数据中心GPU用的
+left are the ones that you use for things like data center gpus because
+
+194
+00:15:02,560 --> 00:15:08,959
+因为这些线缆可以轻松提供单根300w的供电能力
+they're able to go deliver you know 300 watts of power on a single cable and a single connector very easy this is
+
+195
+00:15:08,959 --> 00:15:15,195
+如果你用的是NVidia A100，那这就是你应该会用到的线缆了
+definitely what you would want for if you're using like an nvidia a100 or something like that you would definitely use this kind of cable
+
+196
+00:15:15,219 --> 00:15:22,240
+另一只手上的线缆是给消费级显卡使用的
+now on the other hand there are people that will use like consumery gpus and if you do that you basically you know usually have maybe
+
+197
+00:15:22,240 --> 00:15:30,240
+一般这时候就得用两个接口了，比如6+6pin、6+8pin、8pin布拉布拉
+say two connectors whether there's like you know two six pin or eight pin and six pin an eight pin maybe there's two eight pin connection i don't know there's all kinds of different
+
+198
+00:15:30,240 --> 00:15:39,279
+这些接口把主板上的单口引出两个接口来给消费级显卡供电
+connectors and so that's actually what these cables over here are for where you have the single connector from the motherboard and then you have two connectors per cable to go to each gpu i
+
+199
+00:15:39,279 --> 00:15:41,600
+我不能强调这一功能（译者：因为NV不允许消费级显卡用在数据中心）
+can't stress this enough but if you do
+
+200
+00:15:41,600 --> 00:15:49,839
+但如果你买了类似的服务器，想要用消费级显卡作为PCI-E加速器
+purchase a system kind of like this where you're going to have pcie accelerators and you're thinking like hey i can go use a consumer gpu make
+
+201
+00:15:49,839 --> 00:15:55,519
+要确保制造商有合适的电源线
+sure that the vendor has the appropriate power supply cables because otherwise
+
+202
+00:15:55,519 --> 00:16:02,480
+如果碰到“哦！我的电源线和我的显卡不兼容”这种问题会非常头疼
+that can be a total headache to go and find like oh hey the power cables that i have they they don't work with my gpus
+
+203
+00:16:02,480 --> 00:16:08,000
+虽然有相应的转接线，但这还是非常痛苦的一件事
+um and it's just you can there are adapters out there but it's just a total pain in the butt and you don't really
+
+204
+00:16:08,000 --> 00:16:11,440
+而且多余的线缆还会阻碍气流
+want to go and have extra cables in these things take blocking airflow and
+
+205
+00:16:11,440 --> 00:16:15,534
+所以一定要确保制造商有相应的线缆
+so just make sure that your vendor has these cables and that's a very big thing actually
+
+206
+00:16:15,558 --> 00:16:20,000
+如果你还记得的话，整块承载GPU的电路板都在电源的上方
+now the whole gpu pcb and stuff that's all sitting over the power supplies if you remember so you have
+
+207
+00:16:20,000 --> 00:16:23,680
+电源在最底下，然后是GPU板，最顶部是GPU
+power supplies below you have gpu pcb and then you have all the gpus on top of
+
+208
+00:16:23,680 --> 00:16:32,561
+GPU板和主板之间有一堆线缆连接
+that and then you know what you really have is you have a series of cables and connectors that basically connect the main motherboard of the system to that big pcie thing
+
+209
+00:16:32,585 --> 00:16:41,759
+主板支持两个第三代Intel Xeon可拓展处理器，也就是Ice Lake处理器
+now the motherboard what you have is you have two intel xeon scalable and third generation intel xeon scalable ice lake edition processor now with these ice like edition processors
+
+210
+00:16:41,759 --> 00:16:46,000
+这一代处理器有很多新功能，其中的一部分对这样的服务器来说是非常重要的
+you get a whole bunch of new features and just kind of some of them that are important for a system like this you do
+
+211
+00:16:46,000 --> 00:16:55,040
+这一代拥有128条Gen4 PCI-E通道，相比上一代只有96条PCI-E Gen3通道的Cascade Lake处理器
+get pci gen4 you get 128 lanes which is a big upgrade from the 96 pcie gen 3 lanes that you would get on a dual socket cascade lake system so certainly
+
+212
+00:16:55,040 --> 00:16:57,901
+这是一个巨大的提升
+this is a big upgrade in this generation for intel
+
+213
+00:16:57,925 --> 00:17:04,319
+我们来说说为什么。现在有很多厂商都用AMD EPYC处理器代替Intel
+now let's just call it what it is a lot of the vendors out there actually do have amd EPYC systems or alternatives but there are people that
+
+214
+00:17:04,319 --> 00:17:06,319
+但还有很多人偏爱Intel服务器
+actually very much prefer the intel
+
+215
+00:17:06,319 --> 00:17:13,599
+特别是需要预处理的场景，或者需要AVX-512指令集的工作
+systems especially if you have something where you have like pre-processing or something like that where you might need something like avx-512 maybe you need
+
+216
+00:17:13,599 --> 00:17:15,119
+比如需要VNNI的工作
+VNNI(Vector Neural Network Instructions) or something like that that's
+
+217
+00:17:15,119 --> 00:17:16,959
+实际上这还是非常普遍的
+actually pretty common and so there are
+
+218
+00:17:16,959 --> 00:17:25,508
+对于那些有偏好的用户来说，有A/I两家选是非常重要的
+people that just you know have a preference for one over the other and so it is important to have both the option to have you know amd but also intel xeon scalable processors
+
+219
+00:17:25,532 --> 00:17:30,320
+方便用户根据自己的工作负载来选择最适合自己的
+because just you know it allows you to go and say here's my workload what is the best fit for me
+
+220
+00:17:30,320 --> 00:17:36,080
+此外，第三代至强还有很多AMD无法企及的技术
+and there are some other technologies that you get as well with third generation xeon scalable that you don't necessarily get with amd and a really
+
+221
+00:17:36,080 --> 00:17:44,000
+最典型的例子就是傲腾持久内存或者说PMem 200
+good example of that is that in a system like this you may want to go use something like uh intel optane persistent memory or pmem 200 and that
+
+222
+00:17:44,000 --> 00:17:50,400
+可以给你提供单根高达512G的空间，能作为非常可靠、快速的存储介质
+gives you up to 512 gigs per dimm but that could also be very persistent very very fast persistent storage you can
+
+223
+00:17:50,400 --> 00:17:56,480
+如果需要大量内存，也可以作为内存使用
+also have additional memory so if you wanted to go like to a very high memory count you can totally go do that this
+
+224
+00:17:56,480 --> 00:18:03,280
+这台服务器引出了完整的8通道内存，每个CPU有16个内存槽，每个通道2根内存
+does have a full set of 8 channel memory per cpu so 16 channels per cpu and also two dimms per channel which means that
+
+225
+00:18:03,280 --> 00:18:09,200
+整台服务器插满两个CPU就能插上32根内存
+we get a total of 32 dimms in the system along with the two sockets okay now
+
+226
+00:18:09,200 --> 00:18:14,960
+还有一个我觉得很酷的小功能...其实也不算小
+here's a little tiny feature or maybe it's actually kind of a bigger feature in this system but i just kind of think it's totally cool so i want to go over
+
+227
+00:18:14,960 --> 00:18:22,720
+STH的老读者会知道
+it and that's the fact that one thing that i think a lot of people that read sth or you know have read sth over the years know is that i do not like the
+
+228
+00:18:22,720 --> 00:18:24,720
+我不喜欢薄薄的塑料导风罩
+little flimsy plastic airflow guys i
+
+229
+00:18:24,720 --> 00:18:27,520
+我就是很讨厌它们
+just i just dislike them with a passion
+
+230
+00:18:27,520 --> 00:18:32,320
+但很多服务器制造商都喜欢用
+and they have been used by many vendors in systems like this and they're just a
+
+231
+00:18:32,320 --> 00:18:33,919
+它们用起来真的让人痛苦不堪
+total pain to go once these things are
+
+232
+00:18:33,919 --> 00:18:38,960
+比如你终于把4u服务器搞定了
+all configured to like kind of go get in place get seated right you know these are 4u systems you got to kind of
+
+233
+00:18:38,960 --> 00:18:42,799
+但这些软软的导风罩就是会把机箱里的东西搞得一团糟，我真的很讨厌
+like move those things around and those flimsy ones i absolutely hate it i mean
+
+234
+00:18:42,799 --> 00:18:49,120
+我从e5 v1v2时代就开始接触到这些软趴趴的导风罩了
+we've been using them since like the xeon e5 i don't know v1 v2 era and this type of
+
+235
+00:18:49,120 --> 00:18:53,600
+这种讨厌的设计什么时候似啊
+system and i just dislike them with a passion battalion has kind of gone the
+
+236
+00:18:53,600 --> 00:18:58,799
+泰安完全走了另一条路，他们没有用硬塑料做导风罩
+absolute other way not only are they doing like say something like a hard plastic airflow guide but they actually
+
+237
+00:18:58,799 --> 00:19:01,280
+而是用金属做！
+have a metal airflow guide that directs
+
+238
+00:19:01,280 --> 00:19:06,080
+使得气流能够通过CPU以及两侧的内存
+air both over the cpus along with some of the memory slots as well and that is
+
+239
+00:19:06,080 --> 00:19:08,195
+对我来说真是太棒了！
+just to me totally crazy
+
+240
+00:19:08,219 --> 00:19:14,720
+因为软塑料导风罩和硬塑料的都很常见
+because it is pretty common that you see the flimsy one it's also kind of common that you see kind of the hard plastic ones but
+
+241
+00:19:14,720 --> 00:19:18,240
+但金属的几乎见不到
+you almost never see full metal airflow
+
+242
+00:19:18,240 --> 00:19:25,280
+我现在的感觉就像是个呆子看到书一样痴迷，因为我这个月已经做了5台GPU服务器的测评了
+guides and so just as a you know nerd that looks at these things and does you know i guess we're doing five gpu servers just this month and we do a ton
+
+243
+00:19:25,280 --> 00:19:29,887
+这绝对是个差异化的特点，我觉得这非常nb
+of these systems and that is definitely a differentiated feature which i think is just super cool
+
+244
+00:19:29,911 --> 00:19:34,480
+既然服务器就在我的身后，为什么我不直接把里面的组件拉出来给你们看呢哈哈
+and so just talking about this i was like wait the server's sitting right behind me why don't i just go pull this thing out and so what i
+
+245
+00:19:34,480 --> 00:19:36,540
+接下来我想说说这台服务器的风扇模组
+want to talk about next is actually the fan module
+
+246
+00:19:36,564 --> 00:19:42,880
+这些风扇模组其实非常有意思，因为它们是热插拔的，意味着它们非常便于维护
+so these fan modules are actually kind of cool because you can kind of see they're actually hot swap and they're really easy to go service
+
+247
+00:19:42,880 --> 00:19:48,480
+同时，你还会发现这两个风扇是垂直排列在风扇架里的
+but at the same time you can actually see that there are two fans in the carrier that are oriented vertically now
+
+248
+00:19:48,480 --> 00:19:50,799
+它们都是80mm风扇
+these are 80 millimeter fans and what
+
+249
+00:19:50,799 --> 00:19:57,200
+这样的设计能让大量的气流传过机箱
+this basically allows you to do is get a ton of airflow through the entire chassis right because you have these two
+
+250
+00:19:57,200 --> 00:20:02,640
+因为两个风扇是上下叠在一起的，能让整个4u机箱都充满狂奔的空气
+fans that are stacked on top of each other just means that the entire 4u chassis is just blowing air like crazy
+
+251
+00:20:02,640 --> 00:20:05,648
+现在展示的是风扇是如何热插拔的
+and then also just kind of how tyan has this setup internally
+
+252
+00:20:05,672 --> 00:20:10,960
+如果一组风扇损坏了，这样的设计能让你继续运行你的工作负载
+you actually do get if one failed you'd actually still be able to run your workloads um you
+
+253
+00:20:10,960 --> 00:20:12,640
+这一点还算不错
+know so so that's actually kind of nice
+
+254
+00:20:12,640 --> 00:20:18,559
+有些服务器只有一列风扇，这就导致一个风扇要给多个GPU散热
+there are some systems that only have like one set of fan that you know service different gpus so
+
+255
+00:20:18,559 --> 00:20:25,760
+如果你搞到的是那样的系统，不像这样有两列设计的那种
+if you get one of those systems and like you know you don't have these two two fans that can actually cool something you only have like you know one fan per
+
+256
+00:20:25,760 --> 00:20:34,159
+那样的话，虽然其他的GPU不会有影响，但那两个单独的GPU会过热
+two gpus sometimes what can happen is if that fan fails then all the rest of your gpus are gonna be fine but you're gonna have like two gpus that will overheat
+
+257
+00:20:34,159 --> 00:20:38,974
+我觉得这样的设计很酷(cool)？额又是一个双关
+and so having a design like this is actually kind of cool i guess that was kind of a pun too
+
+258
+00:20:38,998 --> 00:20:49,360
+哦还有一点，它们是反转风扇，所以应该可以说每个风扇模组有四个风扇？
+um also just to note these are counter rotating fan modules so it is kind of like that there are i guess you know four sets of fans in this kind of stack configuration so just
+
+259
+00:20:49,360 --> 00:20:50,799
+我就随便提一嘴
+want to kind of point that out as well
+
+260
+00:20:50,799 --> 00:20:55,600
+还有一点我想讲的细节
+and there was one tiny little feature that i did want to talk about because it
+
+261
+00:20:55,600 --> 00:20:59,840
+不是很常见的设计，但我觉得泰安干得不错的地方
+is something that's not overly common and it is a nice feature that tying has
+
+262
+00:20:59,840 --> 00:21:01,520
+我觉得有些人可能会忽视它
+i think a lot of people would overlook
+
+263
+00:21:01,520 --> 00:21:05,600
+如果你注意到风扇墙是怎么安装上的
+and if you look at how the fan wall is actually mounted there are actually
+
+264
+00:21:05,600 --> 00:21:10,720
+螺丝底下还有一圈橡胶环
+little rubber grommets that sit on the screws that hold in the fan wall and
+
+265
+00:21:10,720 --> 00:21:14,960
+虽然这个细节容易被忽略
+while that may seem like a very small detail to folks just know that when
+
+266
+00:21:14,960 --> 00:21:18,720
+当这些服务器全功率运转时
+these things are actually running kind of at full bore and the accelerators are
+
+267
+00:21:18,720 --> 00:21:27,919
+它们会制造强烈的震动，导致机箱晃动的发生
+going you know these fans actually vibrate quite a bit and when they create that vibration it actually does shake the chassis quite a bit and so having
+
+268
+00:21:27,919 --> 00:21:34,000
+这些橡胶圈能够让风扇震动和机箱的其余部分隔离开来
+these little rubber grommets it's really there to go and isolate the fans from vibrating the rest of the chassis it's
+
+269
+00:21:34,000 --> 00:21:38,880
+这是件小事，很多人或公司都不会注意到
+like a tiny little thing but a lot of people don't do that or a lot of companies don't do that and it does show
+
+270
+00:21:38,880 --> 00:21:44,159
+泰安作为一家干了那么久的公司，只有它们这类企业才会注意到这些
+that you know tyan has been making these systems for years and just kind of that they would think of something like this
+
+271
+00:21:44,159 --> 00:21:47,947
+一定是用户反馈才会产生这种改进
+it's definitely something that's come from like customer feedback and made its way into this product
+
+272
+00:21:47,971 --> 00:21:51,120
+好了，让我们开始进行硬件介绍吧
+all right home stretch of the hardware overview let's
+
+273
+00:21:51,120 --> 00:21:54,640
+让我们看看服务器的前脸，在那堆硬盘位上面
+get to the front of the system and just above all that drive bay and all that
+
+274
+00:21:54,640 --> 00:22:03,200
+也就是机箱的靠上部分，你能看到两个竖着装的PCI-E x16插槽
+kind of stuff at the very top of the chassis you're going to see these like kind of two kind of strangely mounted pcie by 16 slots now in our system only
+
+275
+00:22:03,200 --> 00:22:12,000
+提一点，我们这台只有其中的一个接口接上了数据接口，另一个只接上了电源
+one of the two of these is actually hooked up to data there is the other one that is actually hooked up to power but not data of course you can change the
+
+276
+00:22:12,000 --> 00:22:14,960
+当然你可以根据自己的需求自己接线缆
+way that your cables go in the system and actually hook this thing up if you
+
+277
+00:22:14,960 --> 00:22:23,120
+但它的主要功能是让你接RAID卡或者类似的东西的
+wanted to but the idea i think with these are really that these are there for things like if you wanted to have a raid controller or something like that
+
+278
+00:22:23,120 --> 00:22:30,435
+你能把它们塞到这个可以被称为“插槽”的地方，当然，你想插两个也行
+you would then go and put them into this kind of i guess slot and then you have a second one so if you want to have two you could go do that
+
+279
+00:22:30,459 --> 00:22:33,760
+好的，让我们来到管理部分
+okay so let's kind of move on and let's get to management
+
+280
+00:22:33,760 --> 00:22:36,480
+用的是泰安的MegaRAC SP-X
+this uses tyan's MegaRAC SP-X so you do
+
+281
+00:22:36,480 --> 00:22:40,159
+有iKVM这类功能
+get things like ikvm and all that kind of stuff we actually have stuff that you
+
+282
+00:22:40,159 --> 00:22:46,000
+如果你想了解更多关于这个管理页面怎么使用的教程，看看视频下面并不存在的链接
+know we'll link on down below if you want to kind of just go check it out and kind of i guess get a better view than what we're going to
+
+283
+00:22:46,000 --> 00:22:52,640
+我可不想再做一次一样的教程了
+go over here i just don't want to go through the management interface that we've done a gazillion times again because we've done it a gajillion times
+
+284
+00:22:52,640 --> 00:22:54,775
+想看就去看吧
+at this point but if you want to go check that out you can
+
+285
+00:22:54,799 --> 00:23:00,159
+就性能而言，主要有两个我们需要注意的点
+now in terms of performance we kind of wanted to look at two main things now in these systems
+
+286
+00:23:00,159 --> 00:23:10,320
+要声明的一点是，如果是相同的PCI-E解决方案：也就是在PCI-E交换机体系下，使用同样的GPU，同样的交换机芯片
+just being frank here if you have a pcie solution where you have pcie switches and you have the same gpus same pci switches the by far the biggest
+
+287
+00:23:10,320 --> 00:23:14,080
+目前为止，最大的导致性能差距的差异就是散热能力
+difference that you get in terms of performance is just based on cooling and
+
+288
+00:23:14,080 --> 00:23:18,835
+所以这个问题就变成了，这台服务器能不能很好地进行散热
+really the question is like can the system cool the gpus that are in there or can they not
+
+289
+00:23:18,859 --> 00:23:26,080
+所以，如果我在考虑选择服务器时，我会通过以下分项来选择不同的方案
+so when you're thinking about a system like this i the way at least i would go and kind of stratify the different solutions or is i would
+
+290
+00:23:26,080 --> 00:23:29,361
+我会选择使用什么加速器，
+figure out like you know kind of what kind of accelerators do i want to put in there
+
+291
+00:23:29,385 --> 00:23:39,919
+使用什么样的拓扑结构，是使用NVidia NVLink，还是PCI-E、还是直连CPU、亦或者是通过PCI-交换机芯片
+i figure out what kind of topology do i want i mean do i want like you know an nvidia nv link topology do i want pcie do i want direct to cpu pcie do i want the pcie switch pcie do i want
+
+292
+00:23:39,919 --> 00:23:42,000
+是使用单路系统还是多路
+single root or dual root i mean you
+
+293
+00:23:42,000 --> 00:23:45,360
+搞清楚适合自己的拓扑结构
+know what are the different kind of topologies that i might want and then
+
+294
+00:23:45,360 --> 00:23:49,840
+这是挑选服务器的第一个过滤项
+you know i think that's kind of like the first filter in terms of when you're looking at these systems then the next
+
+295
+00:23:49,840 --> 00:23:55,840
+在这之后，就要考虑服务器是否能给这些GPU散热
+big one should definitely be you know can the system cool the gpus or is it
+
+296
+00:23:55,840 --> 00:24:03,120
+如果过热了就会导致降频
+going to be the case where you know the gpus are going to overheat and if they overheat that means really that they throttle down if they throttle down you
+
+297
+00:24:03,120 --> 00:24:05,279
+导致性能损失
+lose performance and these are generally
+
+298
+00:24:05,279 --> 00:24:10,559
+而且一般来说，这些服务器都不是便宜货，因为这些加速器都蛮贵的
+really expensive systems right once you have these accelerators in there these are not cheap systems and so you don't
+
+299
+00:24:10,559 --> 00:24:15,039
+既然你不想让它们性能下降，那么你就需要良好的散热
+really want them not performing well and so you do need good cooling and there
+
+300
+00:24:15,039 --> 00:24:16,559
+好的散热需要在两个方面做好
+are actually two aspects because there
+
+301
+00:24:16,559 --> 00:24:20,687
+因为一些服务器，特别是老服务器 
+used to be especially in the old days quite a few systems that couldn't handle like
+
+302
+00:24:20,711 --> 00:24:25,360
+不能同时使用顶级CPU和加速器
+the top bin cpus along with the accelerators and so this is just
+
+303
+00:24:25,360 --> 00:24:29,440
+所以我们要把两者的散热能力都测试一遍
+something that you know we wanted to test both the cpus and the gpus now this
+
+304
+00:24:29,440 --> 00:24:35,760
+这台服务器声称最高支持270w处理器，所以我们找了一对铂金8380
+system claims that it can take up to 270 watt processors so we took the platinum 8380s and we put them in there and we
+
+305
+00:24:35,760 --> 00:24:43,120
+这是Intel高端的40核心处理器，散热管够吗？最后的性能和标准的2u服务器比有什么差别吗？
+said well this is the 40 core high-end cpus that intel has like you know can this cool and how does it compare to just kind of our standard 2u server in
+
+306
+00:24:43,120 --> 00:24:46,080
+结果看上去还是比较接近的
+terms of performance and what we generally saw was it was pretty close
+
+307
+00:24:46,080 --> 00:24:51,307
+实际上稍微慢了一点点，但大约只有0.5%左右的差距，可以算作是偏差量
+this was actually a little bit slower but it was like half a percent which is pretty much what we considered test variation
+
+308
+00:24:51,331 --> 00:24:57,039
+所以我的结论是，这台服务器的散热能力非常接近我们的基准线
+so i i would say that you know for me i would say that this is close enough to our baseline that this
+
+309
+00:24:57,039 --> 00:25:02,847
+其中的差距基本可以算作是测试误差，也就是说，这台服务器可以支持270w TDP的CPU
+is just kind of normal variation and i would say that this can actually cool 270 watt tdp cpus
+
+310
+00:25:02,871 --> 00:25:10,320
+在GPU这边，我们也做了同样的事情，但我们自己把多出的空位挡住了，因为我们只有八张A40
+now on the gpu side we did the same thing but one thing that we did do is we did block off because we only had eight nvidia a40s we had to
+
+311
+00:25:10,320 --> 00:25:16,775
+一般来说，如果是实际使用状态下，你也会这么干 
+actually block off the slots that were uh empty and not occupied that's kind of normally what you would do and
+
+312
+00:25:16,799 --> 00:25:24,240
+我们平常肯定会搞10张GPU来测试，但时局不同往年嘛，现在不太好搞
+we would totally have put 10 gpus in there but frankly gpus are very hard to get these days especially you know gpus that are
+
+313
+00:25:24,240 --> 00:25:30,188
+而且目前GPU还要比平时贵上5 6000刀，所以就这样吧 
+like 5 6 000 bucks a pop or more um you know so we had eight that's that's what we had sorry guys
+
+314
+00:25:30,212 --> 00:25:32,640
+再重复一遍我们要做的，把测试结果和基准线做比较
+so what we want to do is just compare this to a baseline and
+
+315
+00:25:32,640 --> 00:25:40,201
+确保这些GPU都和普通的300w A40有一样的表现
+just make sure that the gpus even if they're all the way at 300 watts uh tdp like the nvidia a40s are
+
+316
+00:25:40,225 --> 00:25:45,760
+我倒是想有80G的A100，但没办法，数量不够
+i wish we had A100 80gigs but no way we have enough of those for this right we just want to
+
+317
+00:25:45,760 --> 00:25:49,440
+我们只是确保这台服务器能够为300w的GPU提供良好散热
+make sure that it could cool a 300 watt gpu because you know frankly if you have
+
+318
+00:25:49,440 --> 00:25:57,520
+因为测了300w的GPU，低于300w的也就不在话下了 
+a 300 watt gpu uh in a pcie slot then frankly if it's a lower wattage gpu you should be able to cool that no problem so that was kind of the thought process
+
+319
+00:25:57,520 --> 00:26:01,279
+看下结果，还不错
+there and when we kind of looked at it again it actually was pretty good we're
+
+320
+00:26:01,279 --> 00:26:06,559
+平均低于预期1.2%
+about 1.2 percent just kind of on average lower than we would have expected
+
+321
+00:26:06,559 --> 00:26:12,159
+比我预想的要差得多一点
+which is actually a little bit more than i would probably say is uh just a normal
+
+322
+00:26:12,159 --> 00:26:15,919
+测试误差一般在1%到1.5%
+it usually is like one percent ish or one and a half percent for our test
+
+323
+00:26:15,919 --> 00:26:21,279
+所以这样的结果算是有些偏高的测试误差
+variation so this would probably be kind of at the higher end of what we would consider a test variation but then again
+
+324
+00:26:21,279 --> 00:26:26,440
+但由于我们没有插满十个GPU，所以我们这次做了一个挡风板来导流 
+just remember that we did have to do a little blocking off of the airflow because we didn't have a full 10 gpus
+
+325
+00:26:26,464 --> 00:26:29,679
+这可能会导致结果产生一些变化
+so there was a little bit of funkiness going on because of that and frankly it
+
+326
+00:26:29,679 --> 00:26:33,039
+但说实话这点差距还是很小的，总体而言结果还算可靠
+was pretty close so i think overall we're okay and you know frankly if it
+
+327
+00:26:33,039 --> 00:26:36,799
+而且1.5%的差距还算是比较合理的
+was one one and a half percent that seems to me to be pretty reasonable if
+
+328
+00:26:36,799 --> 00:26:41,754
+如果差距到达5%到10%，这个问题就值得警惕了
+ we see something that's more like a five to ten percent delta that usually is a big warning sign
+
+329
+00:26:41,778 --> 00:26:45,172
+1.2%的差距在我看来还好
+so 1.2 to me just kind of feels okay
+
+330
+00:26:45,196 --> 00:26:47,760
+接下来让我们看一个你们肯定会问到的问题
+but yeah let's get to that next thing that you're definitely
+
+331
+00:26:47,760 --> 00:26:52,148
+这台服务器要消耗多少电力？
+wondering like okay so how much power does this thing use
+
+332
+00:26:52,172 --> 00:26:59,127
+我们之前讲过，这台服务器有四个1600w 80PLUS
+铂金电源 now remember that we have a total of four 1.6 kilowatt 80 plus platinum power supplies
+
+333
+00:26:59,151 --> 00:27:07,120
+但要说明的是，这些电源只有在200V以上的市电供应下，才有单个1600w的输出
+and just to be really clear real quick these things are 1.6 kilowatt power supplies each if you're at over 200 volts if you're kind
+
+334
+00:27:07,120 --> 00:27:14,260
+如果输入只有100V到120V，它们就只有1000w的输出能力了
+of down in the kind of 100 to 120 something volt range this is only like a one kilowatt power supply
+
+335
+00:27:14,284 --> 00:27:22,240
+支持宽幅输入这一点是不错的，因为现在很多GPU服务器支支持200V+的输入了
+and so it can accept both voltages was actually kind of cool for you know a gpu server a lot of them nowadays are only 200 plus volts
+
+336
+00:27:22,240 --> 00:27:27,675
+但同时，电源转换效率会低很多，而且还会影响你的配置选项
+but at the same time you lose a lot of efficiency so that will impact the configurations that you can have in a system like this
+
+337
+00:27:27,699 --> 00:27:34,559
+我们现在的配置是大约3500w，或者说3500w少一点
+now we got our configuration up to about three and a half kilowatts maybe just a little bit south of three and a half kilowatts
+
+338
+00:27:34,559 --> 00:27:38,640
+对我们来说绰绰有余，而且还有很大的升级空间
+which is pretty good now that being said there's definitely room to go up from
+
+339
+00:27:38,640 --> 00:27:45,200
+你可以再塞两张300w GPU，算上散热增加10%的功耗，也就是多上660w左右
+there i mean you could put two more 300 watt gpus which would be 600 watts plus call 10 percent so for cooling it's about 660
+
+340
+00:27:45,200 --> 00:27:51,039
+在这基础上，你还能往里面塞硬盘、DPU等等
+watts and then you know you could put more drives in there and you could put i guess you know a dpu or something like
+
+341
+00:27:51,039 --> 00:27:55,039
+可能还会增加50-60w功耗
+that in there and that could be you know 50 60 watts itself and so overall i mean
+
+342
+00:27:55,039 --> 00:28:02,880
+总之，这台服务器很能塞，在200V+输入的前提下
+you could definitely put a lot more into the system and so if you are at over 200 volts this system is designed to be a
+
+343
+00:28:02,880 --> 00:28:05,039
+电源为3+1冗余设计
+three plus one redundant system which
+
+344
+00:28:05,039 --> 00:28:14,094
+也就是说，这台服务器可以断掉一个电源的同时，还能保持运行。也表明了，这台服务器最高额能输出4800w
+means that you could lose one power supply and still run the system and get up to 4.8 kilowatts of power budget total for your system
+
+345
+00:28:14,118 --> 00:28:18,799
+总结一下，我认为这台服务器表现出色
+and so overall you know i think the system performed decently well uh we were definitely not
+
+346
+00:28:18,799 --> 00:28:26,768
+虽然我们没有用最顶级的配置展示它，但我们已经竭尽全力展示它了 
+at the top end of a configuration for this but like the biggest one that we could basically get for the server in time that we had um so that's kind of what that is so
+
+347
+00:28:26,792 --> 00:28:34,960
+我希望你喜欢这个8/10 GPU服务器的展示视频，它是一款非常酷的服务器
+overall i hope you like this look at a 10 8 or 10 gpu server i mean this is actually something that is really cool there are a lot of people
+
+348
+00:28:34,960 --> 00:28:42,161
+很多人都因为PCI-E方案的灵活性而喜欢这个方案 
+that prefer the pcie just because of the you know flexibility of the pcie solution and so they really like these kind of servers and so
+
+349
+00:28:42,185 --> 00:28:45,340
+我只是觉得这台服务器很nb，所以才做成了视频
+i just kind of thought it'd be cool to show you another one of these
+
+350
+00:28:45,364 --> 00:28:52,121
+另一个原因是我想给大家解释，泰安在服务器设计中做的取舍，以及其原因 
+and then the other just kind of bit is i just really wanted to explain some of the design decisions that tying made and why they made those decisions
+
+351
+00:28:52,145 --> 00:28:54,399
+希望对你有所帮助
+hopefully you found that helpful if you did you know feel free to
+
+352
+00:28:54,399 --> 00:28:56,848
+想发评论的都可以发
+leave comments if you didn't leave a comment as well
+
+353
+00:28:56,872 --> 00:29:02,159
+如果你想了解更多，就去泰安的SC21虚拟展馆
+now if you do want to find out more about this again you can go to the super computing 21 virtual booth from tyan because they
+
+354
+00:29:02,159 --> 00:29:06,960
+那里会有更多有关这台旗舰服务器的具体介绍
+definitely have more on the system there this is going to be one of their flagship systems for that show so
+
+355
+00:29:06,960 --> 00:29:10,528
+一定有值得你去看义眼的东西 definitely
+go you know check that out there's probably more information than we had although
+
+356
+00:29:10,552 --> 00:29:14,561
+我想让这期视频变得更加通俗易懂，所以他们的资料一定比我介绍到的更多 
+i tried being pretty thorough on these but you know they may have some more stuff there if you'd like to see that
+
+357
+00:29:14,585 --> 00:29:18,640
+谢谢谢谢谢谢谢谢谢谢谢谢谢谢
+and hey if you did like this video why don't you give us a like click subscribe turn on notifications so you
+
+358
+00:29:18,640 --> 00:29:21,760
+关注原作者！关注原作者！关注原作者！
+can see whenever we come out with great new videos as always thanks for watching
+
+359
+00:29:21,760 --> 00:29:24,480
+have an awesome day
+
